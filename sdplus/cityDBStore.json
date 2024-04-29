@@ -1,0 +1,13 @@
+{
+  "Bengaluru": {
+    "residentialUtilityTariff": 9,
+    "dailyInsolationAverage": 5.4,
+    "emissionFactors": 0.6
+  },
+  "Mumbai": {
+    "residentialUtilityTariff": 19,
+    "dailyInsolationAverage": 5.2,
+    "emissionFactors": 0.89,
+    "swmBaseCaseCapexMultiplier": 0
+  }
+}

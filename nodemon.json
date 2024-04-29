@@ -1,0 +1,8 @@
+{
+  "ignore": [
+    "src/code/quantities/*.ts",
+    "src/code/quantities/*.json",
+    "src/utils/lookup.ts",
+    "src/models/**/*.json"
+  ]
+}
