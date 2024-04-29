@@ -53,6 +53,3 @@ Deploy Phase
     Dev team will deploy a specific version of a model to AWS / Heroku, and run it using the Kong Runner Framework
     Calculess will call Kong's runner API (/result?calctree=true, body)
     Once calculess receives results from Kong, it will wrap the values in a metadata object
-
-
-    TEst
