@@ -1,0 +1,1 @@
+{"quantities" : [{"id":"hwm__q_noop","arguments":"hwm__st_rooftopPerSwh,hwm__st_rooftopPerHp,hwm__st_outletTemp,hwm__st_inletTemp,hwm__st_converstionFactor,hwm__st_heatLossCoeff,hwm__st_supRet,hwm__st_numberOfShafts,hwm__st_hzPipe,hwm__st_baseCasePerLPDkWh,hwm__st_swhCapexMultiplier,hwm__st_baseCaseVillaSwhCapacity,hwm__st_sdgNumberForHwm","body":"return null;"}]}

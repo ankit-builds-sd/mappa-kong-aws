@@ -1,0 +1,15 @@
+{
+  "namespace": "circumference",
+  "quantities": [
+    {
+      "id": "circumference__q_circumference",
+      "staticValues": ["circumference__st_radius"],
+      "output": "return 2 * Math.PI * circumference__st_radius"
+    },
+    {
+      "id": "circumference__q_sum",
+      "quantities": ["circumference__q_circumference"],
+      "output": "return 1 + 2 + 3;"
+    }
+  ]
+}

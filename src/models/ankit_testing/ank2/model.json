@@ -1,0 +1,27 @@
+{
+  "namespace": "ank2",
+  "extends": ["../ank3", "../ank4"],
+  "quantities": [
+    {
+      "id": "ank2__q_noop",
+      "staticValues": ["ank2__st_rooftopPerSwh", "ank2__st_rooftopPerHp"],
+      "projectInputs": [
+        "ank2__pi_hpHeatingSpeed",
+        "ank2__pi_availableVillaRooftop",
+        "ank2__pi_availablePenthouseRooftop",
+        "ank2__pi_option",
+        "ank2__pi_swhType",
+        "ank2__pi_hpType"
+      ],
+      "output": "return null;"
+    }
+  ],
+  "types": {
+    "ank2__pi_hpHeatingSpeed": "HwmHpHeatingSpeed",
+    "ank2__pi_availableVillaRooftop": "number",
+    "ank2__pi_availablePenthouseRooftop": "number",
+    "ank2__pi_option": "HwmOption",
+    "ank2__pi_swhType": "SwhType",
+    "ank2__pi_hpType": "HpType"
+  }
+}

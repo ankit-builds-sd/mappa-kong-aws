@@ -1,0 +1,301 @@
+{
+  "namespace": "twr",
+  "extends": [
+    "../water"
+  ],
+  "types": {
+    "twr__st_globaLToKLconverter": "number",
+    "twr__st_nbcLPCD": "number",
+    "twr__st_projectCategory": "string",
+    "twr__st_igbcOccupancyVilla": "number",
+    "twr__st_igbcTotalOccupancyVilla": "number",
+    "twr__st_clubhouseOccupancyVilla": "number",
+    "twr__st_igbcOccupancyApartment": "number",
+    "twr__st_igbcOccupancyPenthouse": "number",
+    "twr__st_OccupancyTotalApartment": "number",
+    "twr__st_OccupancyClubhouseApartment": "number",
+    "twr__pi_domestic": "boolean",
+    "twr__pi_pool": "boolean",
+    "twr__pi_flushing": "boolean",
+    "twr__pi_commonAreaCleaning": "boolean",
+    "twr__pi_carWash": "boolean",
+    "twr__pi_landScaping": "boolean",
+    "twr__pi_builtUpArea": "number",
+    "twr__st_stpInput": "number",
+    "twr__st_stpEfficiency": "number",
+    "twr__st_waterPermissibleRoLimit": "number",
+    "twr__st_ufOperationHourse": "number",
+    "twr__st_ufHourlyFlowRate": "number",
+    "twr__st_standardUfFeedVolume": "number",
+    "twr__st_ufModulePrice": "number",
+    "twr__st_ufPowerRating": "number",
+    "twr__st_ufOpearationalHours": "number",
+    "twr__st_roRecoveryRate": "number",
+    "twr__st_roOperationalHourse": "number",
+    "twr__st_standardRoFeedVolume": "number",
+    "twr__st_roPumpRate": "number",
+    "twr__st_roModulePrice": "number",
+    "twr__st_pressureVesselPrice": "number",
+    "twr__st_ozonationUnitCost": "number",
+    "twr__st_uvSystemCost": "number",
+    "twr__st_roPowerRating": "number",
+    "twr__st_globalDaysInYear": "number",
+    "twr__st_offsiteReuse": "boolean",
+    "twr__st_offsiteReusePrice": "number",
+    "twr__st_waterPricePerKL": "number",
+    "twr__st_city": "string",
+    "twr__st_globalKgToTonConv": "number",
+    "twr__st_sdgNumberForTWR": "number",
+    "twr__st_globalTreesPerTonCF": "number",
+    "twr__st_annualBaselineWaterConsumption": "number",
+    "twr__st_LtoM3converter": "number",
+    "twr__st_pumpFlowRate": "number",
+    "twr__pi_noOfFloors": "number",
+    "twr__pi_floorToFloorHeight": "number",
+    "twr__st_globalAccDueToGravity": "number",
+    "twr__st_waterSpecificGravity": "number",
+    "twr__st_globalJoulesToKwConverter": "number",
+    "twr__st_pumpEfficiency": "number",
+    "twr__st_motorEfficiency": "number",
+    "twr__st_goalMonitoringWaterTarget": "number",
+    "twr__st_goalSetting": "number"
+  },
+  "quantities": [
+    {
+      "id": "twr__q_stpCapacityCalculator",
+      "projectInputs": [],
+      "staticValues": [
+        "twr__st_globaLToKLconverter",
+        "twr__st_nbcLPCD",
+        "twr__st_projectCategory",
+        "twr__st_igbcOccupancyVilla",
+        "twr__st_igbcTotalOccupancyVilla",
+        "twr__st_clubhouseOccupancyVilla",
+        "twr__st_igbcOccupancyApartment",
+        "twr__st_igbcOccupancyPenthouse",
+        "twr__st_OccupancyTotalApartment",
+        "twr__st_OccupancyClubhouseApartment"
+      ],
+      "lookUps": [],
+      "quantities": [
+        "water__q_currentWaterTable"
+      ],
+      "output": "const efValues: EFCalculator = \nutilities.utility_EFOccupancy(twr__st_projectCategory,\n    twr__st_igbcOccupancyVilla,\n    twr__st_igbcTotalOccupancyVilla,\n    twr__st_clubhouseOccupancyVilla,\n    twr__st_igbcOccupancyApartment,\n    twr__st_igbcOccupancyPenthouse,\n    twr__st_OccupancyTotalApartment,\n    twr__st_OccupancyClubhouseApartment)\nlet ret: StpCalculator;\nconst efDomestic = (water__q_currentWaterTable.clientBaseCase.residentialDomestic * efValues.efTotalOccupancy) * (water__q_currentWaterTable.clientBaseCase.clubhouseDomestic * efValues.efclubhouseOccupancy);\nconst efFlushing = (water__q_currentWaterTable.clientBaseCase.residentialFlushing * efValues.efTotalOccupancy) + (water__q_currentWaterTable.clientBaseCase.clubhouseFlushing * efValues.efclubhouseOccupancy);\nret={\n    stpCapacity: efValues.efTotalOccupancy * twr__st_nbcLPCD,\n    efDomestic: efDomestic,\n    efFlushing: efFlushing, \n    stpInput: (efDomestic + efFlushing) / twr__st_globaLToKLconverter,\n    efTotalOccupancy: efValues.efTotalOccupancy,\n    efClubhouseOccupancy: efValues.efclubhouseOccupancy\n}\nreturn ret;"
+    },
+    {
+      "id": "twr__q_reuseDemand",
+      "projectInputs": [
+        "twr__pi_domestic",
+        "twr__pi_pool",
+        "twr__pi_flushing",
+        "twr__pi_commonAreaCleaning",
+        "twr__pi_carWash",
+        "twr__pi_landScaping"
+      ],
+      "staticValues": [
+        "twr__st_globaLToKLconverter"
+      ],
+      "lookUps": [],
+      "quantities": [
+        "water__q_currentWaterTable",
+        "twr__q_stpCapacityCalculator"
+      ],
+      "output": "let reuseDemand = 0;\nif(twr__pi_domestic) {\n    reuseDemand = reuseDemand  + (twr__q_stpCapacityCalculator.efDomestic/twr__st_globaLToKLconverter)\n}\nif(twr__pi_pool) {\n    reuseDemand = reuseDemand + (water__q_currentWaterTable.clientBaseCase.swimmingPool/twr__st_globaLToKLconverter)\n}\nif(twr__pi_flushing) {\n    reuseDemand = reuseDemand + (twr__q_stpCapacityCalculator.efFlushing/twr__st_globaLToKLconverter)\n}\nif(twr__pi_commonAreaCleaning) {\n    reuseDemand = reuseDemand + (water__q_currentWaterTable.clientBaseCase.commonAreaCleaning/twr__st_globaLToKLconverter)\n}\nif(twr__pi_carWash) {\n    reuseDemand = reuseDemand + (water__q_currentWaterTable.clientBaseCase.commonAreaCarPark/twr__st_globaLToKLconverter)\n}\nif(twr__pi_landScaping) {\n    reuseDemand = reuseDemand + (water__q_currentWaterTable.clientBaseCase.commonAreaLandScape/twr__st_globaLToKLconverter)\n}\nreturn {reuseDemand}"
+    },
+    {
+      "id": "twr__q_preSDPlusDemand",
+      "projectInputs": [
+        "twr__pi_builtUpArea",
+        "twr__pi_domestic",
+        "twr__pi_pool",
+        "twr__pi_flushing",
+        "twr__pi_commonAreaCleaning",
+        "twr__pi_carWash",
+        "twr__pi_landScaping"
+      ],
+      "staticValues": [
+        "twr__st_globaLToKLconverter",
+        "twr__st_stpEfficiency"
+      ],
+      "lookUps": [],
+      "quantities": [
+        "twr__q_stpCapacityCalculator",
+        "water__q_currentWaterTable"
+      ],
+      "output": "let stpBaseCase:boolean;\ntwr__pi_builtUpArea < 18581 ? stpBaseCase=false : stpBaseCase=true;\nconst stpOutputPreSDPlus = twr__q_stpCapacityCalculator.twr__st_stpInput * twr__st_stpEfficiency;\nlet dailyWaterPreSdPlus = 0;\nlet ret: PreSDPlusDemand;\nlet reuseDemandPreSdPlus = 0;\nif(twr__pi_domestic) {\n    reuseDemandPreSdPlus = reuseDemandPreSdPlus  + (twr__q_stpCapacityCalculator.efDomestic/twr__st_globaLToKLconverter)\n}\nif(twr__pi_pool) {\n    reuseDemandPreSdPlus = reuseDemandPreSdPlus + (water__q_currentWaterTable.clientBaseCase.swimmingPool/twr__st_globaLToKLconverter)\n}\nif(twr__pi_flushing) {\n    reuseDemandPreSdPlus = reuseDemandPreSdPlus + (twr__q_stpCapacityCalculator.efFlushing/twr__st_globaLToKLconverter)\n}\nif(twr__pi_commonAreaCleaning) {\n    reuseDemandPreSdPlus = reuseDemandPreSdPlus + (water__q_currentWaterTable.clientBaseCase.commonAreaCleaning/twr__st_globaLToKLconverter)\n}\nif(twr__pi_carWash) {\n    reuseDemandPreSdPlus = reuseDemandPreSdPlus + (water__q_currentWaterTable.clientBaseCase.commonAreaCarPark/twr__st_globaLToKLconverter)\n}\nif(twr__pi_landScaping) {\n    reuseDemandPreSdPlus = reuseDemandPreSdPlus + (water__q_currentWaterTable.clientBaseCase.commonAreaLandScape/twr__st_globaLToKLconverter)\n}\nif(stpBaseCase) {\n    stpOutputPreSDPlus >= reuseDemandPreSdPlus ? dailyWaterPreSdPlus=reuseDemandPreSdPlus : dailyWaterPreSdPlus=stpOutputPreSDPlus\n}\nelse {\n    dailyWaterPreSdPlus=0;\n}\nret= {\n    stpBaseCase: stpBaseCase,\n    dailyWaterPreSdPlus: dailyWaterPreSdPlus,\n    reuseDemandPreSdPlus: reuseDemandPreSdPlus\n}\nreturn ret;"
+    },
+    {
+      "id": "twr__q_roSystem",
+      "projectInputs": [],
+      "staticValues": [
+        "twr__st_stpEfficiency",
+        "twr__st_waterPermissibleRoLimit",
+        "twr__st_ufOperationHourse",
+        "twr__st_ufHourlyFlowRate",
+        "twr__st_globaLToKLconverter",
+        "twr__st_standardUfFeedVolume",
+        "twr__st_ufModulePrice",
+        "twr__st_ufPowerRating",
+        "twr__st_ufOpearationalHours",
+        "twr__st_roRecoveryRate",
+        "twr__st_roOperationalHourse",
+        "twr__st_standardRoFeedVolume",
+        "twr__st_roPumpRate",
+        "twr__st_roModulePrice",
+        "twr__st_pressureVesselPrice",
+        "twr__st_ozonationUnitCost",
+        "twr__st_uvSystemCost",
+        "twr__st_roPowerRating",
+        "twr__st_globalDaysInYear"
+      ],
+      "lookUps": [],
+      "quantities": [
+        "twr__q_stpCapacityCalculator"
+      ],
+      "output": "let feedWaterCapacity = twr__q_stpCapacityCalculator.stpInput * twr__st_stpEfficiency\n    let ret: {\n        ufHourlyRate: number,\n        ufFeedVolume: number,\n        noOfUfModules: number,\n        ufSystemCost: number,\n        ufEnergy: number,\n        roPermeate: number,\n        roHourlyFlowRate: number,\n        roFeedVolume: number,\n        noRoModule: number,\n        roPumpCost: number,\n        roModuleCost: number,\n        roPlantCost: number,\n        roEnergyAnnual: number\n        \n    }= {\n        ufHourlyRate: 0,\n        ufFeedVolume: 0,\n        noOfUfModules: 0,\n        ufSystemCost: 0,\n        ufEnergy: 0,\n        roPermeate: 0,\n        roHourlyFlowRate: 0,\n        roFeedVolume: 0,\n        noRoModule: 0,\n        roPumpCost: 0,\n        roModuleCost: 0,\n        roPlantCost: 0,\n        roEnergyAnnual: 0\n    }\n    let ufFeedVolume = twr__st_ufHourlyFlowRate/twr__st_globaLToKLconverter;\n    let noOfUfModules = ufFeedVolume/twr__st_standardUfFeedVolume;\n    let ufSystemCost = noOfUfModules * twr__st_ufModulePrice;\n    let ufEnergy = twr__st_ufPowerRating * twr__st_ufOpearationalHours * noOfUfModules;\n    let roPermeate = twr__st_roRecoveryRate * feedWaterCapacity;\n    let roHourlyFlowRate = roPermeate/twr__st_roOperationalHourse;\n    let roFeedVolume = roPermeate/twr__st_globaLToKLconverter;\n    let noRoModule = roFeedVolume/twr__st_standardRoFeedVolume;\n    let roPumpCost = twr__st_roPumpRate * noRoModule;\n    let roModuleCost = noRoModule * (twr__st_roModulePrice + twr__st_pressureVesselPrice)\n    let roPlantCost = roPumpCost + roModuleCost + ufSystemCost + twr__st_ozonationUnitCost + twr__st_uvSystemCost;\n    let roEnergyAnnual = ((twr__st_roPowerRating * twr__st_roOperationalHourse * noRoModule) + ufEnergy) * twr__st_globalDaysInYear;\n\n    if(feedWaterCapacity>twr__st_waterPermissibleRoLimit) {\n        ret = {\n            ufHourlyRate: feedWaterCapacity/twr__st_ufOperationHourse,\n            ufFeedVolume: ufFeedVolume,\n            noOfUfModules: noOfUfModules,\n            ufSystemCost: ufSystemCost,\n            ufEnergy: ufEnergy,\n            roPermeate: roPermeate,\n            roHourlyFlowRate: roHourlyFlowRate,\n            roFeedVolume: roFeedVolume,\n            noRoModule: noRoModule,\n            roPumpCost: roPumpCost,\n            roModuleCost: roModuleCost,\n            roPlantCost: roPlantCost,\n            roEnergyAnnual: roEnergyAnnual\n        }\n    }\n    return ret;"
+    },
+    {
+      "id": "twr__q_flowDiagram",
+      "projectInputs": [
+        "twr__pi_flushing",
+        "twr__pi_landScaping",
+        "twr__pi_commonAreaCleaning",
+        "twr__pi_carWash",
+        "twr__pi_pool",
+        "twr__pi_domestic"
+      ],
+      "staticValues": [
+        "twr__st_globaLToKLconverter",
+        "twr__st_stpEfficiency"
+      ],
+      "lookUps": [],
+      "quantities": [
+        "twr__q_stpCapacityCalculator",
+        "water__q_currentWaterTable",
+        "twr__q_reuseDemand"
+      ],
+      "output": "const stpOutput = twr__q_stpCapacityCalculator.stpInput * twr__st_stpEfficiency;\n    let dailyWater = 0;\n    stpOutput >= twr__q_reuseDemand.reuseDemand ? dailyWater=twr__q_reuseDemand.reuseDemand : dailyWater=stpOutput\n    let usableWater = dailyWater; \n    let flowDiagramFlushing = 0;\n    let flowDiagramCommonArea = 0;\n    let flowDiagramDomestic = 0;\n    let flowDiagramDomesticHealthFaucet = 0;\n    const efhfDaily = ((water__q_currentWaterTable.efficientFixtures.domesticHealthFaucet * twr__q_stpCapacityCalculator.efTotalOccupancy) * (water__q_currentWaterTable.efficientFixtures.clubhouseDomesticHealthFaucet * twr__q_stpCapacityCalculator.efclubhouseOccupancy)) / twr__st_globaLToKLconverter;\n    if(twr__pi_flushing && usableWater >= twr__q_stpCapacityCalculator.efFlushing) {\n        flowDiagramFlushing = twr__q_stpCapacityCalculator.efFlushing/twr__st_globaLToKLconverter;\n        usableWater = usableWater - (twr__q_stpCapacityCalculator.efFlushing / twr__st_globaLToKLconverter);\n    }\n    if(twr__pi_landScaping && usableWater >= water__q_currentWaterTable.clientBaseCase.commonAreaLandScape) {\n        flowDiagramCommonArea = flowDiagramCommonArea + (water__q_currentWaterTable.clientBaseCase.commonAreaLandScape/twr__st_globaLToKLconverter);\n        usableWater = usableWater - (water__q_currentWaterTable.clientBaseCase.commonAreaLandScape/twr__st_globaLToKLconverter);\n    }\n    if(twr__pi_commonAreaCleaning && usableWater >= water__q_currentWaterTable.clientBaseCase.commonAreaCleaning) {\n        flowDiagramCommonArea = flowDiagramCommonArea + (water__q_currentWaterTable.clientBaseCase.commonAreaCleaning/twr__st_globaLToKLconverter);\n        usableWater = usableWater - (water__q_currentWaterTable.clientBaseCase.commonAreaLandScape/twr__st_globaLToKLconverter);\n    }\n    if(twr__pi_carWash && usableWater >= water__q_currentWaterTable.clientBaseCase.commonAreaCarPark) {\n        flowDiagramCommonArea = flowDiagramCommonArea + (water__q_currentWaterTable.clientBaseCase.commonAreaCarPark/twr__st_globaLToKLconverter);\n        usableWater = usableWater - (water__q_currentWaterTable.clientBaseCase.commonAreaCarPark/twr__st_globaLToKLconverter);\n    }\n    if(twr__pi_pool && usableWater >= water__q_currentWaterTable.clientBaseCase.swimmingPool) {\n        flowDiagramCommonArea = flowDiagramCommonArea + (water__q_currentWaterTable.clientBaseCase.swimmingPool/twr__st_globaLToKLconverter);\n        usableWater = usableWater - (water__q_currentWaterTable.clientBaseCase.swimmingPool/twr__st_globaLToKLconverter);\n    }\n    if(twr__pi_domestic && usableWater >= efhfDaily) {\n        flowDiagramDomesticHealthFaucet = efhfDaily/twr__st_globaLToKLconverter;\n        usableWater =  usableWater - (efhfDaily/twr__st_globaLToKLconverter);\n    } \n    if(twr__pi_domestic && usableWater >= (twr__q_stpCapacityCalculator.efDomestic - efhfDaily)) {\n        flowDiagramDomestic = (twr__q_stpCapacityCalculator.efDomestic - efhfDaily) / twr__st_globaLToKLconverter;\n    }\n    else if(twr__pi_domestic) {\n        flowDiagramDomestic = usableWater;\n    }\n    let ret: {\n        usableWater:number,\n        flowDiagramCommonArea: number,\n        flowDiagramFlushing: number,\n        flowDiagramDomestic: number,\n        flowDiagramDomesticHealthFaucet: number\n    }\n\n    ret = {\n        usableWater: usableWater,\n        flowDiagramCommonArea: flowDiagramCommonArea,\n        flowDiagramFlushing: flowDiagramFlushing,\n        flowDiagramDomestic: flowDiagramDomestic,\n        flowDiagramDomesticHealthFaucet: flowDiagramDomesticHealthFaucet\n    }\n    return ret;"
+    },
+    {
+      "id": "twr__q_outcomesPreSdPlus",
+      "projectInputs": [
+        "twr__pi_pool",
+        "twr__pi_domestic"
+      ],
+      "staticValues": [
+        "twr__st_globalDaysInYear",
+        "twr__st_globaLToKLconverter"
+      ],
+      "lookUps": [],
+      "quantities": [
+        "twr__q_preSDPlusDemand",
+        "water__q_currentWaterTable",
+        "twr__q_flowDiagram",
+        "twr__q_roSystem"
+      ],
+      "output": "const annualWaterPreSdPlus = twr__q_preSDPlusDemand.dailyWaterPreSdPlus * twr__st_globalDaysInYear;\n    let feedWaterCapacityPreSdPlus = 0;\n    let roPlantCostPreSdPlus = 0;\n    let roEnergyAnnaulPreSdPlus = 0;\n    let twrCapexPreSdPlus = 0;\n    let ret:OutcomesPreSdPlus;\n    if(twr__pi_pool) {\n        feedWaterCapacityPreSdPlus = water__q_currentWaterTable.clientBaseCase.swimmingPool / twr__st_globaLToKLconverter\n    }\n    if(twr__pi_domestic) {\n        feedWaterCapacityPreSdPlus = twr__q_flowDiagram.flowDiagramDomestic\n    }\n    if(twr__pi_domestic || twr__pi_pool) {\n        roPlantCostPreSdPlus = twr__q_roSystem.roPlantCost;\n        roEnergyAnnaulPreSdPlus = twr__q_roSystem.roEnergyAnnual;\n        twrCapexPreSdPlus = twr__q_roSystem.roPlantCost;\n    }\n    ret={\n        annualWaterPreSdPlus: annualWaterPreSdPlus,\n        feedWaterCapacityPreSdPlus: feedWaterCapacityPreSdPlus,\n        roPlantCostPreSdPlus: roPlantCostPreSdPlus,\n        roEnergyAnnaulPreSdPlus: roEnergyAnnaulPreSdPlus,\n        twrCapexPreSdPlus: twrCapexPreSdPlus\n    }\n\n    return ret;"
+    },
+    {
+      "id": "twr__q_outcomes",
+      "projectInputs": [
+        "twr__pi_pool",
+        "twr__pi_domestic"
+      ],
+      "staticValues": [
+        "twr__st_stpEfficiency",
+        "twr__st_globalDaysInYear",
+        "twr__st_offsiteReuse",
+        "twr__st_offsiteReusePrice",
+        "twr__st_globaLToKLconverter",
+        "twr__st_waterPricePerKL",
+        "twr__st_city"
+      ],
+      "lookUps": [],
+      "quantities": [
+        "twr__q_stpCapacityCalculator",
+        "twr__q_reuseDemand",
+        "twr__q_roSystem",
+        "twr__q_outcomesPreSdPlus",
+        "water__q_currentWaterTable"
+      ],
+      "output": "const stpOutput = twr__q_stpCapacityCalculator.stpInput * twr__st_stpEfficiency;\nlet dailyWater = 0;\nstpOutput >= twr__q_reuseDemand.reuseDemand ? dailyWater=twr__q_reuseDemand.reuseDemand : dailyWater=stpOutput\nlet dischargePercentage = 0;\nlet twrOffsiteReuseDailyWater = 0;\nlet twrOffsiteReuseOffsiteEarnings = 0;\nlet twrFeedWaterCapacity = 0;\nlet twrRoPlantCostPostSdPlus = 0;\nif(twr__st_offsiteReuse) {\n    twrOffsiteReuseDailyWater = stpOutput - dailyWater;\n    twrOffsiteReuseOffsiteEarnings = twrOffsiteReuseDailyWater * twr__st_offsiteReusePrice;\n}\ndischargePercentage= ((dailyWater + twrOffsiteReuseDailyWater) / stpOutput) * 100;\n\nlet twrDischargePercentage = ((dailyWater + twrOffsiteReuseDailyWater) * 100)/stpOutput;\nlet twrAnnualWater = ((dailyWater + twrOffsiteReuseDailyWater) * twr__st_globalDaysInYear) - twr__q_outcomesPreSdPlus.annualWaterPreSdPlus\nif(twr__pi_pool) {\n    twrFeedWaterCapacity = twrFeedWaterCapacity + (water__q_currentWaterTable.clientBaseCase.swimmingPool / twr__st_globaLToKLconverter)\n}\nif(twr__pi_domestic) {\n    twrFeedWaterCapacity = twrFeedWaterCapacity + (twr__q_stpCapacityCalculator.efDomestic / twr__st_globaLToKLconverter)\n}\nif(twr__pi_domestic || twr__pi_pool) {\n    twrRoPlantCostPostSdPlus = twr__q_roSystem.roPlantCost\n}\nlet twrCapex = twrRoPlantCostPostSdPlus - twr__q_outcomesPreSdPlus.twrCapexPreSdPlus\nlet twrOpex = (twrAnnualWater * twr__st_waterPricePerKL) - utilities.utility_energyOpex(twr__q_roSystem.roEnergyAnnual, twr__st_city) + twrOffsiteReuseOffsiteEarnings\nlet ret={\n    stpOutput: stpOutput,\n    dailyWater: dailyWater,\n    dischargePercentage: dischargePercentage,\n    twrOffsiteReuseDailyWater: twrOffsiteReuseDailyWater,\n    twrOffsiteReuseOffsiteEarnings: twrOffsiteReuseOffsiteEarnings,\n    twrDischargePercentage: twrDischargePercentage,\n    twrAnnualWater: twrAnnualWater,\n    twrFeedWaterCapacity: twrFeedWaterCapacity,\n    twrCapexPostSdPlus: twrRoPlantCostPostSdPlus,\n    twrCapex: twrCapex,\n    twrOpex: twrOpex\n}\nreturn ret;"
+    },
+    {
+      "id": "twr__q_projectLevelInsights",
+      "projectInputs": [],
+      "staticValues": [
+        "twr__st_city",
+        "twr__st_globalKgToTonConv",
+        "twr__st_sdgNumberForTWR",
+        "twr__st_globalTreesPerTonCF",
+        "twr__st_annualBaselineWaterConsumption"
+      ],
+      "lookUps": [],
+      "quantities": [
+        "twr__q_outcomes"
+      ],
+      "output": "let ret: {\n    twrCfMitigated: number;\n    twrSDGNumber: number;\n    twrTreesSaved: number;\n    twrTotalPercentageWaterConsumption: number\n}\nret = {\n    twrCfMitigated: (CityDbData[twr__st_city].emissionFactors * twr__st_globalKgToTonConv),\n    twrSDGNumber: twr__st_sdgNumberForTWR,\n    twrTreesSaved: (CityDbData[twr__st_city].emissionFactors * twr__st_globalKgToTonConv) * twr__st_globalTreesPerTonCF,\n    twrTotalPercentageWaterConsumption: (twr__q_outcomes.twrAnnualWater*100) / twr__st_annualBaselineWaterConsumption\n    // once water service written take that value from there\n}\nreturn ret;"
+    },
+    {
+      "id": "twr__q_passiveEnergy",
+      "projectInputs": [
+        "twr__pi_noOfFloors",
+        "twr__pi_floorToFloorHeight"
+      ],
+      "staticValues": [
+        "twr__st_LtoM3converter",
+        "twr__st_pumpFlowRate",
+        "twr__st_globalAccDueToGravity",
+        "twr__st_waterSpecificGravity",
+        "twr__st_globalJoulesToKwConverter",
+        "twr__st_pumpEfficiency",
+        "twr__st_motorEfficiency",
+        "twr__st_city"
+      ],
+      "lookUps": [],
+      "quantities": [
+        "twr__q_outcomes"
+      ],
+      "output": "let ret = {\n    timeTakenToPumpWater: (twr__q_outcomes.twrAnnualWater * twr__st_LtoM3converter) / twr__st_pumpFlowRate,\n    buildingHeight: twr__pi_noOfFloors *  twr__pi_floorToFloorHeight,\n    hydraulicPower: (twr__st_pumpFlowRate* twr__pi_noOfFloors *  twr__pi_floorToFloorHeight * twr__st_globalAccDueToGravity * twr__st_waterSpecificGravity) / twr__st_globalJoulesToKwConverter,\n    shaftPower: ((twr__st_pumpFlowRate* twr__pi_noOfFloors *  twr__pi_floorToFloorHeight * twr__st_globalAccDueToGravity * twr__st_waterSpecificGravity) / twr__st_globalJoulesToKwConverter) / twr__st_pumpEfficiency,\n    electricInput: (((twr__st_pumpFlowRate* twr__pi_noOfFloors *  twr__pi_floorToFloorHeight * twr__st_globalAccDueToGravity * twr__st_waterSpecificGravity) / twr__st_globalJoulesToKwConverter) / twr__st_pumpEfficiency) / twr__st_motorEfficiency,\n    twrPassiveEnergyKwh: ((((twr__st_pumpFlowRate* twr__pi_noOfFloors *  twr__pi_floorToFloorHeight * twr__st_globalAccDueToGravity * twr__st_waterSpecificGravity) / twr__st_globalJoulesToKwConverter) / twr__st_pumpEfficiency) / twr__st_motorEfficiency) * ((twr__q_outcomes.twrAnnualWater * twr__st_LtoM3converter) / twr__st_pumpFlowRate),\n    twrEnergyOpex: utilities.utility_energyOpex(((((twr__st_pumpFlowRate* twr__pi_noOfFloors *  twr__pi_floorToFloorHeight * twr__st_globalAccDueToGravity * twr__st_waterSpecificGravity) / twr__st_globalJoulesToKwConverter) / twr__st_pumpEfficiency) / twr__st_motorEfficiency) * ((twr__q_outcomes.twrAnnualWater * twr__st_LtoM3converter) / twr__st_pumpFlowRate), twr__st_city),\n    passiveWasteKg: 0,\n    passiveEnergyOpex: 0\n}\nreturn ret;"
+    },
+    {
+      "id": "twr__q_goalMonitoring",
+      "projectInputs": [],
+      "staticValues": [
+        "twr__st_goalMonitoringWaterTarget",
+        "twr__st_goalSetting"
+      ],
+      "lookUps": [],
+      "quantities": [
+        "twr__q_outcomes"
+      ],
+      "output": "let ret = {\n    waterGoal: twr__st_goalMonitoringWaterTarget,\n    contribution: (twr__q_outcomes.twrAnnualWater /(twr__st_goalSetting - twr__st_goalMonitoringWaterTarget)) *100 \n}\nreturn ret;"
+    },
+    {
+      "id": "twr__q_overViewBarGraph",
+      "projectInputs": [],
+      "staticValues": [],
+      "lookUps": [],
+      "quantities": [
+        "twr__q_outcomes",
+        "twr__q_flowDiagram"
+      ],
+      "output": "let ret = {\n    title: 'Treated water reuse by category',\n    totalSavings: twr__q_outcomes.twrAnnualWater,\n    seriesNameOne: 'Domestic',\n    seriesValueOne: twr__q_flowDiagram.flowDiagramDomestic,\n    seriesNameTwo: 'Health Faucet',\n    seriesValueTwo: twr__q_flowDiagram.flowDiagramDomesticHealthFaucet,\n    seriesNameThree: 'Flushing',\n    seriesValueThree: twr__q_flowDiagram.flowDiagramFlushing,\n    seriesNameFour: 'Common Area',\n    seriesValueFour: twr__q_flowDiagram.flowDiagramCommonArea,\n    seriesNameFive: 'Drinking',\n    seriesValueFive: twr__q_flowDiagram.usableWater,\n}\nreturn ret;"
+    },
+    {
+      "id": "twr__q_overViewDonutGraph",
+      "projectInputs": [],
+      "staticValues": [
+        "twr__st_globaLToKLconverter"
+      ],
+      "lookUps": [],
+      "quantities": [
+        "twr__q_outcomes",
+        "twr__q_flowDiagram",
+        "twr__q_stpCapacityCalculator",
+        "water__q_currentWaterTable"
+      ],
+      "output": "let ret ={ \n    donutOneTitle: \"% of Total Water\",\n    donutOnevalue: twr__q_outcomes.twrAnnualWater * 100,\n    donutTwoTitle: \"% of Domestic Demand supplied by Grey Water\",\n    donutTwoValue: (twr__q_flowDiagram.flowDiagramDomestic * 100) / (twr__q_stpCapacityCalculator.efDomestic / twr__st_globaLToKLconverter),\n    donutThreTitle: \"% of Common Area Demand supplied by Grey Water\",\n    donutThreeValue: (twr__q_flowDiagram.flowDiagramCommonArea * 100) / ((water__q_currentWaterTable.clientBaseCase.commonAreaCarPark + water__q_currentWaterTable.clientBaseCase.commonAreaCleaning + water__q_currentWaterTable.clientBaseCase.commonAreaLandScape + water__q_currentWaterTable.clientBaseCase.swimmingPool) / twr__st_globaLToKLconverter)\n}\nreturn ret"
+    }
+  ]
+}

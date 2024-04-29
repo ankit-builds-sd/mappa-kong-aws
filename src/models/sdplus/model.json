@@ -1,0 +1,29 @@
+{
+  "namespace": "sdplus",
+  "extends": [
+    "../hwmVilla",
+    "../hwmPenthouse",
+    "../hwmApartment",
+    "../hwmSwimmingPool",
+    "../hwmClubhouse",
+    "../water",
+    "../nstp",
+    "../twr",
+    "../efficientFixturesDualFlush",
+    "../efficientFixturesFaucet",
+    "../efficientFixturesHealthFaucet",
+    "../efficientFixturesKitchenSink",
+    "../efficientFixturesShower",
+    "../goals"
+  ],
+  "quantities": [
+    {
+      "id": "sdplus__q_noop",
+      "projectInputs": [],
+      "staticValues": [],
+      "lookUps": [],
+      "quantities": [],
+      "output": "return null;"
+    }
+  ]
+}

@@ -1,0 +1,29 @@
+{
+  "namespace": "hwmPenthouseTechnologySelection",
+  "extends": ["../hwmPenthouseDemandCalc", "../occupancy", "../hwm"],
+  "quantities": [
+    {
+      "id": "hwmPenthouseTechnologySelection__q_technologySelection",
+      "projectInputs": ["hwm__pi_availablePenthouseRooftop"],
+      "staticValues": ["hwm__st_rooftopPerSwh", "hwm__st_rooftopPerHp"],
+      "lookUps": [],
+      "quantities": ["hwmPenthouseDemandCalc__q_hwmDemand"],
+      "output": "let swhAreaRequired = hwmPenthouseDemandCalc__q_hwmDemand * hwm__st_rooftopPerSwh;\n  let hpAreaRequired = hwmPenthouseDemandCalc__q_hwmDemand * hwm__st_rooftopPerSwh;\n  let hpDomesticCapacity;\n  let swhIndividualCapacity;\n  if (hwm__pi_availablePenthouseRooftop > swhAreaRequired) {\n    swhIndividualCapacity = utilities.roundTo100(\n      hwmPenthouseDemandCalc__q_hwmDemand\n    );\n  } else {\n    swhAreaRequired = hwm__pi_availablePenthouseRooftop;\n    swhIndividualCapacity =\n      utilities.roundTo100(hwm__pi_availablePenthouseRooftop) /\n      hwm__st_rooftopPerSwh;\n  }\n  if (hwm__pi_availablePenthouseRooftop > hpAreaRequired) {\n    hpDomesticCapacity = utilities.roundTo100(hwmPenthouseDemandCalc__q_hwmDemand);\n  } else {\n    hpAreaRequired = hwm__pi_availablePenthouseRooftop;\n    hpDomesticCapacity =\n      utilities.roundTo100(hwm__pi_availablePenthouseRooftop) /\n      hwm__st_rooftopPerHp;\n  }\n\n  return {\n    swhIndividualCapacity,\n    swhAreaRequired,\n    hpDomesticCapacity,\n    hpAreaRequired,\n  };"
+    }
+  ],
+  "types": {
+    "hwmPenthouseTechnologySelection__q_defaultSwhAreaRequired": "number",
+    "hwmPenthouseTechnologySelection__q_swhAreaAndCapacity": "number",
+    "hwmPenthouseTechnologySelection__q_hpAreaAndCapacity": "number",
+    "hwmPenthouseDemandCalc__q_demand": "number",
+    "hwmPenthouseTechnologySelection__st_rooftopPerSwh": "number",
+    "hwmPenthouseTechnologySelection__pi_availablePenthouseRooftop": "number",
+    "hwmPenthouseTechnologySelection__st_rooftopPerHp": "number",
+    "hwmPenthouseTechnologySelection__q_swhAreaRequired": "number",
+    "hwmPenthouseTechnologySelection__q_hpAreaRequired": "number",
+    "hwmPenthouseDemandCalc__q_hwmDemand": "number",
+    "hwm__pi_availablePenthouseRooftop": "number",
+    "hwm__st_rooftopPerSwh": "number",
+    "hwm__st_rooftopPerHp": "number"
+  }
+}

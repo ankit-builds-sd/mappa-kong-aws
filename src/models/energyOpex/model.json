@@ -1,0 +1,10 @@
+{
+  "namespace": "energyOpex",
+  "quantities": [
+    {
+      "id": "energyOpex__q_energyOpex",
+      "projectInputs": ["energyOpex__pi_energy", "energyOpex__pi_city"],
+      "output": "let energyOpex = 0\n    return energyOpex"
+    }
+  ]
+}

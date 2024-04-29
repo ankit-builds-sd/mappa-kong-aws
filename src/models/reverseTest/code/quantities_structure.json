@@ -1,0 +1,29 @@
+{
+  "quantities": [
+    {
+      "id": "reverseTest__q_trial1",
+      "arguments": "reverseTest__pi_pi1:number,reverseTest__pi_pi2:number,reverseTest__st_trial1:number,reverseTest__st_trial2:number,reverseTest__lk_dryWasteContent:number,reverseTest__lk_typeOfBuildingFactor:number",
+      "body": "return reverseTest__st_trial1 + reverseTest__st_trial2;"
+    },
+    {
+      "id": "reverseTest__q_trial2",
+      "arguments": "reverseTest__pi_pi1:number,reverseTest__pi_pi2:number",
+      "body": "return reverseTest__q_trial1 + reverseTest__pi_pi1 + reverseTest__pi_pi2;"
+    },
+    {
+      "id": "reverseTest__q_yearlyConsumption",
+      "arguments": "reverseTest__pi_1,reverseTest__st_dailyConsumption",
+      "body": "return utilities.utility_calculateYearlyConsumption(\r\n    reverseTest__st_dailyConsumption\r\n  );"
+    },
+    {
+      "id": "reverseTest__q_test1",
+      "arguments": "reverseTest__st_yearlyConsumption",
+      "body": "return (\r\n    utilities.utility_convertYearlyUnitToDaily(\r\n      reverseTest__st_yearlyConsumption\r\n    ) + reverseTest__st_yearlyConsumption\r\n  );"
+    },
+    {
+      "id": "reverseTest__q_Valid",
+      "arguments": "circle__pi_t1:HwmDemand",
+      "body": "return 1;"
+    }
+  ]
+}

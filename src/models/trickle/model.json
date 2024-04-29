@@ -1,0 +1,13 @@
+{
+  "namespace": "trickle",
+  "quantities": [
+    {
+      "id": "trickle__q_noop",
+      "staticValues": [],
+      "projectInputs": [
+        "trickle__pi_percentageEnergySavings"
+      ],
+      "output": "return null;"
+    }
+  ]
+}

@@ -1,0 +1,197 @@
+{
+  "namespace": "occupancy",
+  "extends": [],
+  "quantities": [
+    {
+      "id": "occupancy__q_numberOfDwellingUnitsApartments",
+      "projectInputs": [
+        "occupancy__pi_studio",
+        "occupancy__pi_oneBHK",
+        "occupancy__pi_twoBHK",
+        "occupancy__pi_threeBHK",
+        "occupancy__pi_fourBHK"
+      ],
+      "staticValues": [],
+      "lookUps": [],
+      "quantities": [],
+      "output": "return (\noccupancy__pi_studio +\noccupancy__pi_oneBHK +\noccupancy__pi_twoBHK +\noccupancy__pi_threeBHK +\noccupancy__pi_fourBHK\n);"
+    },
+    {
+      "id": "occupancy__q_numberOfDwellingUnitsVilla",
+      "projectInputs": [
+        "occupancy__pi_villaOneBHK",
+        "occupancy__pi_villaFourBHK",
+        "occupancy__pi_villaThreeBHK",
+        "occupancy__pi_villaTwoBHK",
+        "occupancy__pi_villaStudio"
+      ],
+      "staticValues": [],
+      "lookUps": [],
+      "quantities": [],
+      "output": "return (\noccupancy__pi_villaOneBHK +\noccupancy__pi_villaFourBHK +\noccupancy__pi_villaThreeBHK +\noccupancy__pi_villaTwoBHK +\noccupancy__pi_villaStudio\n);"
+    },
+    {
+      "id": "occupancy__q_numberOfDwellingUnitsPenthouse",
+      "projectInputs": [
+        "occupancy__pi_penthouseOneBHK",
+        "occupancy__pi_penthouseThreeBHK",
+        "occupancy__pi_penthouseFourBHK",
+        "occupancy__pi_penthouseTwoBHK",
+        "occupancy__pi_penthouseStudio"
+      ],
+      "staticValues": [],
+      "lookUps": [],
+      "quantities": [],
+      "output": "return (\noccupancy__pi_penthouseOneBHK +\noccupancy__pi_penthouseThreeBHK +\noccupancy__pi_penthouseFourBHK +\noccupancy__pi_penthouseTwoBHK +\noccupancy__pi_penthouseStudio\n);"
+    },
+    {
+      "id": "occupancy__q_occupancyApartment",
+      "projectInputs": [
+        "occupancy__pi_studio",
+        "occupancy__pi_oneBHK",
+        "occupancy__pi_twoBHK",
+        "occupancy__pi_threeBHK",
+        "occupancy__pi_fourBHK"
+      ],
+      "staticValues": [
+        "occupancy__st_studioRefOccupancy",
+        "occupancy__st_oneBHKRefOccupancy",
+        "occupancy__st_twoBHKRefOccupancy",
+        "occupancy__st_threeBHKRefOccupancy",
+        "occupancy__st_fourBHKRefOccupancy"
+      ],
+      "lookUps": [],
+      "quantities": [],
+      "output": "let occupancy = null;\noccupancy =\noccupancy__pi_studio * occupancy__st_studioRefOccupancy +\noccupancy__pi_oneBHK * occupancy__st_oneBHKRefOccupancy +\noccupancy__pi_twoBHK * occupancy__st_twoBHKRefOccupancy +\noccupancy__pi_threeBHK * occupancy__st_threeBHKRefOccupancy +\noccupancy__pi_fourBHK * occupancy__st_fourBHKRefOccupancy;\nreturn occupancy;"
+    },
+    {
+      "id": "occupancy__q_occupancyVilla",
+      "projectInputs": [
+        "occupancy__pi_villaStudio",
+        "occupancy__pi_villaOneBHK",
+        "occupancy__pi_villaTwoBHK",
+        "occupancy__pi_villaThreeBHK",
+        "occupancy__pi_villaFourBHK"
+      ],
+      "staticValues": [
+        "occupancy__st_studioRefOccupancy",
+        "occupancy__st_villaOneBHKRefOccupancy",
+        "occupancy__st_villaTwoBHKRefOccupancy",
+        "occupancy__st_villaThreeBHKRefOccupancy",
+        "occupancy__st_villaFourBHKRefOccupancy"
+      ],
+      "lookUps": [],
+      "quantities": [],
+      "output": "let occupancy = null;\noccupancy =\noccupancy__pi_villaStudio * occupancy__st_studioRefOccupancy +\noccupancy__pi_villaOneBHK * occupancy__st_villaOneBHKRefOccupancy +\noccupancy__pi_villaTwoBHK * occupancy__st_villaTwoBHKRefOccupancy +\noccupancy__pi_villaThreeBHK * occupancy__st_villaThreeBHKRefOccupancy +\noccupancy__pi_villaFourBHK * occupancy__st_villaFourBHKRefOccupancy;\nreturn occupancy;"
+    },
+    {
+      "id": "occupancy__q_occupancyPenthouse",
+      "projectInputs": [
+        "occupancy__pi_penthouseStudio",
+        "occupancy__pi_penthouseOneBHK",
+        "occupancy__pi_penthouseTwoBHK",
+        "occupancy__pi_penthouseThreeBHK",
+        "occupancy__pi_penthouseFourBHK"
+      ],
+      "staticValues": [
+        "occupancy__st_studioRefOccupancy",
+        "occupancy__st_penthouseOneBHKRefOccupancy",
+        "occupancy__st_penthouseTwoBHKRefOccupancy",
+        "occupancy__st_penthouseThreeBHKRefOccupancy",
+        "occupancy__st_penthouseFourBHKRefOccupancy"
+      ],
+      "lookUps": [],
+      "quantities": [],
+      "output": "let occupancy = null;\noccupancy =\noccupancy__pi_penthouseStudio * occupancy__st_studioRefOccupancy +\noccupancy__pi_penthouseOneBHK * occupancy__st_penthouseOneBHKRefOccupancy +\noccupancy__pi_penthouseTwoBHK * occupancy__st_penthouseTwoBHKRefOccupancy +\noccupancy__pi_penthouseThreeBHK *\n  occupancy__st_penthouseThreeBHKRefOccupancy +\noccupancy__pi_penthouseFourBHK * occupancy__st_penthouseFourBHKRefOccupancy;\nreturn occupancy;"
+    },
+    {
+      "id": "occupancy__q_noop",
+      "projectInputs": [],
+      "staticValues": [
+        "occupancy__st_singleBedroomOccupants"
+      ],
+      "lookUps": [],
+      "quantities": [],
+      "output": "return null;"
+    },
+    {
+      "id": "occupancy__q_perFloorOccupancy",
+      "projectInputs": [
+        "occupancy__pi_floors"
+      ],
+      "staticValues": [],
+      "lookUps": [],
+      "quantities": [
+        "occupancy__q_occupancyApartment"
+      ],
+      "output": "return occupancy__q_occupancyApartment / occupancy__pi_floors;"
+    },
+    {
+      "id": "occupancy__q_perFloorApartments",
+      "projectInputs": [
+        "occupancy__pi_floors"
+      ],
+      "staticValues": [],
+      "lookUps": [],
+      "quantities": [
+        "occupancy__q_numberOfDwellingUnitsApartments"
+      ],
+      "output": "return occupancy__q_numberOfDwellingUnitsApartments / occupancy__pi_floors;"
+    },
+    {
+      "id": "occupancy__q_noOfDwellingUnits",
+      "projectInputs": [],
+      "staticValues": [],
+      "lookUps": [],
+      "quantities": [
+        "occupancy__q_numberOfDwellingUnitsVilla",
+        "occupancy__q_numberOfDwellingUnitsApartments",
+        "occupancy__q_numberOfDwellingUnitsPenthouse"
+      ],
+      "output": "return (\noccupancy__q_numberOfDwellingUnitsVilla +\noccupancy__q_numberOfDwellingUnitsApartments +\noccupancy__q_numberOfDwellingUnitsPenthouse\n);"
+    }
+  ],
+  "types": {
+    "occupancy__pi_floors": "number",
+    "occupancy__st_occupancyApartment": "number",
+    "occupancy__st_occupancyPenthouse": "number",
+    "occupancy__pi_numberOfDwellingUnits": "number",
+    "occupancy__q_villa": "number",
+    "occupancy__q_apartments": "number",
+    "occupancy__q_penthouse": "number",
+    "occupancy__pi_studio": "number",
+    "occupancy__pi_oneBHK": "number",
+    "occupancy__pi_twoBHK": "number",
+    "occupancy__pi_threeBHK": "number",
+    "occupancy__pi_fourBHK": "number",
+    "occupancy__pi_villaOneBHK": "number",
+    "occupancy__pi_villaFourBHK": "number",
+    "occupancy__pi_villaThreeBHK": "number",
+    "occupancy__pi_villaTwoBHK": "number",
+    "occupancy__pi_villaStudio": "number",
+    "occupancy__pi_pentHouseOneBHK": "number",
+    "occupancy__pi_penthouseThreeBHK": "number",
+    "occupancy__pi_penthouseFourBHK": "number",
+    "occupancy__pi_pentHouseTwoBHK": "number",
+    "occupancy__pi_penthouseStudio": "number",
+    "occupancy__q_numberOfDwellingUnitsVilla": "number",
+    "occupancy__q_numberOfDwellingUnitsApartments": "number",
+    "occupancy__q_numberOfDwellingUnitsPenthouse": "number",
+    "occupancy__st_studioRefOccupancy": "number",
+    "occupancy__st_oneBHKRefOccupancy": "number",
+    "occupancy__st_twoBHKRefOccupancy": "number",
+    "occupancy__st_threeBHKRefOccupancy": "number",
+    "occupancy__st_fourBHKRefOccupancy": "number",
+    "occupancy__st_villaOneBHKRefOccupancy": "number",
+    "occupancy__st_villaTwoBHKRefOccupancy": "number",
+    "occupancy__st_villaThreeBHKRefOccupancy": "number",
+    "occupancy__st_villaFourBHKRefOccupancy": "number",
+    "occupancy__pi_penthouseOneBHK": "number",
+    "occupancy__st_penthouseOneBHKRefOccupancy": "number",
+    "occupancy__pi_penthouseTwoBHK": "number",
+    "occupancy__st_penthouseTwoBHKRefOccupancy": "number",
+    "occupancy__st_penthouseThreeBHKRefOccupancy": "number",
+    "occupancy__st_penthouseFourBHKRefOccupancy": "number",
+    "occupancy__st_singleBedroomOccupants": "number"
+  }
+}

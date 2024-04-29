@@ -1,0 +1,64 @@
+{
+  "namespace": "reverseTest",
+  "extends": ["../circle"],
+  "types": {
+    "reverseTest__pi_location": "number",
+    "reverseTest__pi_typeOfBuildingFactor": "number",
+    "reverseTest__pi_pi1": "number",
+    "circle__pi_t1": "HwmDemand",
+    "reverseTest__pi_pi2": "number",
+    "reverseTest__st_trial1": "number",
+    "reverseTest__st_trial2": "number",
+    "reverseTest__lk_dryWasteContent": "number",
+    "reverseTest__lk_typeOfBuildingFactor": "number"
+  },
+  "lookUpRelations": {
+    "reverseTest__lk_dryWasteContent": [
+      "reverseTest__pi_location",
+      "reverseTest__pi_typeOfBuildingFactor"
+    ],
+    "reverseTest__lk_typeOfBuildingFactor": [
+      "reverseTest__pi_typeOfBuildingFactor"
+    ]
+  },
+  "quantities": [
+    {
+      "id": "reverseTest__q_trial1",
+      "projectInputs": ["reverseTest__pi_pi1", "reverseTest__pi_pi2"],
+      "staticValues": ["reverseTest__st_trial1", "reverseTest__st_trial2"],
+      "lookUps": [
+        "reverseTest__lk_dryWasteContent",
+        "reverseTest__lk_typeOfBuildingFactor"
+      ],
+      "output": "return reverseTest__st_trial1 + reverseTest__st_trial2;"
+    },
+    {
+      "id": "reverseTest__q_trial2",
+      "projectInputs": ["reverseTest__pi_pi1", "reverseTest__pi_pi2"],
+      "staticValues": [],
+      "lookUps": [],
+      "output": "return reverseTest__q_trial1 + reverseTest__pi_pi1 + reverseTest__pi_pi2;"
+    },
+    {
+      "id": "reverseTest__q_yearlyConsumption",
+      "projectInputs": ["reverseTest__pi_1"],
+      "staticValues": ["reverseTest__st_dailyConsumption"],
+      "lookUps": [],
+      "output": "return utilities.utility_calculateYearlyConsumption(\r\n    reverseTest__st_dailyConsumption\r\n  );"
+    },
+    {
+      "id": "reverseTest__q_test1",
+      "projectInputs": [],
+      "staticValues": ["reverseTest__st_yearlyConsumption"],
+      "lookUps": [],
+      "output": "return (\r\n    utilities.utility_convertYearlyUnitToDaily(\r\n      reverseTest__st_yearlyConsumption\r\n    ) + reverseTest__st_yearlyConsumption\r\n  );"
+    },
+    {
+      "id": "reverseTest__q_Valid",
+      "projectInputs": ["circle__pi_t1"],
+      "staticValues": [],
+      "lookUps": [],
+      "output": "return 1;"
+    }
+  ]
+}

@@ -1,0 +1,29 @@
+{
+  "namespace": "global",
+  "quantities": [
+    {
+      "id": "global__q_noop",
+      "projectInputs": [],
+      "staticValues": [
+        "global__st_hoursInDay",
+        "global__st_daysInYear",
+        "global__st_convertLtoKL",
+        "global__st_convertKgToTon",
+        "global__st_treesPerTonCF",
+        "global__st_convertJoulesTokW",
+        "global__st_convertLtoM3",
+        "global__st_accelarationDueToGravity",
+        "global__st_globalDaysInAYear",
+        "global__st_globalLToKlConverter"
+      ],
+      "lookUps": [],
+      "quantities": [],
+      "output": "return null;"
+    }
+  ],
+  "types": {
+    "global__st_hoursInDay": "number",
+    "global__st_globalDaysInAYear": "number",
+    "global__st_globalLToKlConverter": "number"
+  }
+}

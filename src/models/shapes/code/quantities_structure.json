@@ -1,0 +1,1 @@
+{"quantities":[{"id":"shapes__q_totalArea","arguments":"rectangle__q_area:number,circle__q_area:number","body":"return rectangle__q_area + circle__q_area;"},{"id":"shapes__q_diffArea","arguments":"circle__q_area:number,rectangle__q_area:number","body":"return circle__q_area - rectangle__q_area;"}]}

@@ -1,0 +1,776 @@
+{
+  "namespace": "efficientFixturesDualFlush",
+  "extends": [
+    "../water",
+    "../occupancy",
+    "../global"
+  ],
+  "quantities": [
+    {
+      "id": "efficientFixturesDualFlush__q_outcomes",
+      "projectInputs": [
+        "efficientFixturesDualFlush__pi_city"
+      ],
+      "staticValues": [
+        "global__st_globalDaysInAYear"
+      ],
+      "lookUps": [],
+      "quantities": [
+        "efficientFixturesDualFlush__q_efdfDailyPreSdPlus",
+        "efficientFixturesDualFlush__q_efdfDaily",
+        "efficientFixturesDualFlush__q_efdfFullWcCapexPostSDPlus",
+        "efficientFixturesDualFlush__q_efdfFullWcCapexPreSDPlus"
+      ],
+      "output": "const efdfDailyPreSdPlus = efficientFixturesDualFlush__q_efdfDailyPreSdPlus;\n\n  const efdfDaily = efficientFixturesDualFlush__q_efdfDaily;\n\n  const efdfAnnualWater =\n    (efdfDailyPreSdPlus - efdfDaily) * global__st_globalDaysInAYear;\n\n  const efdfCapex =\n    efficientFixturesDualFlush__q_efdfFullWcCapexPostSDPlus -\n    efficientFixturesDualFlush__q_efdfFullWcCapexPreSDPlus;\n\n  const efdfOpex = utilities.utility_waterOpex(\n    efficientFixturesDualFlush__pi_city,\n    efdfAnnualWater\n  );\n\n  return {\n    efdfDailyPreSdPlus,\n    efdfDaily,\n    efdfAnnualWater,\n    efdfCapex,\n    efdfOpex,\n  };"
+    },
+    {
+      "id": "efficientFixturesDualFlush__q_efdfDailyPreSdPlus",
+      "projectInputs": [
+        "efficientFixturesDualFlush__pi_projectCategory"
+      ],
+      "staticValues": [
+        "global__st_globalLToKlConverter"
+      ],
+      "lookUps": [],
+      "quantities": [
+        "efficientFixturesDualFlush__q_occupancyTotalOccupancyVilla",
+        "efficientFixturesDualFlush__q_occupancyClubhouseOccupancyVilla",
+        "efficientFixturesDualFlush__q_occupancyTotalOccupancyApartment",
+        "efficientFixturesDualFlush__q_occupancyClubhouseOccupancyApartment",
+        "efficientFixturesDualFlush__q_waterFlushingFullWcPreSDPlus",
+        "efficientFixturesDualFlush__q_waterFlushingHalfWcPreSDPlus",
+        "efficientFixturesDualFlush__q_waterClubHouseFlushingFullWcPreSDPlus",
+        "efficientFixturesDualFlush__q_waterClubHouseFlushingHalfWcPreSDPlus"
+      ],
+      "output": "const waterResidentialFlushingPreSDPlus =\n    efficientFixturesDualFlush__q_waterFlushingFullWcPreSDPlus +\n    efficientFixturesDualFlush__q_waterFlushingHalfWcPreSDPlus;\n\n  // EF Occupancy Calc Starts\n  let efTotalOccupancy = 0;\n  let efClubHouseOccupancy = 0;\n\n  if (efficientFixturesDualFlush__pi_projectCategory === 'Villa') {\n    efTotalOccupancy =\n      efficientFixturesDualFlush__q_occupancyTotalOccupancyVilla;\n\n    efClubHouseOccupancy =\n      efficientFixturesDualFlush__q_occupancyClubhouseOccupancyVilla;\n  } else {\n    efTotalOccupancy =\n      efficientFixturesDualFlush__q_occupancyTotalOccupancyApartment;\n\n    efClubHouseOccupancy =\n      efficientFixturesDualFlush__q_occupancyClubhouseOccupancyApartment;\n  }\n\n  // EF Occupancy Calc Ends\n  const waterClubHouseFlushingPreSDPlus =\n    efficientFixturesDualFlush__q_waterClubHouseFlushingFullWcPreSDPlus +\n    efficientFixturesDualFlush__q_waterClubHouseFlushingHalfWcPreSDPlus;\n\n  const efdfDailyPreSdPlus =\n    (waterResidentialFlushingPreSDPlus * efTotalOccupancy +\n      waterClubHouseFlushingPreSDPlus * efClubHouseOccupancy) /\n    global__st_globalLToKlConverter;\n\n  return efdfDailyPreSdPlus;"
+    },
+    {
+      "id": "efficientFixturesDualFlush__q_waterFlushingFullWcPreSDPlus",
+      "projectInputs": [],
+      "staticValues": [
+        "efficientFixturesDualFlush__st_waterFlushingFullWcDaily",
+        "efficientFixturesDualFlush__st_waterFlushingFullWcDuration",
+        "efficientFixturesDualFlush__st_waterFlushingFullWcFlowPreSDPlus"
+      ],
+      "lookUps": [],
+      "quantities": [],
+      "output": "const waterFlushingFullWcPreSDPlus =\n    efficientFixturesDualFlush__st_waterFlushingFullWcDaily *\n    efficientFixturesDualFlush__st_waterFlushingFullWcDuration *\n    efficientFixturesDualFlush__st_waterFlushingFullWcFlowPreSDPlus;\n\n  return waterFlushingFullWcPreSDPlus;"
+    },
+    {
+      "id": "efficientFixturesDualFlush__q_waterFlushingHalfWcPreSDPlus",
+      "projectInputs": [],
+      "staticValues": [
+        "efficientFixturesDualFlush__st_waterFlushingHalfWcDaily",
+        "efficientFixturesDualFlush__st_waterFlushingHalfWcDuration",
+        "efficientFixturesDualFlush__st_waterFlushingHalfWcFlowPreSDPlus"
+      ],
+      "lookUps": [],
+      "quantities": [],
+      "output": "const waterFlushingHalfWcPreSDPlus =\n    efficientFixturesDualFlush__st_waterFlushingHalfWcDaily *\n    efficientFixturesDualFlush__st_waterFlushingHalfWcDuration *\n    efficientFixturesDualFlush__st_waterFlushingHalfWcFlowPreSDPlus;\n\n  return waterFlushingHalfWcPreSDPlus;"
+    },
+    {
+      "id": "efficientFixturesDualFlush__q_waterClubHouseFlushingFullWcPreSDPlus",
+      "projectInputs": [],
+      "staticValues": [
+        "efficientFixturesDualFlush__st_waterClubHouseFlushingFullWcDaily",
+        "efficientFixturesDualFlush__st_waterClubHouseFlushingFullWcDuration",
+        "efficientFixturesDualFlush__st_waterFlushingFullWcFlowPreSDPlus"
+      ],
+      "lookUps": [],
+      "quantities": [],
+      "output": "const waterClubHouseFlushingFullWcPreSDPlus =\nefficientFixturesDualFlush__st_waterClubHouseFlushingFullWcDaily *\nefficientFixturesDualFlush__st_waterClubHouseFlushingFullWcDuration *\nefficientFixturesDualFlush__st_waterFlushingFullWcFlowPreSDPlus;\nreturn waterClubHouseFlushingFullWcPreSDPlus;"
+    },
+    {
+      "id": "efficientFixturesDualFlush__q_waterClubHouseFlushingHalfWcPreSDPlus",
+      "projectInputs": [],
+      "staticValues": [
+        "efficientFixturesDualFlush__st_waterClubHouseFlushingHalfWcDaily",
+        "efficientFixturesDualFlush__st_waterClubHouseFlushingHalfWcDuration",
+        "efficientFixturesDualFlush__st_waterFlushingHalfWcFlowPreSDPlus"
+      ],
+      "lookUps": [],
+      "quantities": [],
+      "output": "const waterClubHouseFlushingHalfWcPreSDPlus =\nefficientFixturesDualFlush__st_waterClubHouseFlushingHalfWcDaily *\nefficientFixturesDualFlush__st_waterClubHouseFlushingHalfWcDuration *\nefficientFixturesDualFlush__st_waterFlushingHalfWcFlowPreSDPlus;\nreturn waterClubHouseFlushingHalfWcPreSDPlus;"
+    },
+    {
+      "id": "efficientFixturesDualFlush__q_efdfDaily",
+      "projectInputs": [
+        "efficientFixturesDualFlush__pi_projectCategory"
+      ],
+      "staticValues": [
+        "efficientFixturesDualFlush__st_waterClubHouseDomesticFaucetDaily",
+        "efficientFixturesDualFlush__st_waterClubHouseDomesticFaucetDuration",
+        "efficientFixturesDualFlush__st_waterDomesticFaucetFlow",
+        "global__st_globalLToKlConverter"
+      ],
+      "lookUps": [],
+      "quantities": [
+        "efficientFixturesDualFlush__q_occupancyTotalOccupancyVilla",
+        "efficientFixturesDualFlush__q_occupancyClubhouseOccupancyVilla",
+        "efficientFixturesDualFlush__q_occupancyTotalOccupancyApartment",
+        "efficientFixturesDualFlush__q_occupancyClubhouseOccupancyApartment",
+        "efficientFixturesDualFlush__q_waterClubHouseFlushingFullWc",
+        "efficientFixturesDualFlush__q_waterClubHouseFlushingHalfWc",
+        "efficientFixturesDualFlush__q_waterFlushingFullWc",
+        "efficientFixturesDualFlush__q_waterFlushingHalfWc"
+      ],
+      "output": "// Water. Residential Flushing\n  // Water. ClubHouse Flushing\n\n  const waterResidentialFlushing =\n    efficientFixturesDualFlush__q_waterFlushingFullWc +\n    efficientFixturesDualFlush__q_waterFlushingHalfWc;\n\n  const waterClubHouseFlushing =\n    efficientFixturesDualFlush__q_waterClubHouseFlushingFullWc +\n    efficientFixturesDualFlush__q_waterClubHouseFlushingHalfWc;\n\n  // EF Occupancy Calc Starts\n  let efTotalOccupancy = 0;\n  let efClubHouseOccupancy = 0;\n\n  if (efficientFixturesDualFlush__pi_projectCategory === 'Villa') {\n    efTotalOccupancy =\n      efficientFixturesDualFlush__q_occupancyTotalOccupancyVilla;\n    efClubHouseOccupancy =\n      efficientFixturesDualFlush__q_occupancyClubhouseOccupancyVilla;\n  } else {\n    efTotalOccupancy =\n      efficientFixturesDualFlush__q_occupancyTotalOccupancyApartment;\n    efClubHouseOccupancy =\n      efficientFixturesDualFlush__q_occupancyClubhouseOccupancyApartment;\n  }\n\n  // EF Occupancy Calc Ends\n\n  const effDaily =\n    waterResidentialFlushing * efTotalOccupancy +\n    (waterClubHouseFlushing * efClubHouseOccupancy) /\n      global__st_globalLToKlConverter;\n\n  return effDaily;"
+    },
+    {
+      "id": "efficientFixturesDualFlush__q_waterFlushingFullWc",
+      "projectInputs": [],
+      "staticValues": [
+        "efficientFixturesDualFlush__st_waterFlushingFullWcDaily",
+        "efficientFixturesDualFlush__st_WaterFlushingFullWcDuration"
+      ],
+      "lookUps": [],
+      "quantities": [],
+      "output": "const product = utilities.utility_efDualFlushProductResolver();\n  const WaterFlushingFullWcFlow = product.fullFlush;\n\n  const waterFlushingFullWC =\n    efficientFixturesDualFlush__st_waterFlushingFullWcDaily *\n    efficientFixturesDualFlush__st_WaterFlushingFullWcDuration *\n    WaterFlushingFullWcFlow;\n\n  return waterFlushingFullWC;"
+    },
+    {
+      "id": "efficientFixturesDualFlush__q_waterFlushingHalfWc",
+      "projectInputs": [],
+      "staticValues": [
+        "efficientFixturesDualFlush__st_waterFlushingHalfWcDaily",
+        "efficientFixturesDualFlush__st_WaterFlushingHalfWcDuration"
+      ],
+      "lookUps": [],
+      "quantities": [],
+      "output": "const product = utilities.utility_efDualFlushProductResolver();\n  const WaterFlushingHalfWcFlow = product.halfFlush;\n\n  const waterFlushingHalfWC =\n    efficientFixturesDualFlush__st_waterFlushingHalfWcDaily *\n    efficientFixturesDualFlush__st_WaterFlushingHalfWcDuration *\n    WaterFlushingHalfWcFlow;\n\n  return waterFlushingHalfWC;"
+    },
+    {
+      "id": "efficientFixturesDualFlush__q_waterClubHouseFlushingFullWc",
+      "projectInputs": [],
+      "staticValues": [
+        "efficientFixturesDualFlush__st_waterClubHouseFlushingFullWcDaily",
+        "efficientFixturesDualFlush__st_waterClubHouseFlushingFullWcDuration",
+        "efficientFixturesDualFlush__st_waterFlushingFullWcFlow"
+      ],
+      "lookUps": [],
+      "quantities": [],
+      "output": "const waterClubHouseFlushingFullWc =\nefficientFixturesDualFlush__st_waterClubHouseFlushingFullWcDaily *\nefficientFixturesDualFlush__st_waterClubHouseFlushingFullWcDuration *\nefficientFixturesDualFlush__st_waterFlushingFullWcFlow;\nreturn waterClubHouseFlushingFullWc;"
+    },
+    {
+      "id": "efficientFixturesDualFlush__q_waterClubHouseFlushingHalfWc",
+      "projectInputs": [],
+      "staticValues": [
+        "efficientFixturesDualFlush__st_waterClubHouseFlushingHalfWcDaily",
+        "efficientFixturesDualFlush__st_waterClubHouseFlushingHalfWcDuration",
+        "efficientFixturesDualFlush__st_waterFlushingHalfWcFlow"
+      ],
+      "lookUps": [],
+      "quantities": [],
+      "output": "const waterClubHouseFlushingHalfWc =\nefficientFixturesDualFlush__st_waterClubHouseFlushingHalfWcDaily *\nefficientFixturesDualFlush__st_waterClubHouseFlushingHalfWcDuration *\nefficientFixturesDualFlush__st_waterFlushingHalfWcFlow;\nreturn waterClubHouseFlushingHalfWc;"
+    },
+    {
+      "id": "efficientFixturesDualFlush__q_efdfFullWcCapexPostSDPlus",
+      "projectInputs": [],
+      "staticValues": [],
+      "lookUps": [],
+      "quantities": [
+        "efficientFixturesDualFlush__q_efdfResidentialFullWcCapexPostSDPlus",
+        "efficientFixturesDualFlush__q_efdfClubHouseFullWcCapexPostSDPlus"
+      ],
+      "output": "efficientFixturesDualFlush__q_efdfResidentialFullWcCapexPostSDPlus +\nefficientFixturesDualFlush__q_efdfClubHouseFullWcCapexPostSDPlus;"
+    },
+    {
+      "id": "efficientFixturesDualFlush__q_efdfFullWcCapexPreSDPlus",
+      "projectInputs": [],
+      "staticValues": [],
+      "lookUps": [],
+      "quantities": [
+        "efficientFixturesDualFlush__q_efdfResidentialFullWcCapexPreSDPlus",
+        "efficientFixturesDualFlush__q_efdfClubHouseFullWcCapexPreSDPlus"
+      ],
+      "output": "return (\nefficientFixturesDualFlush__q_efdfResidentialFullWcCapexPreSDPlus +\nefficientFixturesDualFlush__q_efdfClubHouseFullWcCapexPreSDPlus\n);"
+    },
+    {
+      "id": "efficientFixturesDualFlush__q_efdfResidentialFullWcCapexPostSDPlus",
+      "projectInputs": [
+        "efficientFixturesDualFlush__pi_projectStudio",
+        "efficientFixturesDualFlush__pi_project1BHK",
+        "efficientFixturesDualFlush__pi_project2BHK",
+        "efficientFixturesDualFlush__pi_project3BHK",
+        "efficientFixturesDualFlush__pi_project4BHK"
+      ],
+      "staticValues": [
+        "efficientFixturesDualFlush__st_efdfStudioFlushingFullWc",
+        "efficientFixturesDualFlush__st_efdf1BHKFlushingFullWc",
+        "efficientFixturesDualFlush__st_efdf2BHKFlushingFullWc",
+        "efficientFixturesDualFlush__st_efdf3BHKFlushingFullWc",
+        "efficientFixturesDualFlush__st_efdf4BHKFlushingFullWc",
+        "efficientFixturesDualFlush__st_waterFlushingFullWcPrice"
+      ],
+      "lookUps": [],
+      "quantities": [],
+      "output": "return (\nefficientFixturesDualFlush__pi_projectStudio *\n  efficientFixturesDualFlush__st_efdfStudioFlushingFullWc +\nefficientFixturesDualFlush__pi_project1BHK *\n  efficientFixturesDualFlush__st_efdf1BHKFlushingFullWc +\nefficientFixturesDualFlush__pi_project2BHK *\n  efficientFixturesDualFlush__st_efdf2BHKFlushingFullWc +\nefficientFixturesDualFlush__pi_project3BHK *\n  efficientFixturesDualFlush__st_efdf3BHKFlushingFullWc +\nefficientFixturesDualFlush__pi_project4BHK *\n  efficientFixturesDualFlush__st_efdf4BHKFlushingFullWc *\n  efficientFixturesDualFlush__st_waterFlushingFullWcPrice\n);"
+    },
+    {
+      "id": "efficientFixturesDualFlush__q_efdfClubHouseFullWcCapexPostSDPlus",
+      "projectInputs": [],
+      "staticValues": [
+        "efficientFixturesDualFlush__st_includeClubHouse",
+        "efficientFixturesDualFlush__st_efdfClubHouseFlushingFullWc",
+        "efficientFixturesDualFlush__st_waterFlushingFullWcPrice"
+      ],
+      "lookUps": [],
+      "quantities": [],
+      "output": "let projectClubHouse = 0;\n  if (efficientFixturesDualFlush__st_includeClubHouse === 'Yes') {\n    projectClubHouse = 1;\n  }\n\n  return (\n    projectClubHouse *\n    efficientFixturesDualFlush__st_efdfClubHouseFlushingFullWc *\n    efficientFixturesDualFlush__st_waterFlushingFullWcPrice\n  );"
+    },
+    {
+      "id": "efficientFixturesDualFlush__q_efdfResidentialFullWcCapexPreSDPlus",
+      "projectInputs": [
+        "efficientFixturesDualFlush__pi_projectStudio",
+        "efficientFixturesDualFlush__pi_project1BHK",
+        "efficientFixturesDualFlush__pi_project2BHK",
+        "efficientFixturesDualFlush__pi_project3BHK",
+        "efficientFixturesDualFlush__pi_project4BHK",
+        "efficientFixturesDualFlush__pi_waterFlushingFullWcPricePreSdPlus"
+      ],
+      "staticValues": [
+        "efficientFixturesDualFlush__st_efdfStudioFlushingFullWc",
+        "efficientFixturesDualFlush__st_efdf1BHKFlushingFullWc",
+        "efficientFixturesDualFlush__st_efdf2BHKFlushingFullWc",
+        "efficientFixturesDualFlush__st_efdf3BHKFlushingFullWc",
+        "efficientFixturesDualFlush__st_efdf4BHKFlushingFullWc"
+      ],
+      "lookUps": [],
+      "quantities": [],
+      "output": "return (\nefficientFixturesDualFlush__pi_projectStudio *\n  efficientFixturesDualFlush__st_efdfStudioFlushingFullWc +\nefficientFixturesDualFlush__pi_project1BHK *\n  efficientFixturesDualFlush__st_efdf1BHKFlushingFullWc +\nefficientFixturesDualFlush__pi_project2BHK *\n  efficientFixturesDualFlush__st_efdf2BHKFlushingFullWc +\nefficientFixturesDualFlush__pi_project3BHK *\n  efficientFixturesDualFlush__st_efdf3BHKFlushingFullWc +\nefficientFixturesDualFlush__pi_project4BHK *\n  efficientFixturesDualFlush__st_efdf4BHKFlushingFullWc *\n  efficientFixturesDualFlush__pi_waterFlushingFullWcPricePreSdPlus\n);"
+    },
+    {
+      "id": "efficientFixturesDualFlush__q_efdfClubHouseFullWcCapexPreSDPlus",
+      "projectInputs": [
+        "efficientFixturesDualFlush__pi_waterFlushingFullWCPricePreSdPlus"
+      ],
+      "staticValues": [
+        "efficientFixturesDualFlush__st_includeClubHouse",
+        "efficientFixturesDualFlush__st_efdfClubHouseFlushingFullWC"
+      ],
+      "lookUps": [],
+      "quantities": [],
+      "output": "let projectClubHouse = 0;\n  if (efficientFixturesDualFlush__st_includeClubHouse === 'Yes') {\n    projectClubHouse = 1;\n  }\n\n  return (\n    projectClubHouse *\n    efficientFixturesDualFlush__st_efdfClubHouseFlushingFullWC *\n    efficientFixturesDualFlush__pi_waterFlushingFullWCPricePreSdPlus\n  );"
+    },
+    {
+      "id": "efficientFixturesDualFlush__q_effCapexPostSdPlus",
+      "projectInputs": [
+        "efficientFixturesDualFlush__pi_projectStudio",
+        "efficientFixturesDualFlush__pi_project1Bhk",
+        "efficientFixturesDualFlush__pi_project2Bhk",
+        "efficientFixturesDualFlush__pi_project3Bhk",
+        "efficientFixturesDualFlush__pi_project4Bhk",
+        "efficientFixturesDualFlush__pi_includeClubHouse"
+      ],
+      "staticValues": [
+        "efficientFixturesDualFlush__st_effStudioDomesticFaucet",
+        "efficientFixturesDualFlush__st_eff1BhkDomesticFaucet",
+        "efficientFixturesDualFlush__st_eff2BhkDomesticFaucet",
+        "efficientFixturesDualFlush__st_eff3BhkDomesticFaucet",
+        "efficientFixturesDualFlush__st_eff4BhkDomesticFaucet",
+        "efficientFixturesDualFlush__st_effClubHouseDomesticFaucet"
+      ],
+      "lookUps": [],
+      "quantities": [
+        "efficientFixturesDualFlush__q_effResidentialFaucetCapexPreSdPlus"
+      ],
+      "output": "const product = utilities.utility_efHealthFaucetProductResolver();\n\n  let waterDomesticFaucetPrice = 0;\n  if (product.length) {\n    waterDomesticFaucetPrice = utilities.utility_numberFromString(\n      product.price\n    );\n  }\n\n  const effResidentialFaucetCapexPostSdPlus =\n    (efficientFixturesDualFlush__pi_projectStudio *\n      efficientFixturesDualFlush__st_effStudioDomesticFaucet +\n      efficientFixturesDualFlush__pi_project1Bhk *\n        efficientFixturesDualFlush__st_eff1BhkDomesticFaucet +\n      efficientFixturesDualFlush__pi_project2Bhk *\n        efficientFixturesDualFlush__st_eff2BhkDomesticFaucet +\n      efficientFixturesDualFlush__pi_project3Bhk *\n        efficientFixturesDualFlush__st_eff3BhkDomesticFaucet +\n      efficientFixturesDualFlush__pi_project4Bhk *\n        efficientFixturesDualFlush__st_eff4BhkDomesticFaucet) *\n    waterDomesticFaucetPrice;\n\n  let projectClubHouse = 0;\n  if (efficientFixturesDualFlush__pi_includeClubHouse === 'Yes') {\n    projectClubHouse = 1;\n  }\n\n  const effClubHouseFaucetCapexPostSdPlus =\n    projectClubHouse *\n    efficientFixturesDualFlush__st_effClubHouseDomesticFaucet *\n    waterDomesticFaucetPrice;\n\n  let effCapexPostSdPlus;\n  if (product.aeratorType == 'Built-in Aerator') {\n    effCapexPostSdPlus =\n      effResidentialFaucetCapexPostSdPlus +\n      effClubHouseFaucetCapexPostSdPlus +\n      efficientFixturesDualFlush__q_effResidentialFaucetCapexPreSdPlus;\n  } else {\n    effCapexPostSdPlus =\n      effResidentialFaucetCapexPostSdPlus + effClubHouseFaucetCapexPostSdPlus;\n  }\n\n  return (\n    effResidentialFaucetCapexPostSdPlus + effClubHouseFaucetCapexPostSdPlus\n  );"
+    },
+    {
+      "id": "efficientFixturesDualFlush__q_effResidentialFaucetCapexPreSdPlus",
+      "projectInputs": [
+        "efficientFixturesDualFlush__pi_projectStudio",
+        "efficientFixturesDualFlush__pi_project1Bhk",
+        "efficientFixturesDualFlush__pi_project2Bhk",
+        "efficientFixturesDualFlush__pi_project3Bhk",
+        "efficientFixturesDualFlush__pi_project4Bhk"
+      ],
+      "staticValues": [
+        "efficientFixturesDualFlush__st_effStudioDomesticFaucet",
+        "efficientFixturesDualFlush__st_eff1BhkDomesticFaucet",
+        "efficientFixturesDualFlush__st_eff2BhkDomesticFaucet",
+        "efficientFixturesDualFlush__st_eff3BhkDomesticFaucet",
+        "efficientFixturesDualFlush__st_eff4BhkDomesticFaucet",
+        "efficientFixturesDualFlush__st_waterNbcBaseCaseFaucetPrice"
+      ],
+      "lookUps": [],
+      "quantities": [],
+      "output": "const waterDomesticFaucetPricePreSdPlus =\n    efficientFixturesDualFlush__st_waterNbcBaseCaseFaucetPrice;\n\n  const effResidentialFaucetCapexPreSdPlus =\n    (efficientFixturesDualFlush__pi_projectStudio *\n      efficientFixturesDualFlush__st_effStudioDomesticFaucet +\n      efficientFixturesDualFlush__pi_project1Bhk *\n        efficientFixturesDualFlush__st_eff1BhkDomesticFaucet +\n      efficientFixturesDualFlush__pi_project2Bhk *\n        efficientFixturesDualFlush__st_eff2BhkDomesticFaucet +\n      efficientFixturesDualFlush__pi_project3Bhk *\n        efficientFixturesDualFlush__st_eff3BhkDomesticFaucet +\n      efficientFixturesDualFlush__pi_project4Bhk *\n        efficientFixturesDualFlush__st_eff4BhkDomesticFaucet) *\n    waterDomesticFaucetPricePreSdPlus;\n\n  return effResidentialFaucetCapexPreSdPlus;"
+    },
+    {
+      "id": "efficientFixturesDualFlush__q_effClubHouseFaucetCapexPreSdPlus",
+      "projectInputs": [
+        "efficientFixturesDualFlush__pi_includeClubHouse"
+      ],
+      "staticValues": [
+        "efficientFixturesDualFlush__st_waterNbcBaseCaseFaucetPrice",
+        "efficientFixturesDualFlush__st_effClubHouseDomesticFaucet"
+      ],
+      "lookUps": [],
+      "quantities": [],
+      "output": "const waterDomesticFaucetPricePreSdPlus =\n    efficientFixturesDualFlush__st_waterNbcBaseCaseFaucetPrice;\n\n  let projectClubHouse = 0;\n  if (efficientFixturesDualFlush__pi_includeClubHouse === 'Yes') {\n    projectClubHouse = 1;\n  }\n\n  return (\n    projectClubHouse *\n    efficientFixturesDualFlush__st_effClubHouseDomesticFaucet *\n    waterDomesticFaucetPricePreSdPlus\n  );"
+    },
+    {
+      "id": "efficientFixturesDualFlush__q_igbcOccupanyVilla",
+      "projectInputs": [
+        "efficientFixturesDualFlush__pi_projectVilla1Bhk",
+        "efficientFixturesDualFlush__pi_projectVilla2Bhk",
+        "efficientFixturesDualFlush__pi_projectVilla3Bhk",
+        "efficientFixturesDualFlush__pi_projectVilla4Bhk"
+      ],
+      "staticValues": [
+        "efficientFixturesDualFlush__st_igbc1BhkRefOccupancy",
+        "efficientFixturesDualFlush__st_igbc2BhkRefOccupancy",
+        "efficientFixturesDualFlush__st_igbc3BhkRefOccupancy",
+        "efficientFixturesDualFlush__st_igbc4BhkRefOccupancy"
+      ],
+      "lookUps": [],
+      "quantities": [],
+      "output": "return (\nefficientFixturesDualFlush__pi_projectVilla1Bhk *\n  efficientFixturesDualFlush__st_igbc1BhkRefOccupancy +\nefficientFixturesDualFlush__pi_projectVilla2Bhk *\n  efficientFixturesDualFlush__st_igbc2BhkRefOccupancy +\nefficientFixturesDualFlush__pi_projectVilla3Bhk *\n  efficientFixturesDualFlush__st_igbc3BhkRefOccupancy +\nefficientFixturesDualFlush__pi_projectVilla4Bhk *\n  efficientFixturesDualFlush__st_igbc4BhkRefOccupancy\n);"
+    },
+    {
+      "id": "efficientFixturesDualFlush__q_occupancyTotalOccupancyVilla",
+      "projectInputs": [
+        "occupancy__pi_villaStudio",
+        "occupancy__pi_villaOneBHK",
+        "occupancy__pi_villaTwoBHK",
+        "occupancy__pi_villaThreeBHK",
+        "occupancy__pi_villaFourBHK"
+      ],
+      "staticValues": [
+        "occupancy__st_studioRefOccupancy",
+        "occupancy__st_villaOneBHKRefOccupancy",
+        "occupancy__st_villaTwoBHKRefOccupancy",
+        "occupancy__st_villaThreeBHKRefOccupancy",
+        "occupancy__st_villaFourBHKRefOccupancy",
+        "efficientFixturesDualFlush__st_projectHousekeepingRefOccupancy"
+      ],
+      "lookUps": [],
+      "quantities": [
+        "occupancy__q_occupancyVilla"
+      ],
+      "output": "const totalOccupancyVilla =\n    occupancy__q_occupancyVilla *\n    (1 + efficientFixturesDualFlush__st_projectHousekeepingRefOccupancy);\n\n  return totalOccupancyVilla;"
+    },
+    {
+      "id": "efficientFixturesDualFlush__q_igbcOccupanyApartment",
+      "projectInputs": [
+        "efficientFixturesDualFlush__pi_projectStudio",
+        "efficientFixturesDualFlush__pi_project1Bhk",
+        "efficientFixturesDualFlush__pi_project2Bhk",
+        "efficientFixturesDualFlush__pi_project3Bhk",
+        "efficientFixturesDualFlush__pi_project4Bhk"
+      ],
+      "staticValues": [
+        "efficientFixturesDualFlush__st_igbcStudioRefOccupancy",
+        "efficientFixturesDualFlush__st_igbc1BhkRefOccupancy",
+        "efficientFixturesDualFlush__st_igbc2BhkRefOccupancy",
+        "efficientFixturesDualFlush__st_igbc3BhkRefOccupancy",
+        "efficientFixturesDualFlush__st_igbc4BhkRefOccupancy"
+      ],
+      "lookUps": [],
+      "quantities": [],
+      "output": "return (\nefficientFixturesDualFlush__pi_projectStudio +\nefficientFixturesDualFlush__st_igbcStudioRefOccupancy +\n(efficientFixturesDualFlush__pi_project1Bhk +\n  efficientFixturesDualFlush__st_igbc1BhkRefOccupancy) +\n(efficientFixturesDualFlush__pi_project2Bhk +\n  efficientFixturesDualFlush__st_igbc2BhkRefOccupancy) +\n(efficientFixturesDualFlush__pi_project3Bhk +\n  efficientFixturesDualFlush__st_igbc3BhkRefOccupancy) +\n(efficientFixturesDualFlush__pi_project4Bhk +\n  efficientFixturesDualFlush__st_igbc4BhkRefOccupancy)\n);"
+    },
+    {
+      "id": "efficientFixturesDualFlush__q_occupancyTotalOccupancyApartment",
+      "projectInputs": [
+        "efficientFixturesDualFlush__pi_projectStudio",
+        "efficientFixturesDualFlush__pi_project1Bhk",
+        "efficientFixturesDualFlush__pi_project2Bhk",
+        "efficientFixturesDualFlush__pi_project3Bhk",
+        "efficientFixturesDualFlush__pi_project4Bhk",
+        "occupancy__pi_penthouseStudio",
+        "occupancy__pi_penthouseOneBHK",
+        "occupancy__pi_penthouseTwoBHK",
+        "occupancy__pi_penthouseThreeBHK",
+        "occupancy__pi_penthouseFourBHK"
+      ],
+      "staticValues": [
+        "efficientFixturesDualFlush__st_projectStudioRefOccupancy",
+        "efficientFixturesDualFlush__st_project1BhkRefOccupancy",
+        "efficientFixturesDualFlush__st_project2BhkRefOccupancy",
+        "efficientFixturesDualFlush__st_project3BhkRefOccupancy",
+        "efficientFixturesDualFlush__st_project4BhkRefOccupancy",
+        "efficientFixturesDualFlush__st_projectHousekeepingRefOccupancy",
+        "occupancy__st_studioRefOccupancy",
+        "occupancy__st_penthouseOneBHKRefOccupancy",
+        "occupancy__st_penthouseTwoBHKRefOccupancy",
+        "occupancy__st_penthouseThreeBHKRefOccupancy",
+        "occupancy__st_penthouseFourBHKRefOccupancy"
+      ],
+      "lookUps": [],
+      "quantities": [
+        "occupancy__q_occupancyApartment",
+        "occupancy__q_occupancyPenthouse"
+      ],
+      "output": "const totalOccupancyApartment =\n    (occupancy__q_occupancyApartment + occupancy__q_occupancyPenthouse) *\n    (1 + efficientFixturesDualFlush__st_projectHousekeepingRefOccupancy);\n\n  return totalOccupancyApartment;"
+    },
+    {
+      "id": "efficientFixturesDualFlush__q_occupancyClubhouseOccupancyApartment",
+      "projectInputs": [
+        "occupancy__pi_studio",
+        "occupancy__pi_oneBHK",
+        "occupancy__pi_twoBHK",
+        "occupancy__pi_threeBHK",
+        "occupancy__pi_fourBHK",
+        "occupancy__pi_penthouseStudio",
+        "occupancy__pi_penthouseOneBHK",
+        "occupancy__pi_penthouseTwoBHK",
+        "occupancy__pi_penthouseThreeBHK",
+        "occupancy__pi_penthouseFourBHK",
+        "efficientFixturesDualFlush__pi_includeClubHouse"
+      ],
+      "staticValues": [
+        "occupancy__st_studioRefOccupancy",
+        "occupancy__st_oneBHKRefOccupancy",
+        "occupancy__st_twoBHKRefOccupancy",
+        "occupancy__st_threeBHKRefOccupancy",
+        "occupancy__st_fourBHKRefOccupancy",
+        "occupancy__st_penthouseOneBHKRefOccupancy",
+        "occupancy__st_penthouseTwoBHKRefOccupancy",
+        "occupancy__st_penthouseThreeBHKRefOccupancy",
+        "occupancy__st_penthouseFourBHKRefOccupancy",
+        "efficientFixturesDualFlush__st_clubHouseRefOccupancy"
+      ],
+      "lookUps": [],
+      "quantities": [
+        "occupancy__q_occupancyApartment",
+        "occupancy__q_occupancyPenthouse"
+      ],
+      "output": "let clubHouseRefOccupancy = 0.1;\n  if (efficientFixturesDualFlush__pi_includeClubHouse === 'Yes') {\n    clubHouseRefOccupancy =\n      efficientFixturesDualFlush__st_clubHouseRefOccupancy;\n  }\n\n  const clubHouseOccupancyApartment =\n    (occupancy__q_occupancyApartment + occupancy__q_occupancyPenthouse) *\n    clubHouseRefOccupancy;\n\n  return clubHouseOccupancyApartment;"
+    },
+    {
+      "id": "efficientFixturesDualFlush__q_igbcOccupanyPenthouse",
+      "projectInputs": [
+        "efficientFixturesDualFlush__pi_projectPhStudio",
+        "efficientFixturesDualFlush__pi_projectPh1Bhk",
+        "efficientFixturesDualFlush__pi_projectPh2Bhk",
+        "efficientFixturesDualFlush__pi_projectPh3Bhk",
+        "efficientFixturesDualFlush__pi_projectPh4Bhk"
+      ],
+      "staticValues": [
+        "efficientFixturesDualFlush__st_igbcStudioRefOccupancy",
+        "efficientFixturesDualFlush__st_igbc1BhkRefOccupancy",
+        "efficientFixturesDualFlush__st_igbc2BhkRefOccupancy",
+        "efficientFixturesDualFlush__st_igbc3BhkRefOccupancy",
+        "efficientFixturesDualFlush__st_igbc4BhkRefOccupancy"
+      ],
+      "lookUps": [],
+      "quantities": [],
+      "output": "return (\nefficientFixturesDualFlush__pi_projectPhStudio *\n  efficientFixturesDualFlush__st_igbcStudioRefOccupancy +\nefficientFixturesDualFlush__pi_projectPh1Bhk *\n  efficientFixturesDualFlush__st_igbc1BhkRefOccupancy +\nefficientFixturesDualFlush__pi_projectPh2Bhk *\n  efficientFixturesDualFlush__st_igbc2BhkRefOccupancy +\nefficientFixturesDualFlush__pi_projectPh3Bhk *\n  efficientFixturesDualFlush__st_igbc3BhkRefOccupancy +\nefficientFixturesDualFlush__pi_projectPh4Bhk *\n  efficientFixturesDualFlush__st_igbc4BhkRefOccupancy\n);"
+    },
+    {
+      "id": "efficientFixturesDualFlush__q_occupancyClubhouseOccupancyVilla",
+      "projectInputs": [
+        "efficientFixturesDualFlush__pi_includeClubHouse"
+      ],
+      "staticValues": [
+        "efficientFixturesDualFlush__st_clubHouseRefOccupancy"
+      ],
+      "lookUps": [],
+      "quantities": [
+        "occupancy__q_occupancyVilla"
+      ],
+      "output": "let clubHouseRefOccupancy = 0.1;\n  if (efficientFixturesDualFlush__pi_includeClubHouse === 'Yes') {\n    clubHouseRefOccupancy =\n      efficientFixturesDualFlush__st_clubHouseRefOccupancy;\n  }\n\n  const clubHouseOccupancyVilla =\n    occupancy__q_occupancyVilla * clubHouseRefOccupancy;\n\n  return clubHouseOccupancyVilla;"
+    },
+    {
+      "id": "efficientFixturesDualFlush__q_igbcOutcomes",
+      "projectInputs": [
+        "efficientFixturesDualFlush__pi_projectCategory",
+        "efficientFixturesDualFlush__pi_city"
+      ],
+      "staticValues": [
+        "efficientFixturesDualFlush__st_igbcDomesticShowerDaily",
+        "efficientFixturesDualFlush__st_igbcDomesticShowerDuration",
+        "efficientFixturesDualFlush__st_igbcDomesticShowerFlowPreSDPlus",
+        "efficientFixturesDualFlush__st_waterDomesticShowerDaily",
+        "efficientFixturesDualFlush__st_waterDomesticShowerDuration",
+        "global__st_globalDaysInAYear",
+        "global__st_globalLToKlConverter"
+      ],
+      "lookUps": [],
+      "quantities": [
+        "efficientFixturesDualFlush__q_igbcOccupanyVilla",
+        "efficientFixturesDualFlush__q_igbcOccupanyApartment",
+        "efficientFixturesDualFlush__q_igbcOccupanyPenthouse"
+      ],
+      "output": "const igbcDomesticShowerPreSDPlus =\n    efficientFixturesDualFlush__st_igbcDomesticShowerDaily *\n    efficientFixturesDualFlush__st_igbcDomesticShowerDuration *\n    efficientFixturesDualFlush__st_igbcDomesticShowerFlowPreSDPlus;\n\n  // EF Occupancy Calc Starts\n  let efIgbcOccupancy = 0;\n\n  if (efficientFixturesDualFlush__pi_projectCategory === 'Villa') {\n    efIgbcOccupancy = efficientFixturesDualFlush__q_igbcOccupanyVilla;\n  } else {\n    efIgbcOccupancy =\n      efficientFixturesDualFlush__q_igbcOccupanyApartment +\n      efficientFixturesDualFlush__q_igbcOccupanyPenthouse;\n  }\n  // EF Occupancy Calc Ends\n\n  // Actual Calc\n  const efsIgbcDailyPreSdPlus =\n    (igbcDomesticShowerPreSDPlus * efIgbcOccupancy) /\n    global__st_globalLToKlConverter;\n\n  const product = utilities.utility_efHealthFaucetProductResolver();\n\n  const waterDomesticShower =\n    product.Flowrate *\n    efficientFixturesDualFlush__st_waterDomesticShowerDaily *\n    efficientFixturesDualFlush__st_waterDomesticShowerDuration;\n\n  const efsIgbcDaily =\n    (waterDomesticShower * efIgbcOccupancy) / global__st_globalLToKlConverter;\n\n  const efsIgbcDailySavings = efsIgbcDailyPreSdPlus - efsIgbcDaily;\n\n  const efsIgbcAnnualWater = efsIgbcDailySavings * global__st_globalDaysInAYear;\n  const efsIgBcOpex = utilities.utility_waterOpex(\n    efficientFixturesDualFlush__pi_city,\n    efsIgbcAnnualWater\n  );\n\n  return {\n    efsIgbcDailyPreSdPlus,\n    efsIgbcDaily,\n    efsIgbcDailySavings,\n    efsIgbcAnnualWater,\n    efsIgBcOpex,\n  };"
+    },
+    {
+      "id": "efficientFixturesDualFlush__q_outcomesPreSdPlus",
+      "projectInputs": [],
+      "staticValues": [
+        "efficientFixturesDualFlush__st_globalDaysInAYear"
+      ],
+      "lookUps": [],
+      "quantities": [
+        "efficientFixturesDualFlush__q_efdfDailyPreSdPlus"
+      ],
+      "output": "return (\nefficientFixturesDualFlush__q_efdfDailyPreSdPlus *\nefficientFixturesDualFlush__st_globalDaysInAYear\n);"
+    },
+    {
+      "id": "efficientFixturesDualFlush__q_projectLevelInsights",
+      "projectInputs": [
+        "efficientFixturesDualFlush__pi_city",
+        "efficientFixturesDualFlush__pi_studio",
+        "efficientFixturesDualFlush__pi_oneBHK",
+        "efficientFixturesDualFlush__pi_twoBHK",
+        "efficientFixturesDualFlush__pi_threeBHK",
+        "efficientFixturesDualFlush__pi_includeClubHouse",
+        "efficientFixturesDualFlush__pi_projectLandscapeArea",
+        "efficientFixturesDualFlush__pi_projectNoOfCarParks",
+        "efficientFixturesDualFlush__pi_projectSwimmingPoolSurfaceArea",
+        "efficientFixturesDualFlush__pi_projectAreaOfLobbiesAndCorridors"
+      ],
+      "staticValues": [
+        "efficientFixturesDualFlush__st_globalKg2tonConv",
+        "efficientFixturesDualFlush__st_efSdgNumberForEf",
+        "efficientFixturesDualFlush__st_globalTreesPerTonCf",
+        "efficientFixturesDualFlush__st_projectHousekeepingRefOccupancy",
+        "efficientFixturesDualFlush__st_studioRefOccupancy",
+        "efficientFixturesDualFlush__st_oneBHKRefOccupancy",
+        "efficientFixturesDualFlush__st_twoBHKRefOccupancy",
+        "efficientFixturesDualFlush__st_threeBHKRefOccupancy",
+        "efficientFixturesDualFlush__st_clubHouseRefOccupancy",
+        "efficientFixturesDualFlush__st_waterDailyLandscapeWaterUse",
+        "efficientFixturesDualFlush__st_waterDailyCarWashWaterUse",
+        "efficientFixturesDualFlush__st_waterSwimmingPoolDepth",
+        "efficientFixturesDualFlush__st_waterWaterPerCubicMeter",
+        "efficientFixturesDualFlush__st_waterSwimmingPoolEvaporationRate",
+        "efficientFixturesDualFlush__st_waterDailyLobbiesAndCorridorsWaterUse",
+        "global__st_globalDaysInAYear",
+        "global__st_globalLToKlConverter"
+      ],
+      "lookUps": [],
+      "quantities": [
+        "efficientFixturesDualFlush__q_efdfDailyPreSdPlus",
+        "efficientFixturesDualFlush__q_efdfDaily",
+        "water__q_currentWaterTable"
+      ],
+      "output": "const efdfDailyPreSdPlus = efficientFixturesDualFlush__q_efdfDailyPreSdPlus;\n  const efdfDaily = efficientFixturesDualFlush__q_efdfDaily;\n  const efdfAnnualWater =\n    (efdfDailyPreSdPlus - efdfDaily) * global__st_globalDaysInAYear;\n\n  let cityEmissionFactor: number;\n  if (efficientFixturesDualFlush__pi_city === 'Bangalore') {\n    cityEmissionFactor = 0.6;\n  } else if (efficientFixturesDualFlush__pi_city === 'Bombay') {\n    cityEmissionFactor = 0.89;\n  }\n\n  const occupancy = utilities.utility_efHfOccupancy(\n    efficientFixturesDualFlush__pi_studio,\n    efficientFixturesDualFlush__st_studioRefOccupancy,\n    efficientFixturesDualFlush__pi_oneBHK,\n    efficientFixturesDualFlush__st_oneBHKRefOccupancy,\n    efficientFixturesDualFlush__pi_twoBHK,\n    efficientFixturesDualFlush__st_twoBHKRefOccupancy,\n    efficientFixturesDualFlush__pi_threeBHK,\n    efficientFixturesDualFlush__st_threeBHKRefOccupancy\n  );\n\n  const totalOccupancy = utilities.utility_efHfTotalOccupancy(\n    efficientFixturesDualFlush__pi_studio,\n    efficientFixturesDualFlush__st_studioRefOccupancy,\n    efficientFixturesDualFlush__pi_oneBHK,\n    efficientFixturesDualFlush__st_oneBHKRefOccupancy,\n    efficientFixturesDualFlush__pi_twoBHK,\n    efficientFixturesDualFlush__st_twoBHKRefOccupancy,\n    efficientFixturesDualFlush__pi_threeBHK,\n    efficientFixturesDualFlush__st_threeBHKRefOccupancy,\n    efficientFixturesDualFlush__st_projectHousekeepingRefOccupancy\n  );\n\n  const currentWaterTable = water__q_currentWaterTable;\n  const residentialLPCD = currentWaterTable.clientBaseCase.residentialDrinking;\n  const clubHouseLPCD = currentWaterTable.clientBaseCase.clubhouseDrinking;\n\n  let chRefOcc = 0;\n  if (efficientFixturesDualFlush__pi_includeClubHouse === 'Yes') {\n    chRefOcc = efficientFixturesDualFlush__st_clubHouseRefOccupancy;\n  }\n\n  const clubHouseOccupancy = occupancy * chRefOcc;\n\n  const waterCommonAreaLandscape =\n    efficientFixturesDualFlush__pi_projectLandscapeArea *\n    efficientFixturesDualFlush__st_waterDailyLandscapeWaterUse;\n\n  const waterCommonAreaCarPark =\n    efficientFixturesDualFlush__pi_projectNoOfCarParks *\n    efficientFixturesDualFlush__st_waterDailyCarWashWaterUse;\n\n  const waterCommonAreaCleaning =\n    efficientFixturesDualFlush__pi_projectAreaOfLobbiesAndCorridors *\n    efficientFixturesDualFlush__st_waterDailyLobbiesAndCorridorsWaterUse;\n\n  const waterSwimmingPool =\n    efficientFixturesDualFlush__pi_projectSwimmingPoolSurfaceArea *\n    efficientFixturesDualFlush__st_waterSwimmingPoolDepth *\n    efficientFixturesDualFlush__st_waterWaterPerCubicMeter *\n    efficientFixturesDualFlush__st_waterSwimmingPoolEvaporationRate;\n\n  const totalDailyWater =\n    totalOccupancy * residentialLPCD +\n    clubHouseOccupancy * clubHouseLPCD +\n    waterCommonAreaLandscape +\n    waterCommonAreaCarPark +\n    waterCommonAreaCleaning +\n    waterSwimmingPool;\n\n  const annualBaselineWaterConsumption =\n    (totalDailyWater * global__st_globalDaysInAYear) /\n    global__st_globalLToKlConverter;\n\n  // Final\n  const efdfCfMitigated =\n    cityEmissionFactor *\n    efdfAnnualWater *\n    efficientFixturesDualFlush__st_globalKg2tonConv;\n\n  const efdfSdgNumber = efficientFixturesDualFlush__st_efSdgNumberForEf;\n\n  const efdfTreesSaved =\n    efdfCfMitigated * efficientFixturesDualFlush__st_globalTreesPerTonCf;\n\n  const efdfPercentTotalWaterConsumption =\n    (efdfAnnualWater * 100) / annualBaselineWaterConsumption;\n\n  return {\n    efdfCfMitigated,\n    efdfSdgNumber,\n    efdfTreesSaved,\n    efdfPercentTotalWaterConsumption,\n  };"
+    },
+    {
+      "id": "efficientFixturesDualFlush__q_flowDiagram",
+      "projectInputs": [],
+      "staticValues": [
+        "global__st_globalDaysInAYear"
+      ],
+      "lookUps": [],
+      "quantities": [
+        "efficientFixturesDualFlush__q_effDailyPreSdPlus",
+        "efficientFixturesDualFlush__q_effDaily"
+      ],
+      "output": "const efdfDailyPreSdPlus = efficientFixturesDualFlush__q_effDailyPreSdPlus;\n  const efdfDaily = efficientFixturesDualFlush__q_effDaily;\n  const efdfAnnualWater =\n    (efdfDailyPreSdPlus - efdfDaily) * global__st_globalDaysInAYear;\n\n  const efdfFlowDiagramDomestic = 0;\n  const efdfFlowDiagramHealthFaucet = 0;\n\n  const efdfFlowDiagramFlushing =\n    efdfAnnualWater / global__st_globalDaysInAYear;\n  const efdfFlowDiagramCommonArea = 0;\n  const efdfFlowDiagramDrinking = 0;\n\n  return {\n    efdfFlowDiagramDomestic,\n    efdfFlowDiagramHealthFaucet,\n\n    efdfFlowDiagramFlushing,\n    efdfFlowDiagramCommonArea,\n    efdfFlowDiagramDrinking,\n  };"
+    },
+    {
+      "id": "efficientFixturesDualFlush__q_secondaryImpact",
+      "projectInputs": [
+        "efficientFixturesDualFlush__pi_projectNoOfFloors",
+        "efficientFixturesDualFlush__pi_projectFloorToFloorHeight"
+      ],
+      "staticValues": [
+        "efficientFixturesDualFlush__st_globalLtoM3converter",
+        "efficientFixturesDualFlush__st_waterPumpFlowRate",
+        "efficientFixturesDualFlush__st_globalAccelerationDueToGravity",
+        "efficientFixturesDualFlush__st_waterSpecificGravity",
+        "efficientFixturesDualFlush__st_globalJoulesToKwConverter",
+        "efficientFixturesDualFlush__st_waterPumpEfficiency",
+        "efficientFixturesDualFlush__st_waterMotorEfficiency",
+        "efficientFixturesDualFlush__st_city",
+        "global__st_globalDaysInAYear"
+      ],
+      "lookUps": [],
+      "quantities": [
+        "efficientFixturesDualFlush__q_efdfDailyPreSdPlus",
+        "efficientFixturesDualFlush__q_efdfDaily"
+      ],
+      "output": "const efdfDailyPreSdPlus = efficientFixturesDualFlush__q_efdfDailyPreSdPlus;\n  const efdfDaily = efficientFixturesDualFlush__q_efdfDaily;\n  const efdfAnnualWater =\n    (efdfDailyPreSdPlus - efdfDaily) * global__st_globalDaysInAYear;\n\n  const timeTakenToPumpWater =\n    (efdfAnnualWater * efficientFixturesDualFlush__st_globalLtoM3converter) /\n    efficientFixturesDualFlush__st_waterPumpFlowRate;\n\n  const buildingHeight =\n    efficientFixturesDualFlush__pi_projectNoOfFloors *\n    efficientFixturesDualFlush__pi_projectFloorToFloorHeight;\n\n  const hydraulicPower =\n    (efficientFixturesDualFlush__st_waterPumpFlowRate *\n      buildingHeight *\n      efficientFixturesDualFlush__st_globalAccelerationDueToGravity *\n      efficientFixturesDualFlush__st_waterSpecificGravity) /\n    efficientFixturesDualFlush__st_globalJoulesToKwConverter;\n\n  const shaftPower =\n    hydraulicPower / efficientFixturesDualFlush__st_waterPumpEfficiency;\n\n  const electricalInput =\n    shaftPower / efficientFixturesDualFlush__st_waterMotorEfficiency;\n  const efdfPassiveEnergykWh = electricalInput * timeTakenToPumpWater;\n\n  const efdfPassiveEnergyOpex = utilities.utility_energyOpex(\n    efdfPassiveEnergykWh,\n    efficientFixturesDualFlush__st_city\n  );\n\n  const passiveEnergykWh = efdfPassiveEnergykWh;\n  const passiveEnergyOpex = efdfPassiveEnergyOpex;\n  const passiveWasteKg = 0;\n  const passiveWasteOpex = 0;\n\n  return {\n    passiveEnergykWh,\n    passiveEnergyOpex,\n    passiveWasteKg,\n    passiveWasteOpex,\n  };"
+    },
+    {
+      "id": "efficientFixturesDualFlush__q_overviewBarGraph",
+      "projectInputs": [],
+      "staticValues": [
+        "global__st_globalDaysInAYear"
+      ],
+      "lookUps": [],
+      "quantities": [
+        "efficientFixturesDualFlush__q_efdfDailyPreSdPlus",
+        "efficientFixturesDualFlush__q_efdfDaily"
+      ],
+      "output": "const efdfDailyPreSdPlus = efficientFixturesDualFlush__q_efdfDailyPreSdPlus;\n  const efdfDaily = efficientFixturesDualFlush__q_efdfDaily;\n  const efdfAnnualWater =\n    (efdfDailyPreSdPlus - efdfDaily) * global__st_globalDaysInAYear;\n\n  const title = 'Dual Flush water usage by category';\n  const totalSavings = efdfAnnualWater;\n\n  const seriesName1 = 'Domestic';\n  const seriesValue1 = 0;\n  const seriesName2 = 'Health Faucet';\n  const seriesValue2 = 0;\n  const seriesName3 = 'Flushing';\n  const seriesValue3 = efdfAnnualWater;\n  const seriesName4 = 'Common Area';\n  const seriesValue4 = 0;\n  const seriesName5 = 'Drinking';\n  const seriesValue5 = 0;\n\n  return {\n    title,\n    totalSavings,\n    series: [\n      {\n        name: seriesName1,\n        value: seriesValue1,\n      },\n      {\n        name: seriesName2,\n        value: seriesValue2,\n      },\n      {\n        name: seriesName3,\n        value: seriesValue3,\n      },\n      {\n        name: seriesName4,\n        value: seriesValue4,\n      },\n      {\n        name: seriesName5,\n        value: seriesValue5,\n      },\n    ],\n  };"
+    },
+    {
+      "id": "efficientFixturesDualFlush__q_overviewDonutGraph",
+      "projectInputs": [
+        "efficientFixturesDualFlush__pi_studio",
+        "efficientFixturesDualFlush__pi_oneBHK",
+        "efficientFixturesDualFlush__pi_twoBHK",
+        "efficientFixturesDualFlush__pi_threeBHK",
+        "efficientFixturesDualFlush__pi_includeClubHouse",
+        "efficientFixturesDualFlush__pi_projectLandscapeArea",
+        "efficientFixturesDualFlush__pi_projectNoOfCarParks",
+        "efficientFixturesDualFlush__pi_projectAreaOfLobbiesAndCorridors",
+        "efficientFixturesDualFlush__pi_projectSwimmingPoolSurfaceArea"
+      ],
+      "staticValues": [
+        "efficientFixturesDualFlush__st_studioRefOccupancy",
+        "efficientFixturesDualFlush__st_oneBHKRefOccupancy",
+        "efficientFixturesDualFlush__st_twoBHKRefOccupancy",
+        "efficientFixturesDualFlush__st_threeBHKRefOccupancy",
+        "efficientFixturesDualFlush__st_projectHousekeepingRefOccupancy",
+        "efficientFixturesDualFlush__st_clubHouseRefOccupancy",
+        "efficientFixturesDualFlush__st_waterDailyLandscapeWaterUse",
+        "efficientFixturesDualFlush__st_waterDailyCarWashWaterUse",
+        "efficientFixturesDualFlush__st_waterDailyLobbiesAndCorridorsWaterUse",
+        "efficientFixturesDualFlush__st_waterSwimmingPoolDepth",
+        "efficientFixturesDualFlush__st_waterWaterPerCubicMeter",
+        "efficientFixturesDualFlush__st_waterSwimmingPoolEvaporationRate",
+        "global__st_globalDaysInAYear",
+        "global__st_globalLToKlConverter"
+      ],
+      "lookUps": [],
+      "quantities": [
+        "water__q_currentWaterTable",
+        "efficientFixturesDualFlush__q_efdfDailyPreSdPlus",
+        "efficientFixturesDualFlush__q_efdfDaily"
+      ],
+      "output": "const efdfDailyPreSdPlus = efficientFixturesDualFlush__q_efdfDailyPreSdPlus;\n  const efdfDaily = efficientFixturesDualFlush__q_efdfDaily;\n  const efdfAnnualWater =\n    (efdfDailyPreSdPlus - efdfDaily) * global__st_globalDaysInAYear;\n\n  // Annual Baseline Water Consumption Starts\n  const occupancy = utilities.utility_efHfOccupancy(\n    efficientFixturesDualFlush__pi_studio,\n    efficientFixturesDualFlush__st_studioRefOccupancy,\n    efficientFixturesDualFlush__pi_oneBHK,\n    efficientFixturesDualFlush__st_oneBHKRefOccupancy,\n    efficientFixturesDualFlush__pi_twoBHK,\n    efficientFixturesDualFlush__st_twoBHKRefOccupancy,\n    efficientFixturesDualFlush__pi_threeBHK,\n    efficientFixturesDualFlush__st_threeBHKRefOccupancy\n  );\n\n  const totalOccupancy = utilities.utility_efHfTotalOccupancy(\n    efficientFixturesDualFlush__pi_studio,\n    efficientFixturesDualFlush__st_studioRefOccupancy,\n    efficientFixturesDualFlush__pi_oneBHK,\n    efficientFixturesDualFlush__st_oneBHKRefOccupancy,\n    efficientFixturesDualFlush__pi_twoBHK,\n    efficientFixturesDualFlush__st_twoBHKRefOccupancy,\n    efficientFixturesDualFlush__pi_threeBHK,\n    efficientFixturesDualFlush__st_threeBHKRefOccupancy,\n    efficientFixturesDualFlush__st_projectHousekeepingRefOccupancy\n  );\n\n  const currentWaterTable = water__q_currentWaterTable;\n  const residentialLPCD = currentWaterTable.clientBaseCase.residentialDrinking;\n  const clubHouseLPCD = currentWaterTable.clientBaseCase.clubhouseDrinking;\n\n  let chRefOcc = 0;\n  if (efficientFixturesDualFlush__pi_includeClubHouse === 'Yes') {\n    chRefOcc = efficientFixturesDualFlush__st_clubHouseRefOccupancy;\n  }\n\n  const clubHouseOccupancy = occupancy * chRefOcc;\n\n  const waterCommonAreaLandscape =\n    efficientFixturesDualFlush__pi_projectLandscapeArea *\n    efficientFixturesDualFlush__st_waterDailyLandscapeWaterUse;\n\n  const waterCommonAreaCarPark =\n    efficientFixturesDualFlush__pi_projectNoOfCarParks *\n    efficientFixturesDualFlush__st_waterDailyCarWashWaterUse;\n\n  const waterCommonAreaCleaning =\n    efficientFixturesDualFlush__pi_projectAreaOfLobbiesAndCorridors *\n    efficientFixturesDualFlush__st_waterDailyLobbiesAndCorridorsWaterUse;\n\n  const waterSwimmingPool =\n    efficientFixturesDualFlush__pi_projectSwimmingPoolSurfaceArea *\n    efficientFixturesDualFlush__st_waterSwimmingPoolDepth *\n    efficientFixturesDualFlush__st_waterWaterPerCubicMeter *\n    efficientFixturesDualFlush__st_waterSwimmingPoolEvaporationRate;\n\n  const totalDailyWater =\n    totalOccupancy * residentialLPCD +\n    clubHouseOccupancy * clubHouseLPCD +\n    waterCommonAreaLandscape +\n    waterCommonAreaCarPark +\n    waterCommonAreaCleaning +\n    waterSwimmingPool;\n\n  const annualBaselineWaterConsumption =\n    (totalDailyWater * global__st_globalDaysInAYear) /\n    global__st_globalLToKlConverter;\n\n  // Annual Baseline Water Consumption Ends\n\n  const donut1Title = '% of Total Water';\n  const donut1Value = (efdfAnnualWater * 100) / annualBaselineWaterConsumption;\n\n  return {\n    donut1Title,\n    donut1Value,\n  };"
+    }
+  ],
+  "types": {
+    "efficientFixturesDualFlush__pi_city": "string",
+    "global__st_globalDaysInAYear": "number",
+    "global__st_globalLToKlConverter": "number",
+    "efficientFixturesDualFlush__pi_projectCategory": "string",
+    "efficientFixturesDualFlush__st_waterFlushingFullWcDaily": "number",
+    "efficientFixturesDualFlush__st_waterFlushingFullWcDuration": "number",
+    "efficientFixturesDualFlush__st_waterFlushingFullWcFlowPreSDPlus": "number",
+    "efficientFixturesDualFlush__st_waterFlushingHalfWcDaily": "number",
+    "efficientFixturesDualFlush__st_waterFlushingHalfWcDuration": "number",
+    "efficientFixturesDualFlush__st_waterFlushingHalfWcFlowPreSDPlus": "number",
+    "efficientFixturesDualFlush__st_waterClubHouseFlushingFullWcDaily": "number",
+    "efficientFixturesDualFlush__st_waterClubHouseFlushingFullWcDuration": "number",
+    "efficientFixturesDualFlush__st_waterClubHouseFlushingHalfWcDaily": "number",
+    "efficientFixturesDualFlush__st_waterClubHouseFlushingHalfWcDuration": "number",
+    "efficientFixturesDualFlush__st_waterClubHouseDomesticFaucetDaily": "number",
+    "efficientFixturesDualFlush__st_waterClubHouseDomesticFaucetDuration": "number",
+    "efficientFixturesDualFlush__st_waterDomesticFaucetFlow": "number",
+    "efficientFixturesDualFlush__st_WaterFlushingFullWcDuration": "number",
+    "efficientFixturesDualFlush__st_WaterFlushingHalfWcDuration": "number",
+    "efficientFixturesDualFlush__st_waterFlushingFullWcFlow": "number",
+    "efficientFixturesDualFlush__st_waterFlushingHalfWcFlow": "number",
+    "efficientFixturesDualFlush__st_includeClubHouse": "string",
+    "efficientFixturesDualFlush__st_efdfClubHouseFlushingFullWc": "number",
+    "efficientFixturesDualFlush__st_waterFlushingFullWcPrice": "number",
+    "efficientFixturesDualFlush__pi_projectStudio": "number",
+    "efficientFixturesDualFlush__pi_project1BHK": "number",
+    "efficientFixturesDualFlush__pi_project2BHK": "number",
+    "efficientFixturesDualFlush__pi_project3BHK": "number",
+    "efficientFixturesDualFlush__pi_project4BHK": "number",
+    "efficientFixturesDualFlush__st_efdfStudioFlushingFullWc": "number",
+    "efficientFixturesDualFlush__st_efdf1BHKFlushingFullWc": "number",
+    "efficientFixturesDualFlush__st_efdf2BHKFlushingFullWc": "number",
+    "efficientFixturesDualFlush__st_efdf3BHKFlushingFullWc": "number",
+    "efficientFixturesDualFlush__st_efdf4BHKFlushingFullWc": "number",
+    "efficientFixturesDualFlush__pi_waterFlushingFullWcPricePreSdPlus": "number",
+    "efficientFixturesDualFlush__st_efdfClubHouseFlushingFullWC": "number",
+    "efficientFixturesDualFlush__pi_waterFlushingFullWCPricePreSdPlus": "number",
+    "efficientFixturesDualFlush__pi_project1Bhk": "number",
+    "efficientFixturesDualFlush__pi_project2Bhk": "number",
+    "efficientFixturesDualFlush__pi_project3Bhk": "number",
+    "efficientFixturesDualFlush__pi_project4Bhk": "number",
+    "efficientFixturesDualFlush__st_effStudioDomesticFaucet": "number",
+    "efficientFixturesDualFlush__st_eff1BhkDomesticFaucet": "number",
+    "efficientFixturesDualFlush__st_eff2BhkDomesticFaucet": "number",
+    "efficientFixturesDualFlush__st_eff3BhkDomesticFaucet": "number",
+    "efficientFixturesDualFlush__st_eff4BhkDomesticFaucet": "number",
+    "efficientFixturesDualFlush__pi_includeClubHouse": "string",
+    "efficientFixturesDualFlush__st_effClubHouseDomesticFaucet": "number",
+    "efficientFixturesDualFlush__st_waterNbcBaseCaseFaucetPrice": "number",
+    "efficientFixturesDualFlush__st_igbc1BhkRefOccupancy": "number",
+    "efficientFixturesDualFlush__st_igbc2BhkRefOccupancy": "number",
+    "efficientFixturesDualFlush__st_igbc3BhkRefOccupancy": "number",
+    "efficientFixturesDualFlush__st_igbc4BhkRefOccupancy": "number",
+    "efficientFixturesDualFlush__pi_projectVilla1Bhk": "number",
+    "efficientFixturesDualFlush__pi_projectVilla2Bhk": "number",
+    "efficientFixturesDualFlush__pi_projectVilla3Bhk": "number",
+    "efficientFixturesDualFlush__pi_projectVilla4Bhk": "number",
+    "occupancy__pi_villaStudio": "number",
+    "occupancy__pi_villaOneBHK": "number",
+    "occupancy__pi_villaTwoBHK": "number",
+    "occupancy__pi_villaThreeBHK": "number",
+    "occupancy__pi_villaFourBHK": "number",
+    "occupancy__st_studioRefOccupancy": "number",
+    "occupancy__st_villaOneBHKRefOccupancy": "number",
+    "occupancy__st_villaTwoBHKRefOccupancy": "number",
+    "occupancy__st_villaThreeBHKRefOccupancy": "number",
+    "occupancy__st_villaFourBHKRefOccupancy": "number",
+    "efficientFixturesDualFlush__st_projectHousekeepingRefOccupancy": "number",
+    "efficientFixturesDualFlush__st_igbcStudioRefOccupancy": "number",
+    "efficientFixturesDualFlush__st_projectStudioRefOccupancy": "number",
+    "efficientFixturesDualFlush__st_project1BhkRefOccupancy": "number",
+    "efficientFixturesDualFlush__st_project2BhkRefOccupancy": "number",
+    "efficientFixturesDualFlush__st_project3BhkRefOccupancy": "number",
+    "efficientFixturesDualFlush__st_project4BhkRefOccupancy": "number",
+    "occupancy__pi_penthouseStudio": "number",
+    "occupancy__pi_penthouseOneBHK": "number",
+    "occupancy__pi_penthouseTwoBHK": "number",
+    "occupancy__pi_penthouseThreeBHK": "number",
+    "occupancy__pi_penthouseFourBHK": "number",
+    "occupancy__st_penthouseOneBHKRefOccupancy": "number",
+    "occupancy__st_penthouseTwoBHKRefOccupancy": "number",
+    "occupancy__st_penthouseThreeBHKRefOccupancy": "number",
+    "occupancy__st_penthouseFourBHKRefOccupancy": "number",
+    "occupancy__pi_studio": "number",
+    "occupancy__pi_oneBHK": "number",
+    "occupancy__pi_twoBHK": "number",
+    "occupancy__pi_threeBHK": "number",
+    "occupancy__pi_fourBHK": "number",
+    "occupancy__st_oneBHKRefOccupancy": "number",
+    "occupancy__st_twoBHKRefOccupancy": "number",
+    "occupancy__st_threeBHKRefOccupancy": "number",
+    "occupancy__st_fourBHKRefOccupancy": "number",
+    "efficientFixturesDualFlush__st_clubHouseRefOccupancy": "number",
+    "efficientFixturesDualFlush__pi_projectPhStudio": "number",
+    "efficientFixturesDualFlush__pi_projectPh1Bhk": "number",
+    "efficientFixturesDualFlush__pi_projectPh2Bhk": "number",
+    "efficientFixturesDualFlush__pi_projectPh3Bhk": "number",
+    "efficientFixturesDualFlush__pi_projectPh4Bhk": "number",
+    "efficientFixturesDualFlush__st_igbcDomesticShowerDaily": "number",
+    "efficientFixturesDualFlush__st_igbcDomesticShowerDuration": "number",
+    "efficientFixturesDualFlush__st_igbcDomesticShowerFlowPreSDPlus": "number",
+    "efficientFixturesDualFlush__st_waterDomesticShowerDaily": "number",
+    "efficientFixturesDualFlush__st_waterDomesticShowerDuration": "number",
+    "efficientFixturesDualFlush__st_globalDaysInAYear": "number",
+    "efficientFixturesDualFlush__st_globalKg2tonConv": "number",
+    "efficientFixturesDualFlush__st_efSdgNumberForEf": "number",
+    "efficientFixturesDualFlush__st_globalTreesPerTonCf": "number",
+    "efficientFixturesDualFlush__pi_studio": "number",
+    "efficientFixturesDualFlush__st_studioRefOccupancy": "number",
+    "efficientFixturesDualFlush__pi_oneBHK": "number",
+    "efficientFixturesDualFlush__st_oneBHKRefOccupancy": "number",
+    "efficientFixturesDualFlush__pi_twoBHK": "number",
+    "efficientFixturesDualFlush__st_twoBHKRefOccupancy": "number",
+    "efficientFixturesDualFlush__pi_threeBHK": "number",
+    "efficientFixturesDualFlush__st_threeBHKRefOccupancy": "number",
+    "efficientFixturesDualFlush__pi_projectLandscapeArea": "number",
+    "efficientFixturesDualFlush__st_waterDailyLandscapeWaterUse": "number",
+    "efficientFixturesDualFlush__pi_projectNoOfCarParks": "number",
+    "efficientFixturesDualFlush__st_waterDailyCarWashWaterUse": "number",
+    "efficientFixturesDualFlush__pi_projectSwimmingPoolSurfaceArea": "number",
+    "efficientFixturesDualFlush__st_waterSwimmingPoolDepth": "number",
+    "efficientFixturesDualFlush__st_waterWaterPerCubicMeter": "number",
+    "efficientFixturesDualFlush__st_waterSwimmingPoolEvaporationRate": "number",
+    "efficientFixturesDualFlush__pi_projectAreaOfLobbiesAndCorridors": "number",
+    "efficientFixturesDualFlush__st_waterDailyLobbiesAndCorridorsWaterUse": "number",
+    "efficientFixturesDualFlush__st_globalLtoM3converter": "number",
+    "efficientFixturesDualFlush__st_waterPumpFlowRate": "number",
+    "efficientFixturesDualFlush__pi_projectNoOfFloors": "number",
+    "efficientFixturesDualFlush__pi_projectFloorToFloorHeight": "number",
+    "efficientFixturesDualFlush__st_globalAccelerationDueToGravity": "number",
+    "efficientFixturesDualFlush__st_waterSpecificGravity": "number",
+    "efficientFixturesDualFlush__st_globalJoulesToKwConverter": "number",
+    "efficientFixturesDualFlush__st_waterPumpEfficiency": "number",
+    "efficientFixturesDualFlush__st_waterMotorEfficiency": "number",
+    "efficientFixturesDualFlush__st_city": "string"
+  }
+}

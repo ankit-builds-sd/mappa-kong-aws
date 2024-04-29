@@ -1,0 +1,190 @@
+{
+  "namespace": "hwmPenthouse",
+  "extends": [
+    "../occupancy",
+    "../hwm",
+    "../project",
+    "../global"
+  ],
+  "quantities": [
+    {
+      "id": "hwmPenthouse__q_outcomes",
+      "projectInputs": [
+        "hwmPenthouse__pi_swhType",
+        "hwmPenthouse__pi_swhVariant",
+        "hwmPenthouse__pi_hpType",
+        "hwmPenthouse__pi_option",
+        "hwmPenthouse__pi_hpHeatingSpeed",
+        "project__pi_city",
+        "project__pi_floorHeight",
+        "project__pi_numberOfFloors",
+        "hwmPenthouse__pi_userSwhCapacity",
+        "hwmPenthouse__pi_userHpCapacity",
+        "hwmPenthouse__pi_selectedProductIdentifier"
+      ],
+      "staticValues": [
+        "hwm__st_slowHeatingTime",
+        "hwm__st_fastHeatingTime",
+        "hwm__st_defaultHeatingTime",
+        "hwm__st_initialTemp",
+        "hwm__st_conversionFactor",
+        "global__st_hoursInDay",
+        "hwm__st_heatLossCoeff",
+        "hwm__st_supRet",
+        "hwm__st_numberOfShafts",
+        "hwm__st_hzPipe",
+        "hwm__st_outletTempSwimmingPool",
+        "hwm__st_outletTempOther"
+      ],
+      "lookUps": [],
+      "quantities": [
+        "hwmPenthouse__q_technologySelection",
+        "hwmPenthouse__q_outcomesPreSdPlus",
+        "hwmPenthouse__q_hwmDemand"
+      ],
+      "output": "let defaultProductIdentifier: string;\n  let theProduct: any;\n  let defaultOrSelectedProduct: any;\n  let numberOfProducts: number;\n  let hwmPenthouseSwhCapacity: number;\n  let hwmPenthouseHpDefaultCapacity: number;\n  let hwmPenthouseHpCapacity: number;\n  let hwmPenthouseSwhDefaultCapacity: number;\n  let hwmPenthouseEnergyAnnual: any;\n  let hwmPenthouseCapexPostSdPlus: any;\n  let hwmPenthouseCapex: number;\n  let hwmPenthouseOpex: number;\n  let hwmPenthouseAreaRequired: number;\n  let numberOfDomesticHp: number;\n  let selectedProductPrice: number; //change it once marketplace integrated\n  let selectedProductCapacity: number; //chnage it once marketplace integrated\n  let selectedProductRatedInputPower: number; //change it once marketplace integrated\n  let numberOfHp: number = 10; //not present in algo\n  let pipeLengthDomestic: number = 10; //not there in algo\n  let hpProductResolver;\n  let time = utilities.utility_hwmHpTimeCalculator(\n    hwmPenthouse__pi_hpHeatingSpeed,\n    hwm__st_slowHeatingTime,\n    hwm__st_fastHeatingTime,\n    hwm__st_defaultHeatingTime\n  );\n  if (\n    hwmPenthouse__pi_option === 'solar water heater' &&\n    hwmPenthouse__pi_swhType === 'individual'\n  ) {\n    defaultProductIdentifier = utilities.utility_swhProductResolver(\n      hwmPenthouse__pi_swhType,\n      hwmPenthouse__pi_swhVariant,\n      hwmPenthouse__q_technologySelection.defaultSwhIndividualCapacity,\n      'HWM_Penthouse'\n    );\n    theProduct = utilities.utility_defaultOrSelectedProduct(\n      defaultProductIdentifier,\n      hwmPenthouse__pi_selectedProductIdentifier\n    );\n    selectedProductPrice = utilities.utility_numberFromString(theProduct.price);\n    selectedProductCapacity = utilities.utility_numberFromString(\n      theProduct.filters['Capacity '][0]\n    );\n    hwmPenthouseSwhDefaultCapacity =\n      hwmPenthouse__q_technologySelection.defaultSwhIndividualCapacity;\n    hwmPenthouseSwhDefaultCapacity = utilities.utility_userOrDefaultValue(\n      hwmPenthouseSwhDefaultCapacity,\n      hwmPenthouse__pi_userSwhCapacity\n    );\n    numberOfProducts = hwmPenthouse__q_hwmDemand.hotWaterDu;\n\n    hwmPenthouseEnergyAnnual = utilities.utility_swhEnergySavings(\n      hwmPenthouse__pi_swhType,\n      hwmPenthouse__q_technologySelection.defaultSwhIndividualCapacity,\n      numberOfProducts\n    );\n    hwmPenthouseCapexPostSdPlus = utilities.utility_swhCapex(\n      hwmPenthouse__pi_swhType,\n      hwmPenthouse__q_technologySelection.defaultSwhIndividualCapacity,\n      selectedProductPrice,\n      selectedProductCapacity,\n      numberOfProducts\n    );\n    hwmPenthouseCapex =\n      hwmPenthouseCapexPostSdPlus -\n      hwmPenthouse__q_outcomesPreSdPlus.hwmCapexPreSdPlus;\n    hwmPenthouseOpex = utilities.utility_energyOpex(\n      hwmPenthouseEnergyAnnual,\n      project__pi_city\n    ); //the correct value not present in the algo\n    hwmPenthouseAreaRequired =\n      hwmPenthouse__q_technologySelection.swhAreaRequired;\n  } else if (\n    hwmPenthouse__pi_option === 'heat pump' &&\n    hwmPenthouse__pi_hpType === 'domestic'\n  ) {\n    const outletTemp = utilities.utility_hwmOutletTemp(\n      hwmPenthouse__pi_hpType,\n      hwm__st_outletTempSwimmingPool,\n      hwm__st_outletTempOther\n    );\n    hpProductResolver = utilities.utility_hpProductresolver(\n      hwmPenthouse__pi_hpType,\n      hwmPenthouse__q_technologySelection.defaultHpDomesticCapacity,\n      time,\n      project__pi_floorHeight,\n      project__pi_numberOfFloors,\n      outletTemp,\n      hwm__st_initialTemp,\n      hwm__st_conversionFactor,\n      global__st_hoursInDay,\n      hwm__st_heatLossCoeff,\n      hwm__st_supRet,\n      hwm__st_numberOfShafts,\n      hwm__st_hzPipe,\n      'HWM_Penthouse'\n    );\n    theProduct = utilities.utility_defaultOrSelectedProduct(\n      hpProductResolver.defaultProductIdentifier,\n      hwmPenthouse__pi_selectedProductIdentifier\n    );\n    selectedProductPrice = utilities.utility_numberFromString(theProduct.price);\n    selectedProductRatedInputPower = utilities.utility_numberFromObject(\n      theProduct.properties,\n      'Rated Input Power (kW)'\n    );\n    numberOfProducts = hwmPenthouse__q_hwmDemand.hotWaterDu;\n    hwmPenthouseHpDefaultCapacity =\n      hwmPenthouse__q_technologySelection.defaultHpDomesticCapacity;\n    hwmPenthouseHpDefaultCapacity = utilities.utility_userOrDefaultValue(\n      hwmPenthouseHpDefaultCapacity,\n      hwmPenthouse__pi_userHpCapacity\n    );\n    hwmPenthouseEnergyAnnual = utilities.utility_hpEnergySavings(\n      hwmPenthouse__pi_hpType,\n      hwmPenthouse__q_technologySelection.defaultHpDomesticCapacity,\n      selectedProductRatedInputPower,\n      numberOfProducts,\n      time\n    );\n    hwmPenthouseCapexPostSdPlus = utilities.utility_hpCapex(\n      hwmPenthouse__pi_hpType,\n      hwmPenthouse__q_technologySelection.defaultHpDomesticCapacity,\n      numberOfProducts,\n      selectedProductPrice,\n      selectedProductRatedInputPower,\n      pipeLengthDomestic\n    );\n    hwmPenthouseCapex =\n      hwmPenthouseCapexPostSdPlus -\n      hwmPenthouse__q_outcomesPreSdPlus.hwmCapexPreSdPlus;\n    hwmPenthouseOpex = utilities.utility_energyOpex(\n      hwmPenthouseEnergyAnnual,\n      project__pi_city\n    );\n    hwmPenthouseAreaRequired =\n      hwmPenthouse__q_technologySelection.hpAreaRequired;\n  }\n  return {\n    defaultOrSelectedProduct: theProduct,\n    hwmPenthouseSwhDefaultCapacity,\n    hwmPenthouseHpDefaultCapacity,\n    hwmPenthouseEnergyAnnual,\n    hwmPenthouseCapexPostSdPlus,\n    hwmPenthouseCapex,\n    hwmPenthouseOpex,\n    hwmPenthouseAreaRequired,\n    numberOfProducts,\n  };"
+    },
+    {
+      "id": "hwmPenthouse__q_hwmDemand",
+      "projectInputs": [
+        "hwmPenthouse__pi_demandAssumptionType",
+        "hwmPenthouse__pi_demandAssumption",
+        "hwmPenthouse__pi_lpdPerPenthouse",
+        "hwmPenthouse__pi_demandByBathType"
+      ],
+      "staticValues": [
+        "occupancy__st_singleBedroomOccupants"
+      ],
+      "lookUps": [],
+      "quantities": [
+        "occupancy__q_occupancyPenthouse",
+        "occupancy__q_numberOfDwellingUnitsPenthouse"
+      ],
+      "output": "let hotWaterPerOccupant = null,\n    hotWaterOccupants = null,\n    hotWaterDu = null,\n    hwmDemand = null;\n  if (hwmPenthouse__pi_demandAssumptionType === 'lpcd per occupant') {\n    hotWaterPerOccupant = hwmPenthouse__pi_demandAssumption;\n  } else if (\n    hwmPenthouse__pi_demandAssumptionType ===\n    'link to installed efficient fixtures'\n  ) {\n    hotWaterPerOccupant = -1;\n  } else if (hwmPenthouse__pi_demandAssumptionType === 'lpd per penthouse') {\n    hotWaterPerOccupant = hwmPenthouse__pi_lpdPerPenthouse;\n  }\n\n  hotWaterDu = occupancy__q_numberOfDwellingUnitsPenthouse;\n  if (hwmPenthouse__pi_demandByBathType === 'all baths') {\n    hotWaterOccupants = occupancy__q_occupancyPenthouse;\n  } else if (hwmPenthouse__pi_demandByBathType === 'single bath') {\n    hotWaterOccupants =\n      occupancy__q_numberOfDwellingUnitsPenthouse *\n      occupancy__st_singleBedroomOccupants;\n  } else if (hwmPenthouse__pi_demandByBathType === 'remaining baths') {\n    hotWaterOccupants =\n      occupancy__q_occupancyPenthouse -\n      occupancy__q_numberOfDwellingUnitsPenthouse *\n        occupancy__st_singleBedroomOccupants;\n  } else if (hwmPenthouse__pi_demandAssumptionType === 'lpd per penthouse') {\n    hotWaterOccupants = occupancy__q_numberOfDwellingUnitsPenthouse;\n  }\n  hwmDemand =\n    utilities.roundTo100(hotWaterPerOccupant * hotWaterOccupants) /\n    occupancy__q_numberOfDwellingUnitsPenthouse;\n  return { hwmDemand, hotWaterOccupants, hotWaterDu };"
+    },
+    {
+      "id": "hwmPenthouse__q_technologySelection",
+      "projectInputs": [
+        "hwm__pi_availablePenthouseRooftop"
+      ],
+      "staticValues": [
+        "hwm__st_rooftopPerSwh",
+        "hwm__st_rooftopPerHp"
+      ],
+      "lookUps": [],
+      "quantities": [
+        "hwmPenthouse__q_hwmDemand"
+      ],
+      "output": "let swhAreaRequired = hwmPenthouse__q_hwmDemand * hwm__st_rooftopPerSwh;\n  let hpAreaRequired = hwmPenthouse__q_hwmDemand * hwm__st_rooftopPerSwh;\n  let defaultHpDomesticCapacity;\n  let defaultSwhIndividualCapacity;\n  if (hwm__pi_availablePenthouseRooftop > swhAreaRequired) {\n    defaultSwhIndividualCapacity = utilities.roundTo100(\n      hwmPenthouse__q_hwmDemand\n    );\n  } else {\n    swhAreaRequired = hwm__pi_availablePenthouseRooftop;\n    defaultSwhIndividualCapacity =\n      utilities.roundTo100(hwm__pi_availablePenthouseRooftop) /\n      hwm__st_rooftopPerSwh;\n  }\n  if (hwm__pi_availablePenthouseRooftop > hpAreaRequired) {\n    defaultHpDomesticCapacity = utilities.roundTo100(hwmPenthouse__q_hwmDemand);\n  } else {\n    hpAreaRequired = hwm__pi_availablePenthouseRooftop;\n    defaultHpDomesticCapacity =\n      utilities.roundTo100(hwm__pi_availablePenthouseRooftop) /\n      hwm__st_rooftopPerHp;\n  }\n\n  return {\n    defaultSwhIndividualCapacity,\n    swhAreaRequired,\n    defaultHpDomesticCapacity,\n    hpAreaRequired,\n  };"
+    },
+    {
+      "id": "hwmPenthouse__q_outcomesPreSdPlus",
+      "projectInputs": [],
+      "staticValues": [
+        "hwm__st_baseCasePerLPDkWh",
+        "hwm__st_swhCapexMultiplier",
+        "hwm__st_baseCasePenthouseSwhCapacity"
+      ],
+      "lookUps": [],
+      "quantities": [],
+      "output": "let hwmPenthouseEnergyAnnualPreSdPlus =\nhwm__st_baseCasePenthouseSwhCapacity * hwm__st_baseCasePerLPDkWh;\nlet hwmCapexPreSdPlus =\nhwm__st_baseCasePenthouseSwhCapacity * hwm__st_swhCapexMultiplier;\nreturn {\nhwmPenthouseEnergyAnnualPreSdPlus,\nhwmCapexPreSdPlus,\n};"
+    },
+    {
+      "id": "hwmPenthouse__q_projectLevelInsights",
+      "projectInputs": [
+        "project__pi_city"
+      ],
+      "staticValues": [
+        "global__st_convertKgToTon",
+        "global__st_treesPerTonCF",
+        "hwm__st_sdgNumberForHwm"
+      ],
+      "lookUps": [],
+      "quantities": [
+        "hwmPenthouse__q_outcomes"
+      ],
+      "output": "let cfMitigated = null;\nlet sdgNumber = null;\nlet treesSaved = null;\nlet totalEnergyConsumptionPercentage = null;\nlet residentialHotWaterEnergyConsumption = null;\ncfMitigated =\n1.6 *\nhwmPenthouse__q_outcomes.hwmPenthouseEnergyAnnual *\nglobal__st_convertKgToTon;\nsdgNumber = hwm__st_sdgNumberForHwm;\ntreesSaved = cfMitigated * global__st_treesPerTonCF;\ntotalEnergyConsumptionPercentage =\n(hwmPenthouse__q_outcomes.hwmPenthouseEnergyAnnual * 100) / 200;\nresidentialHotWaterEnergyConsumption =\n(hwmPenthouse__q_outcomes.hwmPenthouseEnergyAnnual * 100) / 300;\nreturn {\ncfMitigated,\nsdgNumber,\ntreesSaved,\ntotalEnergyConsumptionPercentage,\nresidentialHotWaterEnergyConsumption,\n};"
+    },
+    {
+      "id": "hwmPenthouse__q_flowDiagram",
+      "projectInputs": [],
+      "staticValues": [
+        "global__st_daysInYear"
+      ],
+      "lookUps": [],
+      "quantities": [
+        "hwmPenthouse__q_outcomes"
+      ],
+      "output": "let residentialHotWater = null;\nlet residentialLighting = 0;\nlet residentialFan = 0;\nlet homeAppliances = 0;\nlet residentialHvac = 0;\nlet commonArea = 0;\nresidentialHotWater =\nhwmPenthouse__q_outcomes.hwmPenthouseEnergyAnnual / global__st_daysInYear;\nreturn {\nresidentialHotWater,\nresidentialLighting,\nresidentialFan,\nhomeAppliances,\nresidentialHvac,\ncommonArea,\n};"
+    },
+    {
+      "id": "hwmPenthouse__q_secondaryImpact",
+      "projectInputs": [],
+      "staticValues": [],
+      "lookUps": [],
+      "quantities": [],
+      "output": "let passiveWaterKL = 0;\nlet passiveWaterOpex = 0;\nlet passiveWasteKg = 0;\nlet passiveWasteOpex = 0;\nreturn { passiveWaterKL, passiveWaterOpex, passiveWasteKg, passiveWasteOpex };"
+    },
+    {
+      "id": "hwmPenthouse__q_goalMonitoring",
+      "projectInputs": [],
+      "staticValues": [],
+      "lookUps": [],
+      "quantities": [
+        "hwmPenthouse__q_outcomes"
+      ],
+      "output": "let energyGoal = null;\nlet contribution = null;\nenergyGoal = 100;\ncontribution =\n(hwmPenthouse__q_outcomes.hwmPenthouseEnergyAnnual * 100) / 200;\nreturn { energyGoal, contribution };"
+    },
+    {
+      "id": "hwmPenthouse__q_overviewBarGraph",
+      "projectInputs": [],
+      "staticValues": [
+        "hwmPenthouse__st_minValue"
+      ],
+      "lookUps": [],
+      "quantities": [
+        "hwmPenthouse__q_flowDiagram",
+        "hwmPenthouse__q_outcomes"
+      ],
+      "output": "let barOneTitle = 'Annual Energy Savings';\nlet barOneValue = hwmPenthouse__q_outcomes.hwmPenthouseEnergyAnnual;\nlet barOneMax = hwmPenthouse__q_outcomes.hwmPenthouseEnergyAnnual;\nlet barOneMin = hwmPenthouse__st_minValue;\nlet barTwoSubOneTitle = 'Residential Hot Water';\nlet barTwoValue = hwmPenthouse__q_flowDiagram.residentialHotWater;\nlet barTwoSubOneTitlePercentage = (barTwoValue * 100) / barOneValue;\nreturn {\nbarOneTitle,\nbarOneValue,\nbarOneMax,\nbarOneMin,\nbarTwoSubOneTitle,\nbarTwoValue,\nbarTwoSubOneTitlePercentage,\n};"
+    },
+    {
+      "id": "hwmPenthouse__q_overviewDonutGraph",
+      "projectInputs": [],
+      "staticValues": [],
+      "lookUps": [],
+      "quantities": [
+        "hwmPenthouse__q_outcomes"
+      ],
+      "output": "let donutOneTitle = '% of Total Energy';\nlet donutOneValue =\n(hwmPenthouse__q_outcomes.hwmPenthouseEnergyAnnual * 100) / 200;\nlet donutTwoTitle = '% of Residential Hot Water';\nlet donutTwoValue =\n(hwmPenthouse__q_outcomes.hwmPenthouseEnergyAnnual * 100) / 300;\nreturn {\ndonutOneTitle,\ndonutOneValue,\ndonutTwoTitle,\ndonutTwoValue,\n};"
+    }
+  ],
+  "types": {
+    "hwmPenthouse__pi_swhType": "SwhType",
+    "hwmPenthouse__pi_hpType": "HpType",
+    "hwmPenthouse__pi_option": "HwmOption",
+    "hwmPenthouse__q_timeCalculator": "number",
+    "hwm__pi_hpHeatingSpeed": "HwmHpHeatingSpeed",
+    "hwm__st_slowHeatingTime": "number",
+    "hwm__st_fastHeatingTime": "number",
+    "hwm__st_defaultHeatingTime": "number",
+    "project__pi_city": "string",
+    "hwm__pi_swhType": "SwhType",
+    "hwm__pi_hpType": "HpType",
+    "hwm__pi_option": "HwmOption",
+    "hwm__pi_swhVariant": "SwhVariant",
+    "project__pi_floorHeight": "number",
+    "project__pi_numberOfFloors": "number",
+    "hwmPenthouse__pi_selectedProductIdentifier": "string",
+    "hwm__st_initialTemp": "number",
+    "hwm__st_conversionFactor": "number",
+    "global__st_hoursInDay": "number",
+    "hwm__st_heatLossCoeff": "number",
+    "hwm__st_supRet": "number",
+    "hwm__st_numberOfShafts": "number",
+    "hwm__st_hzPipe": "number",
+    "hwm__q_outletTemp": "number",
+    "hwm__st_outletTempSwimmingPool": "number",
+    "hwm__st_outletTempOther": "number"
+  }
+}

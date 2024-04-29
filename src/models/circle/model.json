@@ -1,0 +1,24 @@
+{
+  "namespace": "circle",
+  "quantities": [
+    {
+      "id": "circle__q_area",
+      "staticValues": ["circle__st_rad"],
+      "output": "return Math.PI * circle__st_rad * circle__st_rad"
+    },
+    {
+      "id": "circle__q_areaOfSector",
+      "staticValues": ["circle__st_rad", "circle__st_theta"],
+      "output": "return Math.PI * circle__st_rad * circle__st_rad * (circle__st_theta/360)"
+    },
+    {
+      "id": "circle__q_test",
+      "quantities": ["circle__q_area"],
+      "output": "return circle__q_area;"
+    }
+  ],
+  "types": {
+    "circle__st_rad": "number",
+    "circle__st_theta": "number"
+  }
+}

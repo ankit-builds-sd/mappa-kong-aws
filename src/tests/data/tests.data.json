@@ -1,0 +1,83 @@
+[
+  {
+    "Generate q_project_capex, q_solarwh_capex & q_solarpv_capex": {
+      "inputs": {
+        "projectInputs": {
+          "totalNumberOfApartments": 10,
+          "numberOfFloors": 5
+        },
+        "staticValues": {
+          "occupancyFactor": 4
+        }
+      },
+      "quantityNames": [
+        "q_project_capex",
+        "q_solarwh_capex",
+        "q_solarpv_capex"
+      ],
+      "outputs": [
+        {
+          "q_project_capex": 60
+        },
+        {
+          "q_solarwh_capex": 20
+        },
+        {
+          "q_solarpv_capex": 40
+        }
+      ]
+    }
+  },
+  {
+    "Generate q_occupancy": {
+      "inputs": {
+        "projectInputs": {
+          "studio": 0,
+          "oneBHK": 159,
+          "twoBHK": 608,
+          "threeBHK": 518,
+          "fourBHK": 0
+        },
+        "staticValues": {
+          "studioRefOccupancy": 2,
+          "oneBHKRefOccupancy": 2,
+          "twoBHKRefOccupancy": 5,
+          "threeBHKRefOccupancy": 6,
+          "fourBHKRefOccupancy": 7
+        }
+      },
+      "quantityNames": ["q_occupancy"],
+      "outputs": [
+        {
+          "q_occupancy": 6466
+        }
+      ]
+    }
+  },
+  {
+    "Generate q_noOfApartments": {
+      "inputs": {
+        "projectInputs": {},
+        "staticValues": {
+          "clubHouseRefOccupancy": 0.1,
+          "studio": 0,
+          "studioRefOccupancy": 2,
+          "oneBHK": 159,
+          "oneBHKRefOccupancy": 2,
+          "twoBHK": 608,
+          "twoBHKRefOccupancy": 5,
+          "threeBHK": 518,
+          "threeBHKRefOccupancy": 6,
+          "fourBHK": 0,
+          "fourBHKRefOccupancy": 7
+        }
+      },
+      "quantityNames": ["q_noOfApartments"],
+      "outputs": [
+        {
+          "q_noOfApartments": 1285
+        }
+      ]
+    }
+  }
+]

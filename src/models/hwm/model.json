@@ -1,0 +1,37 @@
+{
+  "namespace": "hwm",
+  "quantities": [
+    {
+      "id": "hwm__q_noop",
+      "projectInputs": [],
+      "staticValues": [
+        "hwm__st_rooftopPerSwh",
+        "hwm__st_rooftopPerHp",
+        "hwm__st_outletTemp",
+        "hwm__st_inletTemp",
+        "hwm__st_converstionFactor",
+        "hwm__st_heatLossCoeff",
+        "hwm__st_supRet",
+        "hwm__st_numberOfShafts",
+        "hwm__st_hzPipe",
+        "hwm__st_baseCasePerLPDkWh",
+        "hwm__st_swhCapexMultiplier",
+        "hwm__st_baseCaseVillaSwhCapacity",
+        "hwm__st_sdgNumberForHwm"
+      ],
+      "lookUps": [],
+      "quantities": [],
+      "output": "return null;"
+    }
+  ],
+  "types": {
+    "hwm__pi_hpHeatingSpeed": "HwmHpHeatingSpeed",
+    "hwm__pi_availableVillaRooftop": "number",
+    "hwm__pi_availablePenthouseRooftop": "number",
+    "hwm__pi_option": "HwmOption",
+    "hwm__pi_swhType": "SwhType",
+    "hwm__pi_hpType": "HpType",
+    "hwm__st_outletTempSwimmingPool": "number",
+    "hwm__st_outletTempOther": "number"
+  }
+}

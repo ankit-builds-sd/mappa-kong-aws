@@ -1,0 +1,47 @@
+{
+  "namespace": "project",
+  "quantities": [
+    {
+      "id": "project__q_availableRooftop",
+      "projectInputs": [
+        "project__pi_rooftopArea",
+        "project__pi_unavailableRooftopArea"
+      ],
+      "output": "return null;"
+    },
+    {
+      "id": "project__q_noop",
+      "projectInputs": [
+        "project__pi_city",
+        "project__pi_swimmingPool",
+        "project__pi_numberOfFloors",
+        "project__pi_floorHeight",
+        "project__pi_landscapeArea",
+        "project__pi_noOfCarParks",
+        "project__pi_areaOfLobbiesAndCorridors",
+        "project__pi_swimmingPoolSurfaceArea",
+        "project__pi_availableVillaRooftop",
+        "project__pi_availablePenthouseRooftop",
+        "project__pi_floorToFloorHeight"
+      ],
+      "staticValues": [],
+      "lookUps": [],
+      "quantities": [],
+      "output": "return null;"
+    }
+  ],
+  "types": {
+    "project__pi_unavailableRooftopArea": "number",
+    "project__pi_rooftopArea": "number",
+    "project__pi_city": "string",
+    "project__pi_swimmingPool": "number",
+    "project__pi_numberOfFloors": "number",
+    "project__pi_floorHeight": "number",
+    "project__pi_landscapeArea": "number",
+    "project__pi_noOfCarParks": "number",
+    "project__pi_areaOfLobbiesAndCorridors": "number",
+    "project__pi_swimmingPoolSurfaceArea": "number",
+    "project__pi_availableVillaRooftop": "number",
+    "project__pi_availablePenthouseRooftop": "number"
+  }
+}

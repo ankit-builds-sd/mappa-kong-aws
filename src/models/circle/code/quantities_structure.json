@@ -1,0 +1,19 @@
+{
+  "quantities": [
+    {
+      "id": "circle__q_area",
+      "arguments": "circle__st_rad:number",
+      "body": "return Math.PI * circle__st_rad * circle__st_rad"
+    },
+    {
+      "id": "circle__q_areaOfSector",
+      "arguments": "circle__st_rad:number,circle__st_theta:number",
+      "body": "return Math.PI * circle__st_rad * circle__st_rad * (circle__st_theta/360)"
+    },
+    {
+      "id": "circle__q_test",
+      "arguments": "circle__q_area",
+      "body": "return circle__q_area;"
+    }
+  ]
+}
