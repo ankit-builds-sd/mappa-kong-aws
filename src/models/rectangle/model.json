@@ -48,6 +48,14 @@
       "lookUps": [],
       "quantities": [],
       "output": "if (typeof rectangle__pi_t1 === 'number' && rectangle__st_t1 === 'central') {\nreturn 1;\n} else if (\ntypeof rectangle__pi_t1 === 'string' &&\nrectangle__st_t1 === 'individual'\n) {\nreturn 2;\n}"
+    },
+    {
+      "id": "rectangle__q_tAws",
+      "projectInputs": ["rectangle__pi_tAws"],
+      "staticValues": ["rectangle__st_tAws"],
+      "lookUps": [],
+      "quantities": [],
+      "output": "if (typeof rectangle__pi_tAws === 'number' && rectangle__st_tAws === 'central') {\nreturn 1;\n} else if (\ntypeof rectangle__pi_tAws === 'string' &&\nrectangle__st_tAws === 'individual'\n) {\nreturn 2;\n}"
     }
   ],
   "types": {
