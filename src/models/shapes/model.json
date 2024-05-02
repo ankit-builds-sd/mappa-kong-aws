@@ -1,17 +1,9 @@
 {
   "namespace": "shapes",
-  "extends": [
-    "../circle",
-    "../rectangle"
-  ],
+  "extends": ["../circle", "../rectangle"],
   "lookUpRelations": {
-    "lk_dryWasteContent": [
-      "pi_location",
-      "pi_typeOfBuildingFactor"
-    ],
-    "lk_typeOfBuildingFactor": [
-      "pi_typeOfBuildingFactor"
-    ]
+    "lk_dryWasteContent": ["pi_location", "pi_typeOfBuildingFactor"],
+    "lk_typeOfBuildingFactor": ["pi_typeOfBuildingFactor"]
   },
   "quantities": [
     {
@@ -19,10 +11,7 @@
       "projectInputs": [],
       "staticValues": [],
       "lookUps": [],
-      "quantities": [
-        "rectangle__q_area",
-        "circle__q_area"
-      ],
+      "quantities": ["rectangle__q_area", "circle__q_area"],
       "output": "return rectangle__q_area + circle__q_area;"
     },
     {
@@ -30,10 +19,7 @@
       "projectInputs": [],
       "staticValues": [],
       "lookUps": [],
-      "quantities": [
-        "circle__q_area",
-        "rectangle__q_area"
-      ],
+      "quantities": ["circle__q_area", "rectangle__q_area"],
       "output": "return circle__q_area - rectangle__q_area;"
     }
   ],

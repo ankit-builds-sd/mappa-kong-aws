@@ -1,1 +1,32 @@
-{"namespace":"clubhouse","extends":["../hwmClubhouseTechSelection","../hwmClubhouseDemandCalc"],"quantities":[{"id":"clubhouse__q_outcomes","staticValues":["clubhouse__st_swhType","clubhouse__st_option"],"output":"","quantities":["clubhouse__q_technology_selection","clubhouse__q_demandCalc"]},{"id":"clubhouse__q_demandCalc","quantities":[],"output":"","projectInputs":["clubhouse__pi_lpcdPerOccupant","clubhouse__pi_poolAreaPerOccupant","clubhouse__pi_swimmingPoolSurfaceArea"],"staticValues":["clubhouse__st_demandAssumption","clubhouse__st_hwmDemand","clubhouse__st_showerDiversity","clubhouse__st_poolOccupants","clubhouse__st_hotWaterPerOccupant"]},{"id":"clubhouse__q_technology_selection","staticValues":["clubhouse__st_HPCommercialCapacity","clubhouse__st_HPAreaReqd","clubhouse__st_SWHCentralCapacity","clubhouse__st_swhAreaReqd"],"output":"","quantities":["clubhouse__q_availableRooftop"],"projectInputs":["clubhouse__pi_clubhouseRooftopArea","clubhouse__pi_RooftopPerHP","clubhouse__pi_hotWaterHours","clubhouse__pi_rooftopPerSwh"]}]}
+{
+  "namespace": "clubhouse",
+  "extends": ["../hwmClubhouseTechSelection", "../hwmClubhouseDemandCalc"],
+  "quantities": [
+    {
+      "id": "clubhouse__q_outcomes",
+      "staticValues": ["clubhouse__st_swhType", "clubhouse__st_option"],
+      "output": "",
+      "quantities": ["clubhouse__q_technology_selection", "clubhouse__q_demandCalc"]
+    },
+    {
+      "id": "clubhouse__q_demandCalc",
+      "quantities": [],
+      "output": "",
+      "projectInputs": ["clubhouse__pi_lpcdPerOccupant", "clubhouse__pi_poolAreaPerOccupant", "clubhouse__pi_swimmingPoolSurfaceArea"],
+      "staticValues": [
+        "clubhouse__st_demandAssumption",
+        "clubhouse__st_hwmDemand",
+        "clubhouse__st_showerDiversity",
+        "clubhouse__st_poolOccupants",
+        "clubhouse__st_hotWaterPerOccupant"
+      ]
+    },
+    {
+      "id": "clubhouse__q_technology_selection",
+      "staticValues": ["clubhouse__st_HPCommercialCapacity", "clubhouse__st_HPAreaReqd", "clubhouse__st_SWHCentralCapacity", "clubhouse__st_swhAreaReqd"],
+      "output": "",
+      "quantities": ["clubhouse__q_availableRooftop"],
+      "projectInputs": ["clubhouse__pi_clubhouseRooftopArea", "clubhouse__pi_RooftopPerHP", "clubhouse__pi_hotWaterHours", "clubhouse__pi_rooftopPerSwh"]
+    }
+  ]
+}

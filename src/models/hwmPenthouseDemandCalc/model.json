@@ -1,8 +1,6 @@
 {
   "namespace": "hwmPenthouseDemandCalc",
-  "extends": [
-    "../occupancy"
-  ],
+  "extends": ["../occupancy"],
   "quantities": [
     {
       "id": "hwmPenthouseDemandCalc__q_hwmDemand",
@@ -12,14 +10,9 @@
         "hwmPenthouseDemandCalc__pi_lpdPerPenthouse",
         "hwmPenthouseDemandCalc__pi_demandByBathType"
       ],
-      "staticValues": [
-        "occupancy__st_singleBedroomOccupants"
-      ],
+      "staticValues": ["occupancy__st_singleBedroomOccupants"],
       "lookUps": [],
-      "quantities": [
-        "occupancy__q_occupancyPenthouse",
-        "occupancy__q_numberOfDwellingUnitsPenthouse"
-      ],
+      "quantities": ["occupancy__q_occupancyPenthouse", "occupancy__q_numberOfDwellingUnitsPenthouse"],
       "output": "let hotWaterPerOccupant = null,\n    hotWaterOccupants = null,\n    hotWaterDu = null,\n    hwmDemand = null;\n  if (hwmPenthouseDemandCalc__pi_demandAssumptionType === 'lpcd per occupant') {\n    hotWaterPerOccupant = hwmPenthouseDemandCalc__pi_demandAssumption;\n  } else if (\n    hwmPenthouseDemandCalc__pi_demandAssumptionType ===\n    'link to installed efficient fixtures'\n  ) {\n    hotWaterPerOccupant = -1;\n  } else if (\n    hwmPenthouseDemandCalc__pi_demandAssumptionType === 'lpd per penthouse'\n  ) {\n    hotWaterPerOccupant = hwmPenthouseDemandCalc__pi_lpdPerPenthouse;\n  }\n\n  hotWaterDu = occupancy__q_numberOfDwellingUnitsPenthouse;\n  if (hwmPenthouseDemandCalc__pi_demandByBathType === 'all baths') {\n    hotWaterOccupants = occupancy__q_occupancyPenthouse;\n  } else if (hwmPenthouseDemandCalc__pi_demandByBathType === 'single bath') {\n    hotWaterOccupants =\n      occupancy__q_numberOfDwellingUnitsPenthouse *\n      occupancy__st_singleBedroomOccupants;\n  } else if (\n    hwmPenthouseDemandCalc__pi_demandByBathType === 'remaining baths'\n  ) {\n    hotWaterOccupants =\n      occupancy__q_occupancyPenthouse -\n      occupancy__q_numberOfDwellingUnitsPenthouse *\n        occupancy__st_singleBedroomOccupants;\n  } else if (\n    hwmPenthouseDemandCalc__pi_demandAssumptionType === 'lpd per penthouse'\n  ) {\n    hotWaterOccupants = occupancy__q_numberOfDwellingUnitsPenthouse;\n  }\n  hwmDemand =\n    utilities.roundTo100(hotWaterPerOccupant * hotWaterOccupants) /\n    occupancy__q_numberOfDwellingUnitsPenthouse;\n  return { hwmDemand, hotWaterOccupants, hotWaterDu };"
     }
   ],

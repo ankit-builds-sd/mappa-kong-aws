@@ -52,11 +52,7 @@
     {
       "id": "hwmSwimmingPool__q_outcomesPreSdPlus",
       "projectInputs": [],
-      "staticValues": [
-        "hwm__st_baseCasePerLPDkWh",
-        "hwm__st_swhCapexMultiplier",
-        "hwm__st_baseCasePoolSwhCapacity"
-      ],
+      "staticValues": ["hwm__st_baseCasePerLPDkWh", "hwm__st_swhCapexMultiplier", "hwm__st_baseCasePoolSwhCapacity"],
       "lookUps": [],
       "quantities": [],
       "output": "let hwmPoolEnergyAnnualPreSdPlus =\nhwm__st_baseCasePoolSwhCapacity * hwm__st_baseCasePerLPDkWh;\nlet hwmCapexPreSdPlus =\nhwm__st_baseCasePoolSwhCapacity * hwm__st_swhCapexMultiplier;\nreturn { hwmPoolEnergyAnnualPreSdPlus, hwmCapexPreSdPlus };"
@@ -64,11 +60,7 @@
     {
       "id": "hwmSwimmingPool__q_projectLevelInsights",
       "projectInputs": ["project__pi_city"],
-      "staticValues": [
-        "global__st_convertKgToTon",
-        "global__st_treesPerTonCF",
-        "hwm__st_sdgNumberForHwm"
-      ],
+      "staticValues": ["global__st_convertKgToTon", "global__st_treesPerTonCF", "hwm__st_sdgNumberForHwm"],
       "lookUps": [],
       "quantities": ["hwmSwimmingPool__q_outcomes"],
       "output": "let cfMitigated =\nutilities.utility_getCityEmissionFactors(project__pi_city) *\nhwmSwimmingPool__q_outcomes.hwmPoolEnergyAnnual *\nglobal__st_convertKgToTon;\nlet sdgNumber = hwm__st_sdgNumberForHwm;\nlet treesSaved = cfMitigated * global__st_treesPerTonCF;\nlet totalEnergyConsumptionPercentage =\n(hwmSwimmingPool__q_outcomes.hwmPoolEnergyAnnual * 100) / 200;\nreturn {\ncfMitigated,\nsdgNumber,\ntreesSaved,\ntotalEnergyConsumptionPercentage,\n};"
@@ -102,10 +94,7 @@
       "projectInputs": [],
       "staticValues": ["hwmSwimmingPool__st_minValue"],
       "lookUps": [],
-      "quantities": [
-        "hwmSwimmingPool__q_flowDiagram",
-        "hwmSwimmingPool__q_outcomes"
-      ],
+      "quantities": ["hwmSwimmingPool__q_flowDiagram", "hwmSwimmingPool__q_outcomes"],
       "output": "let barOneTitle = 'Annual Energy Savings';\nlet barOneValue = hwmSwimmingPool__q_outcomes.hwmPoolEnergyAnnual;\nlet barOneMax = hwmSwimmingPool__q_outcomes.hwmPoolEnergyAnnual;\nlet barOneMin = hwmSwimmingPool__st_minValue;\nlet barTwoSubOneTitle = 'Common Area';\nlet barTwoValue = hwmSwimmingPool__q_flowDiagram.commonArea;\nlet barTwoSubOneTitlePercentage = (barTwoValue * 100) / barOneValue;\nreturn {\nbarOneTitle,\nbarOneValue,\nbarOneMax,\nbarOneMin,\nbarTwoSubOneTitle,\nbarTwoValue,\nbarTwoSubOneTitlePercentage,\n};"
     },
     {

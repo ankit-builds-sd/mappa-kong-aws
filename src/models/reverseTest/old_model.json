@@ -6,23 +6,15 @@
     "reverseTest__pi_typeOfBuildingFactor": "number"
   },
   "lookUpRelations": {
-    "reverseTest__lk_dryWasteContent": [
-      "reverseTest__pi_location",
-      "reverseTest__pi_typeOfBuildingFactor"
-    ],
-    "reverseTest__lk_typeOfBuildingFactor": [
-      "reverseTest__pi_typeOfBuildingFactor"
-    ]
+    "reverseTest__lk_dryWasteContent": ["reverseTest__pi_location", "reverseTest__pi_typeOfBuildingFactor"],
+    "reverseTest__lk_typeOfBuildingFactor": ["reverseTest__pi_typeOfBuildingFactor"]
   },
   "quantities": [
     {
       "id": "reverseTest__q_trial1",
       "projectInputs": ["reverseTest__pi_pi1", "reverseTest__pi_pi2"],
       "staticValues": ["reverseTest__st_trial1", "reverseTest__st_trial2"],
-      "lookUps": [
-        "reverseTest__lk_dryWasteContent",
-        "reverseTest__lk_typeOfBuildingFactor"
-      ],
+      "lookUps": ["reverseTest__lk_dryWasteContent", "reverseTest__lk_typeOfBuildingFactor"],
       "output": "return reverseTest__st_trial1 + reverseTest__st_trial2;"
     },
     {

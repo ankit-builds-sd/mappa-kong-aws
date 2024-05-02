@@ -1,19 +1,11 @@
 {
   "namespace": "efficientFixturesFaucet",
-  "extends": [
-    "../water",
-    "../occupancy",
-    "../global"
-  ],
+  "extends": ["../water", "../occupancy", "../global"],
   "quantities": [
     {
       "id": "efficientFixturesFaucet__q_outcomes",
-      "projectInputs": [
-        "efficientFixturesFaucet__pi_city"
-      ],
-      "staticValues": [
-        "global__st_globalDaysInAYear"
-      ],
+      "projectInputs": ["efficientFixturesFaucet__pi_city"],
+      "staticValues": ["global__st_globalDaysInAYear"],
       "lookUps": [],
       "quantities": [
         "efficientFixturesFaucet__q_effDailyPreSdPlus",
@@ -26,9 +18,7 @@
     },
     {
       "id": "efficientFixturesFaucet__q_effDailyPreSdPlus",
-      "projectInputs": [
-        "efficientFixturesFaucet__pi_projectCategory"
-      ],
+      "projectInputs": ["efficientFixturesFaucet__pi_projectCategory"],
       "staticValues": [
         "efficientFixturesFaucet__st_waterDomesticFaucetDaily",
         "efficientFixturesFaucet__st_waterDomesticFaucetDuration",
@@ -48,9 +38,7 @@
     },
     {
       "id": "efficientFixturesFaucet__q_effDaily",
-      "projectInputs": [
-        "efficientFixturesFaucet__pi_projectCategory"
-      ],
+      "projectInputs": ["efficientFixturesFaucet__pi_projectCategory"],
       "staticValues": [
         "efficientFixturesFaucet__st_waterDomesticFaucetDaily",
         "efficientFixturesFaucet__st_waterDomesticFaucetDuration",
@@ -87,9 +75,7 @@
         "efficientFixturesFaucet__st_effClubHouseDomesticFaucet"
       ],
       "lookUps": [],
-      "quantities": [
-        "efficientFixturesFaucet__q_effResidentialFaucetCapexPreSdPlus"
-      ],
+      "quantities": ["efficientFixturesFaucet__q_effResidentialFaucetCapexPreSdPlus"],
       "output": "const product = utilities.utility_efHealthFaucetProductResolver();\n\n  let waterDomesticFaucetPrice = 0;\n  if (product.length) {\n    waterDomesticFaucetPrice = utilities.utility_numberFromString(\n      product.price\n    );\n  }\n\n  const effResidentialFaucetCapexPostSdPlus =\n    (efficientFixturesFaucet__pi_projectStudio *\n      efficientFixturesFaucet__st_effStudioDomesticFaucet +\n      efficientFixturesFaucet__pi_project1Bhk *\n        efficientFixturesFaucet__st_eff1BhkDomesticFaucet +\n      efficientFixturesFaucet__pi_project2Bhk *\n        efficientFixturesFaucet__st_eff2BhkDomesticFaucet +\n      efficientFixturesFaucet__pi_project3Bhk *\n        efficientFixturesFaucet__st_eff3BhkDomesticFaucet +\n      efficientFixturesFaucet__pi_project4Bhk *\n        efficientFixturesFaucet__st_eff4BhkDomesticFaucet) *\n    waterDomesticFaucetPrice;\n\n  let projectClubHouse = 0;\n  if (efficientFixturesFaucet__pi_includeClubHouse === 'Yes') {\n    projectClubHouse = 1;\n  }\n\n  const effClubHouseFaucetCapexPostSdPlus =\n    projectClubHouse *\n    efficientFixturesFaucet__st_effClubHouseDomesticFaucet *\n    waterDomesticFaucetPrice;\n\n  let effCapexPostSdPlus;\n  if (product.aeratorType == 'Built-in Aerator') {\n    effCapexPostSdPlus =\n      effResidentialFaucetCapexPostSdPlus +\n      effClubHouseFaucetCapexPostSdPlus +\n      efficientFixturesFaucet__q_effResidentialFaucetCapexPreSdPlus;\n  } else {\n    effCapexPostSdPlus =\n      effResidentialFaucetCapexPostSdPlus + effClubHouseFaucetCapexPostSdPlus;\n  }\n\n  return (\n    effResidentialFaucetCapexPostSdPlus + effClubHouseFaucetCapexPostSdPlus\n  );"
     },
     {
@@ -115,13 +101,8 @@
     },
     {
       "id": "efficientFixturesFaucet__q_effClubHouseFaucetCapexPreSdPlus",
-      "projectInputs": [
-        "efficientFixturesFaucet__pi_includeClubHouse"
-      ],
-      "staticValues": [
-        "efficientFixturesFaucet__st_waterNbcBaseCaseFaucetPrice",
-        "efficientFixturesFaucet__st_effClubHouseDomesticFaucet"
-      ],
+      "projectInputs": ["efficientFixturesFaucet__pi_includeClubHouse"],
+      "staticValues": ["efficientFixturesFaucet__st_waterNbcBaseCaseFaucetPrice", "efficientFixturesFaucet__st_effClubHouseDomesticFaucet"],
       "lookUps": [],
       "quantities": [],
       "output": "const waterDomesticFaucetPricePreSdPlus =\n    efficientFixturesFaucet__st_waterNbcBaseCaseFaucetPrice;\n\n  let projectClubHouse = 0;\n  if (efficientFixturesFaucet__pi_includeClubHouse === 'Yes') {\n    projectClubHouse = 1;\n  }\n\n  return (\n    projectClubHouse *\n    efficientFixturesFaucet__st_effClubHouseDomesticFaucet *\n    waterDomesticFaucetPricePreSdPlus\n  );"
@@ -162,9 +143,7 @@
         "efficientFixturesFaucet__st_projectHousekeepingRefOccupancy"
       ],
       "lookUps": [],
-      "quantities": [
-        "occupancy__q_occupancyVilla"
-      ],
+      "quantities": ["occupancy__q_occupancyVilla"],
       "output": "const totalOccupancyVilla =\n    occupancy__q_occupancyVilla *\n    (1 + efficientFixturesFaucet__st_projectHousekeepingRefOccupancy);\n\n  return totalOccupancyVilla;"
     },
     {
@@ -215,10 +194,7 @@
         "occupancy__st_penthouseFourBHKRefOccupancy"
       ],
       "lookUps": [],
-      "quantities": [
-        "occupancy__q_occupancyApartment",
-        "occupancy__q_occupancyPenthouse"
-      ],
+      "quantities": ["occupancy__q_occupancyApartment", "occupancy__q_occupancyPenthouse"],
       "output": "const totalOccupancyApartment =\n    (occupancy__q_occupancyApartment + occupancy__q_occupancyPenthouse) *\n    (1 + efficientFixturesFaucet__st_projectHousekeepingRefOccupancy);\n\n  return totalOccupancyApartment;"
     },
     {
@@ -249,10 +225,7 @@
         "efficientFixturesFaucet__st_clubHouseRefOccupancy"
       ],
       "lookUps": [],
-      "quantities": [
-        "occupancy__q_occupancyApartment",
-        "occupancy__q_occupancyPenthouse"
-      ],
+      "quantities": ["occupancy__q_occupancyApartment", "occupancy__q_occupancyPenthouse"],
       "output": "let clubHouseRefOccupancy = 0.1;\n  if (efficientFixturesFaucet__pi_includeClubHouse === 'Yes') {\n    clubHouseRefOccupancy = efficientFixturesFaucet__st_clubHouseRefOccupancy;\n  }\n\n  const clubHouseOccupancyApartment =\n    (occupancy__q_occupancyApartment + occupancy__q_occupancyPenthouse) *\n    clubHouseRefOccupancy;\n\n  return clubHouseOccupancyApartment;"
     },
     {
@@ -277,24 +250,15 @@
     },
     {
       "id": "efficientFixturesFaucet__q_occupancyClubhouseOccupancyVilla",
-      "projectInputs": [
-        "efficientFixturesFaucet__pi_includeClubHouse"
-      ],
-      "staticValues": [
-        "efficientFixturesFaucet__st_clubHouseRefOccupancy"
-      ],
+      "projectInputs": ["efficientFixturesFaucet__pi_includeClubHouse"],
+      "staticValues": ["efficientFixturesFaucet__st_clubHouseRefOccupancy"],
       "lookUps": [],
-      "quantities": [
-        "occupancy__q_occupancyVilla"
-      ],
+      "quantities": ["occupancy__q_occupancyVilla"],
       "output": "let clubHouseRefOccupancy = 0.1;\n  if (efficientFixturesFaucet__pi_includeClubHouse === 'Yes') {\n    clubHouseRefOccupancy = efficientFixturesFaucet__st_clubHouseRefOccupancy;\n  }\n\n  const clubHouseOccupancyVilla =\n    occupancy__q_occupancyVilla * clubHouseRefOccupancy;\n\n  return clubHouseOccupancyVilla;"
     },
     {
       "id": "efficientFixturesFaucet__q_igbcOutcomes",
-      "projectInputs": [
-        "efficientFixturesFaucet__pi_projectCategory",
-        "efficientFixturesFaucet__pi_city"
-      ],
+      "projectInputs": ["efficientFixturesFaucet__pi_projectCategory", "efficientFixturesFaucet__pi_city"],
       "staticValues": [
         "efficientFixturesFaucet__st_igbcDomesticfaucetDaily",
         "efficientFixturesFaucet__st_igbcDomesticfaucetDuration",
@@ -346,32 +310,20 @@
         "global__st_globalLToKlConverter"
       ],
       "lookUps": [],
-      "quantities": [
-        "efficientFixturesFaucet__q_effDailyPreSdPlus",
-        "efficientFixturesFaucet__q_effDaily",
-        "water__q_currentWaterTable"
-      ],
+      "quantities": ["efficientFixturesFaucet__q_effDailyPreSdPlus", "efficientFixturesFaucet__q_effDaily", "water__q_currentWaterTable"],
       "output": "const effDailyPreSdPlus = efficientFixturesFaucet__q_effDailyPreSdPlus;\n  const effDaily = efficientFixturesFaucet__q_effDaily;\n  const effAnnualWater =\n    (effDailyPreSdPlus - effDaily) * global__st_globalDaysInAYear;\n\n  let cityEmissionFactor: number;\n  if (efficientFixturesFaucet__pi_city === 'Bangalore') {\n    cityEmissionFactor = 0.6;\n  } else if (efficientFixturesFaucet__pi_city === 'Bombay') {\n    cityEmissionFactor = 0.89;\n  }\n\n  const occupancy = utilities.utility_efHfOccupancy(\n    efficientFixturesFaucet__pi_studio,\n    efficientFixturesFaucet__st_studioRefOccupancy,\n    efficientFixturesFaucet__pi_oneBHK,\n    efficientFixturesFaucet__st_oneBHKRefOccupancy,\n    efficientFixturesFaucet__pi_twoBHK,\n    efficientFixturesFaucet__st_twoBHKRefOccupancy,\n    efficientFixturesFaucet__pi_threeBHK,\n    efficientFixturesFaucet__st_threeBHKRefOccupancy\n  );\n\n  const totalOccupancy = utilities.utility_efHfTotalOccupancy(\n    efficientFixturesFaucet__pi_studio,\n    efficientFixturesFaucet__st_studioRefOccupancy,\n    efficientFixturesFaucet__pi_oneBHK,\n    efficientFixturesFaucet__st_oneBHKRefOccupancy,\n    efficientFixturesFaucet__pi_twoBHK,\n    efficientFixturesFaucet__st_twoBHKRefOccupancy,\n    efficientFixturesFaucet__pi_threeBHK,\n    efficientFixturesFaucet__st_threeBHKRefOccupancy,\n    efficientFixturesFaucet__st_projectHousekeepingRefOccupancy\n  );\n\n  const currentWaterTable = water__q_currentWaterTable;\n  const residentialLPCD = currentWaterTable.clientBaseCase.residentialDrinking;\n  const clubHouseLPCD = currentWaterTable.clientBaseCase.clubhouseDrinking;\n\n  let chRefOcc = 0;\n  if (efficientFixturesFaucet__pi_includeClubHouse === 'Yes') {\n    chRefOcc = efficientFixturesFaucet__st_clubHouseRefOccupancy;\n  }\n\n  const clubHouseOccupancy = occupancy * chRefOcc;\n\n  const waterCommonAreaLandscape =\n    efficientFixturesFaucet__pi_projectLandscapeArea *\n    efficientFixturesFaucet__st_waterDailyLandscapeWaterUse;\n\n  const waterCommonAreaCarPark =\n    efficientFixturesFaucet__pi_projectNoOfCarParks *\n    efficientFixturesFaucet__st_waterDailyCarWashWaterUse;\n\n  const waterCommonAreaCleaning =\n    efficientFixturesFaucet__pi_projectAreaOfLobbiesAndCorridors *\n    efficientFixturesFaucet__st_waterDailyLobbiesAndCorridorsWaterUse;\n\n  const waterSwimmingPool =\n    efficientFixturesFaucet__pi_projectSwimmingPoolSurfaceArea *\n    efficientFixturesFaucet__st_waterSwimmingPoolDepth *\n    efficientFixturesFaucet__st_waterWaterPerCubicMeter *\n    efficientFixturesFaucet__st_waterSwimmingPoolEvaporationRate;\n\n  const totalDailyWater =\n    totalOccupancy * residentialLPCD +\n    clubHouseOccupancy * clubHouseLPCD +\n    waterCommonAreaLandscape +\n    waterCommonAreaCarPark +\n    waterCommonAreaCleaning +\n    waterSwimmingPool;\n\n  const annualBaselineWaterConsumption =\n    (totalDailyWater * global__st_globalDaysInAYear) /\n    global__st_globalLToKlConverter;\n\n  // Final\n  const effCfMitigated =\n    cityEmissionFactor *\n    effAnnualWater *\n    efficientFixturesFaucet__st_globalKg2tonConv;\n\n  const effSdgNumber = efficientFixturesFaucet__st_efSdgNumberForEf;\n\n  const effTreesSaved =\n    effCfMitigated * efficientFixturesFaucet__st_globalTreesPerTonCf;\n\n  const effPercentTotalWaterConsumption =\n    (effAnnualWater * 100) / annualBaselineWaterConsumption;\n\n  return {\n    effCfMitigated,\n    effSdgNumber,\n    effTreesSaved,\n    effPercentTotalWaterConsumption,\n  };"
     },
     {
       "id": "efficientFixturesFaucet__q_flowDiagram",
       "projectInputs": [],
-      "staticValues": [
-        "global__st_globalDaysInAYear"
-      ],
+      "staticValues": ["global__st_globalDaysInAYear"],
       "lookUps": [],
-      "quantities": [
-        "efficientFixturesFaucet__q_effDailyPreSdPlus",
-        "efficientFixturesFaucet__q_effDaily"
-      ],
+      "quantities": ["efficientFixturesFaucet__q_effDailyPreSdPlus", "efficientFixturesFaucet__q_effDaily"],
       "output": "const effDailyPreSdPlus = efficientFixturesFaucet__q_effDailyPreSdPlus;\n  const effDaily = efficientFixturesFaucet__q_effDaily;\n  const effAnnualWater =\n    (effDailyPreSdPlus - effDaily) * global__st_globalDaysInAYear;\n\n  const effFlowDiagramDomestic = effAnnualWater / global__st_globalDaysInAYear;\n  const effFlowDiagramHealthFaucet = 0;\n\n  const effFlowDiagramFlushing = 0;\n  const effFlowDiagramCommonArea = 0;\n  const effFlowDiagramDrinking = 0;\n\n  return {\n    effFlowDiagramDomestic,\n    effFlowDiagramHealthFaucet,\n\n    effFlowDiagramFlushing,\n    effFlowDiagramCommonArea,\n    effFlowDiagramDrinking,\n  };"
     },
     {
       "id": "efficientFixturesFaucet__q_secondaryImpact",
-      "projectInputs": [
-        "efficientFixturesFaucet__pi_projectNoOfFloors",
-        "efficientFixturesFaucet__pi_projectFloorToFloorHeight"
-      ],
+      "projectInputs": ["efficientFixturesFaucet__pi_projectNoOfFloors", "efficientFixturesFaucet__pi_projectFloorToFloorHeight"],
       "staticValues": [
         "efficientFixturesFaucet__st_globalLtoM3converter",
         "efficientFixturesFaucet__st_waterPumpFlowRate",
@@ -384,23 +336,15 @@
         "global__st_globalDaysInAYear"
       ],
       "lookUps": [],
-      "quantities": [
-        "efficientFixturesFaucet__q_effDailyPreSdPlus",
-        "efficientFixturesFaucet__q_effDaily"
-      ],
+      "quantities": ["efficientFixturesFaucet__q_effDailyPreSdPlus", "efficientFixturesFaucet__q_effDaily"],
       "output": "const effDailyPreSdPlus = efficientFixturesFaucet__q_effDailyPreSdPlus;\n  const effDaily = efficientFixturesFaucet__q_effDaily;\n  const effAnnualWater =\n    (effDailyPreSdPlus - effDaily) * global__st_globalDaysInAYear;\n\n  const timeTakenToPumpWater =\n    (effAnnualWater * efficientFixturesFaucet__st_globalLtoM3converter) /\n    efficientFixturesFaucet__st_waterPumpFlowRate;\n\n  const buildingHeight =\n    efficientFixturesFaucet__pi_projectNoOfFloors *\n    efficientFixturesFaucet__pi_projectFloorToFloorHeight;\n\n  const hydraulicPower =\n    (efficientFixturesFaucet__st_waterPumpFlowRate *\n      buildingHeight *\n      efficientFixturesFaucet__st_globalAccelerationDueToGravity *\n      efficientFixturesFaucet__st_waterSpecificGravityOfWater) /\n    efficientFixturesFaucet__st_globalJoulesToKwConverter;\n\n  const shaftPower =\n    hydraulicPower / efficientFixturesFaucet__st_waterPumpEfficiency;\n\n  const electricalInput =\n    shaftPower / efficientFixturesFaucet__st_waterMotorEfficiency;\n  const effPassiveEnergykWh = electricalInput * timeTakenToPumpWater;\n\n  const effPassiveEnergyOpex = utilities.utility_energyOpex(\n    effPassiveEnergykWh,\n    efficientFixturesFaucet__st_city\n  );\n\n  return {\n    timeTakenToPumpWater,\n    buildingHeight,\n    hydraulicPower,\n    shaftPower,\n    electricalInput,\n    effPassiveEnergykWh,\n    effPassiveEnergyOpex,\n  };"
     },
     {
       "id": "efficientFixturesFaucet__q_overviewBarGraph",
       "projectInputs": [],
-      "staticValues": [
-        "global__st_globalDaysInAYear"
-      ],
+      "staticValues": ["global__st_globalDaysInAYear"],
       "lookUps": [],
-      "quantities": [
-        "efficientFixturesFaucet__q_effDailyPreSdPlus",
-        "efficientFixturesFaucet__q_effDaily"
-      ],
+      "quantities": ["efficientFixturesFaucet__q_effDailyPreSdPlus", "efficientFixturesFaucet__q_effDaily"],
       "output": "const effDailyPreSdPlus = efficientFixturesFaucet__q_effDailyPreSdPlus;\n  const effDaily = efficientFixturesFaucet__q_effDaily;\n  const effAnnualWater =\n    (effDailyPreSdPlus - effDaily) * global__st_globalDaysInAYear;\n\n  const title = 'Efficient Fixtures water usage by category';\n  const totalSavings = effAnnualWater;\n\n  const seriesName1 = 'Domestic';\n  const seriesValue1 = effAnnualWater;\n  const seriesName2 = 'Health Faucet';\n  const seriesValue2 = 0;\n  const seriesName3 = 'Flushing';\n  const seriesValue3 = 0;\n  const seriesName4 = 'Common Area';\n  const seriesValue4 = 0;\n  const seriesName5 = 'Drinking';\n  const seriesValue5 = 0;\n\n  return {\n    title,\n    totalSavings,\n    series: [\n      {\n        name: seriesName1,\n        value: seriesValue1,\n      },\n      {\n        name: seriesName2,\n        value: seriesValue2,\n      },\n      {\n        name: seriesName3,\n        value: seriesValue3,\n      },\n      {\n        name: seriesName4,\n        value: seriesValue4,\n      },\n      {\n        name: seriesName5,\n        value: seriesValue5,\n      },\n    ],\n  };"
     },
     {

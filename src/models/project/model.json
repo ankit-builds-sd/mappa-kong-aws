@@ -3,10 +3,7 @@
   "quantities": [
     {
       "id": "project__q_availableRooftop",
-      "projectInputs": [
-        "project__pi_rooftopArea",
-        "project__pi_unavailableRooftopArea"
-      ],
+      "projectInputs": ["project__pi_rooftopArea", "project__pi_unavailableRooftopArea"],
       "output": "return null;"
     },
     {

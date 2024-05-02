@@ -4,13 +4,7 @@
   "quantities": [
     {
       "id": "occupancy__q_numberOfDwellingUnitsApartments",
-      "projectInputs": [
-        "occupancy__pi_studio",
-        "occupancy__pi_oneBHK",
-        "occupancy__pi_twoBHK",
-        "occupancy__pi_threeBHK",
-        "occupancy__pi_fourBHK"
-      ],
+      "projectInputs": ["occupancy__pi_studio", "occupancy__pi_oneBHK", "occupancy__pi_twoBHK", "occupancy__pi_threeBHK", "occupancy__pi_fourBHK"],
       "staticValues": [],
       "lookUps": [],
       "quantities": [],
@@ -46,13 +40,7 @@
     },
     {
       "id": "occupancy__q_occupancyApartment",
-      "projectInputs": [
-        "occupancy__pi_studio",
-        "occupancy__pi_oneBHK",
-        "occupancy__pi_twoBHK",
-        "occupancy__pi_threeBHK",
-        "occupancy__pi_fourBHK"
-      ],
+      "projectInputs": ["occupancy__pi_studio", "occupancy__pi_oneBHK", "occupancy__pi_twoBHK", "occupancy__pi_threeBHK", "occupancy__pi_fourBHK"],
       "staticValues": [
         "occupancy__st_studioRefOccupancy",
         "occupancy__st_oneBHKRefOccupancy",
@@ -107,35 +95,25 @@
     {
       "id": "occupancy__q_noop",
       "projectInputs": [],
-      "staticValues": [
-        "occupancy__st_singleBedroomOccupants"
-      ],
+      "staticValues": ["occupancy__st_singleBedroomOccupants"],
       "lookUps": [],
       "quantities": [],
       "output": "return null;"
     },
     {
       "id": "occupancy__q_perFloorOccupancy",
-      "projectInputs": [
-        "occupancy__pi_floors"
-      ],
+      "projectInputs": ["occupancy__pi_floors"],
       "staticValues": [],
       "lookUps": [],
-      "quantities": [
-        "occupancy__q_occupancyApartment"
-      ],
+      "quantities": ["occupancy__q_occupancyApartment"],
       "output": "return occupancy__q_occupancyApartment / occupancy__pi_floors;"
     },
     {
       "id": "occupancy__q_perFloorApartments",
-      "projectInputs": [
-        "occupancy__pi_floors"
-      ],
+      "projectInputs": ["occupancy__pi_floors"],
       "staticValues": [],
       "lookUps": [],
-      "quantities": [
-        "occupancy__q_numberOfDwellingUnitsApartments"
-      ],
+      "quantities": ["occupancy__q_numberOfDwellingUnitsApartments"],
       "output": "return occupancy__q_numberOfDwellingUnitsApartments / occupancy__pi_floors;"
     },
     {
@@ -143,11 +121,7 @@
       "projectInputs": [],
       "staticValues": [],
       "lookUps": [],
-      "quantities": [
-        "occupancy__q_numberOfDwellingUnitsVilla",
-        "occupancy__q_numberOfDwellingUnitsApartments",
-        "occupancy__q_numberOfDwellingUnitsPenthouse"
-      ],
+      "quantities": ["occupancy__q_numberOfDwellingUnitsVilla", "occupancy__q_numberOfDwellingUnitsApartments", "occupancy__q_numberOfDwellingUnitsPenthouse"],
       "output": "return (\noccupancy__q_numberOfDwellingUnitsVilla +\noccupancy__q_numberOfDwellingUnitsApartments +\noccupancy__q_numberOfDwellingUnitsPenthouse\n);"
     }
   ],

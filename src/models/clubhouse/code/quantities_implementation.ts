@@ -1,11 +1,6 @@
 import { irr } from 'node-irr';
 import * as utilities from '../../../utilities/utility';
-export function clubhouse__q_outcomes(
-  clubhouse__st_swhType,
-  clubhouse__st_option,
-  clubhouse__q_technology_selection,
-  clubhouse__q_demandCalc
-) {}
+export function clubhouse__q_outcomes(clubhouse__st_swhType, clubhouse__st_option, clubhouse__q_technology_selection, clubhouse__q_demandCalc) {}
 export function clubhouse__q_demandCalc(
   clubhouse__pi_lpcdPerOccupant,
   clubhouse__pi_poolAreaPerOccupant,

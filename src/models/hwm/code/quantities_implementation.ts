@@ -1,1 +1,28 @@
-import { irr } from 'node-irr'; import { HwmDemandAssumptionBase, HwmDemandAssumptionVilla, HwmDemandAssumptionPenthouse, DemandAssumptionApartment, HwmDemandByBath, HwmOption, HeatPumpType, SwhType, SwhVariant, HpType, HwmHpHeatingSpeed, SdPlusInterventions, CurrentWaterTableRow, CurrentWaterTable, CurrentWaterTableInputsRow, CurrentWaterTableInputs, WaterPreSdPlusRow, WaterPreSdPlus, PlumbingDetailsPreSdPlus, EFCalculator, StpCalculator, PreSDPlusDemand, OutcomesPreSdPlus } from '../../../utilities/types'; import * as utilities from '../../../utilities/utility'; import { CityDbData, SDPlusDefaultsStore } from '../../../utilities/stores';export  function hwm__q_noop(hwm__st_rooftopPerSwh,hwm__st_rooftopPerHp,hwm__st_outletTemp,hwm__st_inletTemp,hwm__st_converstionFactor,hwm__st_heatLossCoeff,hwm__st_supRet,hwm__st_numberOfShafts,hwm__st_hzPipe,hwm__st_baseCasePerLPDkWh,hwm__st_swhCapexMultiplier,hwm__st_baseCaseVillaSwhCapacity,hwm__st_sdgNumberForHwm){return null;}
+import { irr } from 'node-irr';
+import {
+  HwmDemandAssumptionBase,
+  HwmDemandAssumptionVilla,
+  HwmDemandAssumptionPenthouse,
+  DemandAssumptionApartment,
+  HwmDemandByBath,
+  HwmOption,
+  HeatPumpType,
+  SwhType,
+  SwhVariant,
+  HpType,
+  HwmHpHeatingSpeed,
+  SdPlusInterventions,
+  CurrentWaterTableRow,
+  CurrentWaterTable,
+  CurrentWaterTableInputsRow,
+  CurrentWaterTableInputs,
+  WaterPreSdPlusRow,
+  WaterPreSdPlus,
+  PlumbingDetailsPreSdPlus,
+  EFCalculator,
+  StpCalculator,
+  PreSDPlusDemand,
+  OutcomesPreSdPlus,
+} from '../../../utilities/types';
+import * as utilities from '../../../utilities/utility';
+import { CityDbData, SDPlusDefaultsStore } from '../../../utilities/stores';

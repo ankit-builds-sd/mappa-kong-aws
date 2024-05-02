@@ -1,1 +1,9 @@
-{"quantities":[{"id":"ank1__q_noop","arguments":"ank1__pi_hpHeatingSpeed:HwmHpHeatingSpeed,ank1__pi_availableVillaRooftop:number,ank1__pi_availablePenthouseRooftop:number,ank1__pi_option:HwmOption,ank1__pi_swhType:SwhType,ank1__pi_hpType:HpType,ank1__st_rooftopPerSwh,ank1__st_rooftopPerHp","body":"return null;"}]}
+{
+  "quantities": [
+    {
+      "id": "ank1__q_noop",
+      "arguments": "ank1__pi_hpHeatingSpeed:HwmHpHeatingSpeed,ank1__pi_availableVillaRooftop:number,ank1__pi_availablePenthouseRooftop:number,ank1__pi_option:HwmOption,ank1__pi_swhType:SwhType,ank1__pi_hpType:HpType,ank1__st_rooftopPerSwh,ank1__st_rooftopPerHp",
+      "body": "return null;"
+    }
+  ]
+}

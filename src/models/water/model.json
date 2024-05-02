@@ -1,8 +1,6 @@
 {
   "namespace": "water",
-  "extends": [
-    "../project"
-  ],
+  "extends": ["../project"],
   "quantities": [
     {
       "id": "water__q_customLCPDCalc",
@@ -95,17 +93,12 @@
         "water__st_nbcBaseFlushingHalfFlow"
       ],
       "lookUps": [],
-      "quantities": [
-        "water__q_customLCPDCalc"
-      ],
+      "quantities": ["water__q_customLCPDCalc"],
       "output": "let ret: WaterPreSdPlus;\nif (water__pi_manualEntry === true) {\nret = {\n  domesticHealthFaucet: {\n    flow: water__pi_domestichHealthFaucetFlow,\n    price: water__pi_domesticHealthFaucetPrice,\n  },\n  domesticFaucet: {\n    flow: water__pi_domesticFaucetFlow,\n    price: water__pi_domesticFaucetPrice\n  },\n  domesticKitchenSink: {\n    flow: water__pi_domesticKitchenSinkFlow,\n    price: water__pi_domesticKitchenSinkPrice\n  },\n  domesticShower: {\n    flow: water__pi_domesticShowerFlow,\n    price: water__pi_domesticShowerPrice\n  },\n  flushingFull: {\n    flow: water__pi_domesticFlushingFullFlow,\n    price: water__pi_domesticFlushingFullPrice\n  },\n  flushingHalf: {\n    flow: water__pi_domesticFlushingHalfFlow,\n    price: water__pi_domesticFlushingHalfPrice\n  },\n  domesticWashUtensilsFlow: water__st_nbcBaseCaseDomesticWashUtensilsFlow,\n  domesticWashClothesFlow: water__st_nbcBaseCaseDomesticWashClothesFlow\n};\n}\nelse if (water__pi_customLPCD === true) {\nconst manualLPCDNonDrinking = water__st_manualLPCD - water__q_customLCPDCalc.drinkingLPCD;\nret = {\n  manualLPCDNonDrinking: manualLPCDNonDrinking,\n  domesticHealthFaucet: {\n    flow: (water__q_customLCPDCalc.healthFaucetFactor * manualLPCDNonDrinking) / (water__st_domesticHealthFaucetDuration * water__st_domesticHealthFaucetDaily),\n    price: water__st_nbcBaseCaseHealthFaucetPrice\n  },\n  domesticFaucet: {\n    flow: (water__q_customLCPDCalc.faucetFactor * manualLPCDNonDrinking) / (water__st_domesticFaucetDuration * water__st_domesticFaucetDaily),\n    price: water__st_nbcBaseCaseFaucetPrice\n  },\n  domesticKitchenSink: {\n    flow: (water__q_customLCPDCalc.kitchenSinkFactor * manualLPCDNonDrinking) / (water__st_domesticKitchenSinkDuration * water__st_domesticKitchenSinkDaily),\n    price: water__st_nbcBaseCaseKitchenSinkPrice\n  },\n  domesticShower: {\n    flow: (water__q_customLCPDCalc.showerFactor * manualLPCDNonDrinking) / (water__st_domesticShowerDuration * water__st_domesticShowerDaily),\n    price: water__st_nbcBaseCaseShowerPrice\n  },\n  flushingFull: {\n    flow: (water__q_customLCPDCalc.flushingFullFactor * manualLPCDNonDrinking) / (water__st_flushingFullDuration * water__st_flushingFullDaily),\n    price: water__st_nbcBaseFlushingFullPrice\n  },\n  flushingHalf: {\n    flow: (water__q_customLCPDCalc.flushingHalfFactor * manualLPCDNonDrinking) / (water__st_flushingHalfDuration * water__st_flushingHalfDaily),\n    price: water__st_nbcBaseFlushingHalfPrice\n  },\n  domesticWashUtensilsFlow: (water__q_customLCPDCalc.washUtensilsFactor * manualLPCDNonDrinking) / (water__st_domesticWashUtensilsDuration * water__st_domesticWashUtensilsDaily),\n  domesticWashClothesFlow: (water__q_customLCPDCalc.washClothesFactor * manualLPCDNonDrinking) / (water__st_domesticWashClothesDuration * water__st_domesticWashClothesDaily),\n}\n}\nelse {\nret = {\n  domesticHealthFaucet: {\n    flow: water__st_nbcBaseCaseHealthFaucetFlow,\n    price: water__st_nbcBaseCaseHealthFaucetPrice,\n  },\n  domesticFaucet: {\n    flow: water__st_nbcBaseCaseFaucetFlow,\n    price: water__st_nbcBaseCaseFaucetPrice\n  },\n  domesticKitchenSink: {\n    flow: water__st_nbcBaseCaseKitchenSinkFlow,\n    price: water__st_nbcBaseCaseKitchenSinkPrice\n  },\n  domesticShower: {\n    flow: water__st_nbcBaseCaseShowerFlow,\n    price: water__st_nbcBaseCaseShowerPrice\n  },\n  flushingFull: {\n    flow: water__st_nbcBaseFlushingFullFlow,\n    price: water__st_nbcBaseFlushingFullPrice\n  },\n  flushingHalf: {\n    flow: water__st_nbcBaseFlushingHalfFlow,\n    price: water__st_nbcBaseFlushingHalfPrice\n  },\n  domesticWashUtensilsFlow: water__st_nbcBaseCaseDomesticWashUtensilsFlow,\n  domesticWashClothesFlow: water__st_nbcBaseCaseDomesticWashClothesFlow\n};\n}\nreturn ret;"
     },
     {
       "id": "water__q_plubmingDetailsPreSD",
-      "projectInputs": [
-        "water__pi_alreadyInstalledCRO",
-        "water__pi_assumeIndividualRO"
-      ],
+      "projectInputs": ["water__pi_alreadyInstalledCRO", "water__pi_assumeIndividualRO"],
       "staticValues": [
         "water__st_bisDrinkingDrinnkingFlow",
         "water__st_bisDrinkingCookingFlow",
@@ -120,12 +113,7 @@
     },
     {
       "id": "water__q_currentWaterTable",
-      "projectInputs": [
-        "water__pi_landscapeArea",
-        "water__pi_noOfCarParks",
-        "water__pi_areaOfLobbiesAndCorridors",
-        "water__pi_swimmingPoolSurfaceArea"
-      ],
+      "projectInputs": ["water__pi_landscapeArea", "water__pi_noOfCarParks", "water__pi_areaOfLobbiesAndCorridors", "water__pi_swimmingPoolSurfaceArea"],
       "staticValues": [
         "water__st_drinkingDrinkingDaily",
         "water__st_drinkingDrinkingDuration",
@@ -176,21 +164,13 @@
         "water__st_SWMEfficiency"
       ],
       "lookUps": [],
-      "quantities": [
-        "water__q_plubmingDetailsPreSD",
-        "water__q_preSdPlus"
-      ],
+      "quantities": ["water__q_plubmingDetailsPreSD", "water__q_preSdPlus"],
       "output": "const domesticHealthFaucet =\n  water__st_domesticHealthFaucetDaily *\n  water__st_domesticHealthFaucetDuration *\n  water__st_domesticSelectedHealthFaucetFlow;\n\n  const clubhouseDomesticHealthFaucet = \n  water__st_clubhouseHealthFaucetDaily * \n  water__st_clubhouseHealthFaucetDuration * \n  water__q_preSdPlus.domesticHealthFaucet.flow;\n\n  const residentialDomesticValue =\n    water__st_domesticHealthFaucetDaily *\n    water__st_domesticHealthFaucetDuration *\n    water__q_preSdPlus.domesticHealthFaucet.flow\n    +\n    water__st_domesticFaucetDaily *\n    water__st_domesticFaucetDuration *\n    water__q_preSdPlus.domesticFaucet.flow\n    +\n    water__st_domesticKitchenSinkDaily *\n    water__st_domesticKitchenSinkDuration *\n    water__q_preSdPlus.domesticKitchenSink.flow\n    +\n    water__st_domesticShowerDaily *\n    water__st_domesticShowerDuration *\n    water__q_preSdPlus.domesticShower.flow\n    +\n    water__st_domesticWashClothesDaily *\n    water__st_domesticWashClothesDuration *\n    water__q_preSdPlus.domesticWashClothesFlow\n    +\n    water__st_domesticWashUtensilsDaily *\n    water__st_domesticWashUtensilsDuration *\n    water__q_preSdPlus.domesticWashUtensilsFlow;\n\n  const residentialDrinkingValue =\n    water__st_drinkingDrinkingDaily *\n    water__st_drinkingDrinkingDuration *\n    water__q_plubmingDetailsPreSD.drinkingDrinkingFlow\n    +\n    water__st_drinkingCookingDaily *\n    water__st_drinkingCookingDuration *\n    water__q_plubmingDetailsPreSD.drinkingCookingFlow;\n\n  const residentialFlushingValue =\n    water__st_flushingHalfDaily * water__st_flushingHalfDuration * water__q_preSdPlus.flushingHalf.flow\n    +\n    water__st_flushingFullDaily * water__st_flushingFullDuration * water__q_preSdPlus.flushingFull.flow;\n  let ret: CurrentWaterTable = {\n    totalLPCD: {\n      totalLPCDPreSDPlus: residentialDrinkingValue + residentialDomesticValue + residentialFlushingValue\n    },\n    clientBaseCase: {\n      residentialDrinking: residentialDrinkingValue,\n      residentialDomestic: residentialDomesticValue,\n      residentialFlushing: residentialFlushingValue,\n      clubhouseDrinking:\n        water__st_clubhouseDrinkingDrinkingDaily * water__st_clubhouseDrinkingDrinkingDuration * water__q_plubmingDetailsPreSD.clubhouseDrinkingFlow\n        +\n        water__st_clubhouseDrinkingCookingDaily * water__st_clubhouseDrinkingCookingDuration * water__q_plubmingDetailsPreSD.clubhouseCookingFlow,\n      clubhouseDomestic:\n        water__st_clubhouseHealthFaucetDaily * water__st_clubhouseHealthFaucetDuration * water__q_preSdPlus.domesticHealthFaucet.flow\n        +\n        water__st_clubhouseFaucetDaily * water__st_clubhouseFaucetDuration * water__q_preSdPlus.domesticFaucet.flow\n        +\n        water__st_clubhouseShowerDaily * water__st_clubhouseShowerDuration * water__q_preSdPlus.domesticShower.flow,\n      clubhouseFlushing:\n        water__st_clubhouseFlushingFullDaily * water__st_clubhouseFlushingFullDuration * water__q_preSdPlus.flushingFull.flow\n        +\n        water__st_clubhouseFlushingHalfDaily * water__st_clubhouseFlushingHalfDuration * water__q_preSdPlus.flushingHalf.flow,\n      commonAreaLandScape:\n        water__pi_landscapeArea * water__st_dailyLandScapeWaterUse,\n      commonAreaCarPark:\n        water__pi_noOfCarParks * water__st_dailyCarWashWaterUse,\n      commonAreaCleaning:\n        water__pi_areaOfLobbiesAndCorridors * water__st_dailyLobbiesAndCorridorsWaterUse,\n      swimmingPool:\n        water__pi_swimmingPoolSurfaceArea * water__st_swimmingPoolDepth * water__st_swimmingPoolWaterPerCubicMeter * water__st_swimmingPoolEvaporationRate\n\n    },\n    efficientFixtures: {\n      residentialDrinking:\n        water__st_drinkingDrinkingDaily *\n        water__st_drinkingDrinkingDuration *\n        water__q_plubmingDetailsPreSD.drinkingDrinkingFlow\n        +\n        water__st_drinkingCookingDaily *\n        water__st_drinkingCookingDuration *\n        water__q_plubmingDetailsPreSD.drinkingCookingFlow,\n      residentialDomestic:\n        water__st_domesticHealthFaucetDaily *\n        water__st_domesticHealthFaucetDuration *\n        water__st_domesticSelectedHealthFaucetFlow\n        +\n        water__st_domesticFaucetDaily *\n        water__st_domesticFaucetDuration *\n        water__st_domesticSelectedFaucetFlow\n        +\n        water__st_domesticKitchenSinkDaily *\n        water__st_domesticKitchenSinkDuration *\n        water__st_domesticSelectedKitchenSinkFlow\n        +\n        water__st_domesticShowerDaily *\n        water__st_domesticShowerDuration *\n        water__st_domesticSelectedShowerFlow\n        +\n        water__st_domesticWashClothesDaily *\n        water__st_domesticWashClothesDuration *\n        water__q_preSdPlus.domesticWashClothesFlow\n        +\n        water__st_domesticWashUtensilsDaily *\n        water__st_domesticWashUtensilsDuration *\n        water__q_preSdPlus.domesticWashUtensilsFlow,\n      residentialFlushing:\n        water__st_flushingHalfDaily * water__st_flushingHalfDuration * water__q_preSdPlus.flushingHalf.flow\n        +\n        water__st_flushingFullDaily * water__st_flushingFullDuration * water__q_preSdPlus.flushingFull.flow,\n      clubhouseDomestic:\n        water__st_clubhouseHealthFaucetDaily * water__st_clubhouseHealthFaucetDuration * water__q_preSdPlus.domesticHealthFaucet.flow\n        +\n        water__st_clubhouseFaucetDaily * water__st_clubhouseFaucetDuration * water__q_preSdPlus.domesticFaucet.flow\n        +\n        water__st_clubhouseShowerDaily * water__st_clubhouseShowerDuration * water__q_preSdPlus.domesticShower.flow,\n        domesticHealthFaucet: domesticHealthFaucet,\n        clubhouseDomesticHealthFaucet: clubhouseDomesticHealthFaucet\n    },\n    dualFlush: {\n      residentialFlushing:\n        water__st_flushingHalfDaily * water__st_flushingHalfDuration * water__st_selectedflushingHalfFlow\n        +\n        water__st_flushingFullDaily * water__st_flushingFullDuration * water__st_selectedflushingFullFlow,\n      clubhouseFlushing:\n        water__st_clubhouseFlushingFullDaily * water__st_clubhouseFlushingFullDuration * water__q_preSdPlus.flushingFull.flow\n        +\n        water__st_clubhouseFlushingHalfDaily * water__st_clubhouseFlushingHalfDuration * water__q_preSdPlus.flushingHalf.flow,\n    },\n    smartWaterMeter: {\n      residentialDomestic: residentialDomesticValue * water__st_SWMEfficiency\n    },\n  };\n  return ret;"
     },
     {
       "id": "water__q_noop",
       "projectInputs": [],
-      "staticValues": [
-        "water__st_pumpEfficiency",
-        "water__st_motorEfficiency",
-        "water__st_specificGravityOfWater",
-        "water__st_pumpFlowRate"
-      ],
+      "staticValues": ["water__st_pumpEfficiency", "water__st_motorEfficiency", "water__st_specificGravityOfWater", "water__st_pumpFlowRate"],
       "lookUps": [],
       "quantities": [],
       "output": "return null"

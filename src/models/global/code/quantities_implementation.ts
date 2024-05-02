@@ -1,1 +1,28 @@
-import { irr } from 'node-irr'; import { HwmDemandAssumptionBase, HwmDemandAssumptionVilla, HwmDemandAssumptionPenthouse, DemandAssumptionApartment, HwmDemandByBath, HwmOption, HeatPumpType, SwhType, SwhVariant, HpType, HwmHpHeatingSpeed, SdPlusInterventions, CurrentWaterTableRow, CurrentWaterTable, CurrentWaterTableInputsRow, CurrentWaterTableInputs, WaterPreSdPlusRow, WaterPreSdPlus, PlumbingDetailsPreSdPlus, EFCalculator, StpCalculator, PreSDPlusDemand, OutcomesPreSdPlus } from '../../../utilities/types'; import * as utilities from '../../../utilities/utility'; import { CityDbData, SDPlusDefaultsStore } from '../../../utilities/stores';export  function global__q_noop(global__st_hoursInDay:number,global__st_daysInYear,global__st_convertLtoKL,global__st_convertKgToTon,global__st_treesPerTonCF,global__st_convertJoulesTokW,global__st_convertLtoM3,global__st_accelarationDueToGravity,global__st_globalDaysInAYear:number,global__st_globalLToKlConverter:number){return null;}
+import { irr } from 'node-irr';
+import {
+  HwmDemandAssumptionBase,
+  HwmDemandAssumptionVilla,
+  HwmDemandAssumptionPenthouse,
+  DemandAssumptionApartment,
+  HwmDemandByBath,
+  HwmOption,
+  HeatPumpType,
+  SwhType,
+  SwhVariant,
+  HpType,
+  HwmHpHeatingSpeed,
+  SdPlusInterventions,
+  CurrentWaterTableRow,
+  CurrentWaterTable,
+  CurrentWaterTableInputsRow,
+  CurrentWaterTableInputs,
+  WaterPreSdPlusRow,
+  WaterPreSdPlus,
+  PlumbingDetailsPreSdPlus,
+  EFCalculator,
+  StpCalculator,
+  PreSDPlusDemand,
+  OutcomesPreSdPlus,
+} from '../../../utilities/types';
+import * as utilities from '../../../utilities/utility';
+import { CityDbData, SDPlusDefaultsStore } from '../../../utilities/stores';

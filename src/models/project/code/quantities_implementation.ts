@@ -1,2 +1,28 @@
-import { irr } from 'node-irr'; import { HwmDemandAssumptionBase, HwmDemandAssumptionVilla, HwmDemandAssumptionPenthouse, DemandAssumptionApartment, HwmDemandByBath, HwmOption, HeatPumpType, SwhType, SwhVariant, HpType, HwmHpHeatingSpeed, SdPlusInterventions, CurrentWaterTableRow, CurrentWaterTable, CurrentWaterTableInputsRow, CurrentWaterTableInputs, WaterPreSdPlusRow, WaterPreSdPlus, PlumbingDetailsPreSdPlus, EFCalculator, StpCalculator, PreSDPlusDemand, OutcomesPreSdPlus } from '../../../utilities/types'; import * as utilities from '../../../utilities/utility'; import { CityDbData, SDPlusDefaultsStore } from '../../../utilities/stores';export  function project__q_availableRooftop(project__pi_rooftopArea:number,project__pi_unavailableRooftopArea:number){return null;}
-export  function project__q_noop(project__pi_city:string,project__pi_swimmingPool:number,project__pi_numberOfFloors:number,project__pi_floorHeight:number,project__pi_landscapeArea:number,project__pi_noOfCarParks:number,project__pi_areaOfLobbiesAndCorridors:number,project__pi_swimmingPoolSurfaceArea:number,project__pi_availableVillaRooftop:number,project__pi_availablePenthouseRooftop:number,project__pi_floorToFloorHeight){return null;}
+import { irr } from 'node-irr';
+import {
+  HwmDemandAssumptionBase,
+  HwmDemandAssumptionVilla,
+  HwmDemandAssumptionPenthouse,
+  DemandAssumptionApartment,
+  HwmDemandByBath,
+  HwmOption,
+  HeatPumpType,
+  SwhType,
+  SwhVariant,
+  HpType,
+  HwmHpHeatingSpeed,
+  SdPlusInterventions,
+  CurrentWaterTableRow,
+  CurrentWaterTable,
+  CurrentWaterTableInputsRow,
+  CurrentWaterTableInputs,
+  WaterPreSdPlusRow,
+  WaterPreSdPlus,
+  PlumbingDetailsPreSdPlus,
+  EFCalculator,
+  StpCalculator,
+  PreSDPlusDemand,
+  OutcomesPreSdPlus,
+} from '../../../utilities/types';
+import * as utilities from '../../../utilities/utility';
+import { CityDbData, SDPlusDefaultsStore } from '../../../utilities/stores';

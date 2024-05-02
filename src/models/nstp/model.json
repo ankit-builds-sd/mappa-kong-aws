@@ -1,8 +1,6 @@
 {
   "namespace": "nstp",
-  "extends": [
-    "../twr"
-  ],
+  "extends": ["../twr"],
   "types": {
     "nstp__st_goalMonitoringWaterTarget": "number",
     "nstp__st_goalSetting": "number",
@@ -63,39 +61,23 @@
       "projectInputs": [],
       "staticValues": [],
       "lookUps": [],
-      "quantities": [
-        "nstp__q_outcomes",
-        "nstp__q_flowDiagram"
-      ],
+      "quantities": ["nstp__q_outcomes", "nstp__q_flowDiagram"],
       "output": "return {\n    title: \"Treated water reuse by category\",\n    totalSavings: nstp__q_outcomes.annualWater,\n    seriesNameOne:'Domestic',\n    seriesValueOne: nstp__q_flowDiagram.flowDiagramDomestic,\n    seriesNameTwo: 'Health Faucet',\n    seriesValueTwo: nstp__q_flowDiagram.flowDiagramHealthFaucet,\n    seriesNameThree: 'Flushing',\n    seriesValueThree: nstp__q_flowDiagram.flowDiagramFlushing,\n    seriesNameFour: 'Common Area',\n    seriesValueFour: nstp__q_flowDiagram.flowDiagramCommonArea,\n    seriesNameFive: 'Drinking',\n    seriesValueFive: nstp__q_flowDiagram.flowDiagramDrinking\n}"
     },
     {
       "id": "nstp__q_goalMonitoring",
       "projectInputs": [],
-      "staticValues": [
-        "nstp__st_goalMonitoringWaterTarget",
-        "nstp__st_goalSetting",
-        "nstp__st_waterGoalTarget"
-      ],
+      "staticValues": ["nstp__st_goalMonitoringWaterTarget", "nstp__st_goalSetting", "nstp__st_waterGoalTarget"],
       "lookUps": [],
-      "quantities": [
-        "nstp__q_outcomes"
-      ],
+      "quantities": ["nstp__q_outcomes"],
       "output": "let ret= {\n    waterGoal: nstp__st_goalMonitoringWaterTarget,\n    nstpContribution: (nstp__q_outcomes.annualWater * 100) / (nstp__st_goalSetting - nstp__st_waterGoalTarget)\n}\nreturn ret;"
     },
     {
       "id": "nstp__q_secondaryImpact",
-      "projectInputs": [
-        "nstp__pi_city"
-      ],
-      "staticValues": [
-        "nstp__st_globalIndiaAverageElectricityTariff"
-      ],
+      "projectInputs": ["nstp__pi_city"],
+      "staticValues": ["nstp__st_globalIndiaAverageElectricityTariff"],
       "lookUps": [],
-      "quantities": [
-        "nstp__q_outcomesPreSdPlus",
-        "nstp__q_outcomes"
-      ],
+      "quantities": ["nstp__q_outcomesPreSdPlus", "nstp__q_outcomes"],
       "output": "const nstpPassiveEnergy = (nstp__q_outcomesPreSdPlus.annualEnergy / nstp__st_globalIndiaAverageElectricityTariff) - (nstp__q_outcomes.nstpCapexAnnualEnergyPostSdPlus/ CityDbData[nstp__pi_city].residentialDomestic) \nconst nstpEnergyOPex = (nstp__q_outcomesPreSdPlus.annualEnergy) - nstp__q_outcomes.nstpCapexAnnualEnergyPostSdPlus\nreturn {\n    nstpPassiveEnergy: nstpPassiveEnergy,\n    nstpEnergyOPex: nstpEnergyOPex,\n    nstpPassiveWasteKg: 0,\n    nstpPassiveWasteOpex: 0\n}"
     },
     {
@@ -108,9 +90,7 @@
     },
     {
       "id": "nstp__q_projectLevelInsights",
-      "projectInputs": [
-        "nstp__pi_city"
-      ],
+      "projectInputs": ["nstp__pi_city"],
       "staticValues": [
         "nstp__st_annualWater",
         "nstp__st_globalLtoKLConverter",
@@ -124,10 +104,7 @@
     },
     {
       "id": "nstp__q_outcomesPreSdPlus",
-      "projectInputs": [
-        "nstp__pi_city",
-        "nstp__pi_baseCaseStp"
-      ],
+      "projectInputs": ["nstp__pi_city", "nstp__pi_baseCaseStp"],
       "staticValues": [
         "nstp__st_globalYoyInflationMBBR",
         "nstp__st_globalCurrentYearMBBR",
@@ -164,16 +141,12 @@
         "nstp__st_sbrArea"
       ],
       "lookUps": [],
-      "quantities": [
-        "twr__q_stpCapacityCalculator"
-      ],
+      "quantities": ["twr__q_stpCapacityCalculator"],
       "output": "let capex = 0;\n    let opex = 0;\n    let annualEnergy = 0;\n    let nstpAreaPreSdPlus = 0;\n\n    if (nstp__pi_baseCaseStp === 'MBBR') {\n        let { stpcoCapex: capOne, stpcoAnnualEnergy: energyOne, stpcoOpex: opexOne } = utilities.utility_stpCapexOpex(nstp__st_globalYoyInflationMBBR,\n            nstp__st_globalCurrentYearMBBR,\n            nstp__st_stpcoStudyYearMBBR,\n            nstp__st_stpcoCivilMBBR,\n            nstp__st_stpcoMAndEMBBR,\n            nstp__st_stpcoCapacityMBBR,\n            nstp__st_stpcoInflationMBBR,\n            nstp__st_stpcoElectricityMBBR,\n            nstp__pi_city,\n            nstp__st_stpcoChemicalMBBR,\n            nstp__st_stpcoWorkforceMBBR);\n        capex = capex + capOne;\n        opex = opex + opexOne;\n        annualEnergy = annualEnergy + energyOne;\n        nstpAreaPreSdPlus = nstp__st_mbbrArea * twr__q_stpCapacityCalculator.stpCapacity\n    };\n    if (nstp__pi_baseCaseStp === 'MBR') {\n        let { stpcoCapex: capTwo, stpcoAnnualEnergy: energyTwo, stpcoOpex: opexTwo } = utilities.utility_stpCapexOpex(nstp__st_globalYoyInflationMBR,\n            nstp__st_globalCurrentYearMBR,\n            nstp__st_stpcoStudyYearMBR,\n            nstp__st_stpcoCivilMBR,\n            nstp__st_stpcoMAndEMBR,\n            nstp__st_stpcoCapacityMBR,\n            nstp__st_stpcoInflationMBR,\n            nstp__st_stpcoElectricityMBR,\n            nstp__pi_city,\n            nstp__st_stpcoChemicalMBR,\n            nstp__st_stpcoWorkforceMBR);\n        capex = capex + capTwo;\n        opex = opex + opexTwo;\n        annualEnergy = annualEnergy + energyTwo;\n        nstpAreaPreSdPlus = nstp__st_mbrArea * twr__q_stpCapacityCalculator.stpCapacity\n    };\n    if (nstp__pi_baseCaseStp === 'SBR') {\n        let { stpcoCapex: capThree, stpcoAnnualEnergy: energyThree, stpcoOpex: opexThree } = utilities.utility_stpCapexOpex(nstp__st_globalYoyInflationSBR,\n            nstp__st_globalCurrentYearSBR,\n            nstp__st_stpcoStudyYearSBR,\n            nstp__st_stpcoCivilSBR,\n            nstp__st_stpcoMAndESBR,\n            nstp__st_stpcoCapacitySBR,\n            nstp__st_stpcoInflationSBR,\n            nstp__st_stpcoElectricitySBR,\n            nstp__pi_city,\n            nstp__st_stpcoChemicalSBR,\n            nstp__st_stpcoWorkforceSBR);\n   \n        capex = capex + capThree;\n        opex = opex + opexThree;\n        annualEnergy = annualEnergy + energyThree;\n        nstpAreaPreSdPlus = nstp__st_sbrArea * twr__q_stpCapacityCalculator.stpCapacity\n    };\n    return {\n        capex: capex,\n        opex: opex,\n        annualEnergy: annualEnergy,\n        nstpAreaPreSdPlus: nstpAreaPreSdPlus\n    }"
     },
     {
       "id": "nstp__q_outcomes",
-      "projectInputs": [
-        "nstp__pi_city"
-      ],
+      "projectInputs": ["nstp__pi_city"],
       "staticValues": [
         "nstp__st_waterSavingPercentage",
         "nstp__st_selectedProductPrice",
@@ -185,10 +158,7 @@
         "nstp__st_selectedProductArea"
       ],
       "lookUps": [],
-      "quantities": [
-        "twr__q_stpCapacityCalculator",
-        "nstp__q_outcomesPreSdPlus"
-      ],
+      "quantities": ["twr__q_stpCapacityCalculator", "nstp__q_outcomesPreSdPlus"],
       "output": "const energy = nstp__st_selectedProductOpexElectricity * twr__q_stpCapacityCalculator.stpCapacity * CityDbData[nstp__pi_city].residentialUtilityTariff;\nconst workforce = nstp__st_selectedProductOpexWorkforce * nstp__st_globalStandardWorkforceSalary;\nconst chemical = nstp__st_selectedProductOpexChemical * twr__q_stpCapacityCalculator.stpCapacity;\nconst bacteria = nstp__st_selectedProductOpexBacteria * twr__q_stpCapacityCalculator.stpCapacity;\nlet ret = {\n    annualWater: twr__q_stpCapacityCalculator.stpCapacity * nstp__st_waterSavingPercentage,\n    capexPostSdPlus: twr__q_stpCapacityCalculator.stpCapacity * nstp__st_selectedProductPrice,\n    nstpCapex: (twr__q_stpCapacityCalculator.stpCapacity * nstp__st_selectedProductPrice) - nstp__q_outcomesPreSdPlus.capex,\n    nstpCapexAnnualEnergyPostSdPlus: energy,\n    nstpCapexAnnualWorkforcePostSdPlus: workforce,\n    nstpCapexAnnualEnergyChemicalSdPlus: chemical,\n    nstpCapexAnnualBacteriaPostSdPlus: bacteria,\n    nstpOpex: nstp__q_outcomesPreSdPlus.opex - (energy + bacteria + workforce + chemical),\n    nstpArea: nstp__st_selectedProductArea * twr__q_stpCapacityCalculator.stpCapacity\n};\nreturn ret"
     }
   ]

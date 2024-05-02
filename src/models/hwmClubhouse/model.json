@@ -1,10 +1,6 @@
 {
   "namespace": "hwmClubhouse",
-  "extends": [
-    "../hwm",
-    "../project",
-    "../global"
-  ],
+  "extends": ["../hwm", "../project", "../global"],
   "quantities": [
     {
       "id": "hwmClubhouse__q_outcomes",
@@ -36,82 +32,47 @@
         "hwm__st_outletTempOther"
       ],
       "lookUps": [],
-      "quantities": [
-        "hwmClubhouse__q_outcomesPreSdPlus",
-        "hwmClubhouse__q_technologySelection"
-      ],
+      "quantities": ["hwmClubhouse__q_outcomesPreSdPlus", "hwmClubhouse__q_technologySelection"],
       "output": "let defaultProductIdentifier: string;\nlet theProduct: any;\nlet defaultHwmClubhouseCapacity: number;\nlet hwmClubhouseEnergyAnnual: any;\nlet hwmClubhouseCapexPostSdPlus: any;\nlet hwmClubhouseCapex: number;\nlet hwmClubhouseOpex: number;\nlet hwmClubhouseAreaRequired: number;\nlet numberOfDomesticHp: number;\nlet numberOfCommercialHp: number;\nlet selectedProductRatedHeatingCapacity: number;\nlet selectedProductPrice: number; //change it once marketplace integrated\nlet selectedProductCapacity: number; //chnage it once marketplace integrated\nlet selectedProductRatedInputPower: number;\nlet numberOfProducts: number;\nlet hpProductResolver;\nlet time = utilities.utility_hwmHpTimeCalculator(\nhwmClubhouse__pi_hpHeatingSpeed,\nhwm__st_slowHeatingTime,\nhwm__st_fastHeatingTime,\nhwm__st_defaultHeatingTime\n);\nif (\nhwmClubhouse__pi_option === 'solar water heater' &&\nhwmClubhouse__pi_swhType === 'central'\n) {\ndefaultProductIdentifier = utilities.utility_swhProductResolver(\n  hwmClubhouse__pi_swhType,\n  hwmClubhouse__pi_swhVariant,\n  hwmClubhouse__q_technologySelection.defaultSwhCentralCapacity,\n  'HWM_Clubhouse'\n);\ntheProduct = utilities.utility_defaultOrSelectedProduct(\n  defaultProductIdentifier,\n  hwmClubhouse__pi_selectedProductIdentifier\n);\nselectedProductPrice = utilities.utility_numberFromString(theProduct.price);\nselectedProductCapacity = utilities.utility_numberFromString(\n  theProduct.filters['Capacity '][0]\n);\ndefaultHwmClubhouseCapacity =\n  hwmClubhouse__q_technologySelection.defaultSwhCentralCapacity;\ndefaultHwmClubhouseCapacity = utilities.utility_userOrDefaultValue(\n  defaultHwmClubhouseCapacity,\n  hwmClubhouse__pi_userSwhCapacity\n);\nhwmClubhouseEnergyAnnual = utilities.utility_swhEnergySavings(\n  hwmClubhouse__pi_swhType,\n  hwmClubhouse__q_technologySelection.defaultSwhCentralCapacity,\n  0\n);\nhwmClubhouseCapexPostSdPlus = utilities.utility_swhCapex(\n  hwmClubhouse__pi_swhType,\n  hwmClubhouse__q_technologySelection.defaultSwhCentralCapacity,\n  selectedProductPrice,\n  selectedProductCapacity,\n  0\n);\nhwmClubhouseCapex =\n  hwmClubhouseCapexPostSdPlus -\n  hwmClubhouse__q_outcomesPreSdPlus.hwmCapexPreSdPlus;\nhwmClubhouseOpex = utilities.utility_energyOpex(\n  hwmClubhouseEnergyAnnual,\n  project__pi_city\n);\nhwmClubhouseAreaRequired =\n  hwmClubhouse__q_technologySelection.swhAreaRequired;\n} else if (\nhwmClubhouse__pi_option === 'solar water heater' &&\nhwmClubhouse__pi_swhType === 'individual'\n) {\ndefaultProductIdentifier = utilities.utility_swhProductResolver(\n  hwmClubhouse__pi_swhType,\n  hwmClubhouse__pi_swhVariant,\n  hwmClubhouse__q_technologySelection.defaultSwhIndividualCapacity,\n  'HWM_Clubhouse'\n);\ntheProduct = utilities.utility_defaultOrSelectedProduct(\n  defaultProductIdentifier,\n  hwmClubhouse__pi_selectedProductIdentifier\n);\nselectedProductPrice = utilities.utility_numberFromString(theProduct.price);\nselectedProductCapacity = utilities.utility_numberFromString(\n  theProduct.filters['Capacity '][0]\n);\nnumberOfProducts =\n  hwmClubhouse__q_technologySelection.defaultSwhIndividualCapacity /\n  selectedProductCapacity;\ndefaultHwmClubhouseCapacity =\n  hwmClubhouse__q_technologySelection.defaultSwhIndividualCapacity;\ndefaultHwmClubhouseCapacity = utilities.utility_userOrDefaultValue(\n  defaultHwmClubhouseCapacity,\n  hwmClubhouse__pi_userSwhCapacity\n);\nhwmClubhouseEnergyAnnual = utilities.utility_swhEnergySavings(\n  hwmClubhouse__pi_swhType,\n  hwmClubhouse__q_technologySelection.defaultSwhIndividualCapacity,\n  numberOfProducts\n);\nhwmClubhouseCapexPostSdPlus = utilities.utility_swhCapex(\n  hwmClubhouse__pi_swhType,\n  hwmClubhouse__q_technologySelection.defaultSwhIndividualCapacity,\n  selectedProductPrice,\n  selectedProductCapacity,\n  numberOfProducts\n);\nhwmClubhouseCapex =\n  hwmClubhouseCapexPostSdPlus -\n  hwmClubhouse__q_outcomesPreSdPlus.hwmCapexPreSdPlus;\nhwmClubhouseAreaRequired =\n  hwmClubhouse__q_technologySelection.swhAreaRequired;\n} else if (\nhwmClubhouse__pi_option === 'heat pump' &&\nhwmClubhouse__pi_hpType === 'domestic'\n) {\nconst outletTemp = utilities.utility_hwmOutletTemp(\n  hwmClubhouse__pi_hpType,\n  hwm__st_outletTempSwimmingPool,\n  hwm__st_outletTempOther\n);\nhpProductResolver = utilities.utility_hpProductresolver(\n  hwmClubhouse__pi_hpType,\n  hwmClubhouse__q_technologySelection.defaultHpDomesticCapacity,\n  time,\n  project__pi_floorHeight,\n  project__pi_numberOfFloors,\n  outletTemp,\n  hwm__st_initialTemp,\n  hwm__st_conversionFactor,\n  global__st_hoursInDay,\n  hwm__st_heatLossCoeff,\n  hwm__st_supRet,\n  hwm__st_numberOfShafts,\n  hwm__st_hzPipe,\n  'HWM_Clubhouse'\n);\ntheProduct = utilities.utility_defaultOrSelectedProduct(\n  hpProductResolver.defaultProductIdentifier,\n  hwmClubhouse__pi_selectedProductIdentifier\n);\nselectedProductPrice = utilities.utility_numberFromString(theProduct.price);\nselectedProductRatedHeatingCapacity = utilities.utility_numberFromObject(\n  theProduct.properties,\n  'Rated Heating Capacity (kW)'\n);\nselectedProductCapacity = utilities.utility_numberFromString(\n  theProduct.filters['Capacity '][0]\n);\nnumberOfProducts =\n  hpProductResolver.requiredHeatingCapacity /\n  selectedProductRatedHeatingCapacity;\ndefaultHwmClubhouseCapacity =\n  hwmClubhouse__q_technologySelection.defaultHpDomesticCapacity;\ndefaultHwmClubhouseCapacity = utilities.utility_userOrDefaultValue(\n  defaultHwmClubhouseCapacity,\n  hwmClubhouse__pi_userHpCapacity\n);\nhwmClubhouseEnergyAnnual = utilities.utility_hpEnergySavings(\n  hwmClubhouse__pi_hpType,\n  hwmClubhouse__q_technologySelection.defaultHpDomesticCapacity,\n  selectedProductRatedInputPower,\n  numberOfProducts,\n  time\n);\nhwmClubhouseCapexPostSdPlus = utilities.utility_hpCapex(\n  hwmClubhouse__pi_hpType,\n  hwmClubhouse__q_technologySelection.defaultHpDomesticCapacity,\n  numberOfProducts,\n  selectedProductPrice,\n  selectedProductRatedInputPower,\n  hpProductResolver.pipelength\n);\nhwmClubhouseCapex =\n  hwmClubhouseCapexPostSdPlus -\n  hwmClubhouse__q_outcomesPreSdPlus.hwmCapexPreSdPlus;\nhwmClubhouseOpex = utilities.utility_energyOpex(\n  hwmClubhouseEnergyAnnual,\n  project__pi_city\n);\nhwmClubhouseAreaRequired =\n  hwmClubhouse__q_technologySelection.hpAreaRequired;\n} else if (\nhwmClubhouse__pi_option === 'heat pump' &&\nhwmClubhouse__pi_hpType === 'commercial'\n) {\nconst outletTemp = utilities.utility_hwmOutletTemp(\n  hwmClubhouse__pi_hpType,\n  hwm__st_outletTempSwimmingPool,\n  hwm__st_outletTempOther\n);\nhpProductResolver = utilities.utility_hpProductresolver(\n  hwmClubhouse__pi_hpType,\n  hwmClubhouse__q_technologySelection.defaultHpDomesticCapacity,\n  time,\n  project__pi_floorHeight,\n  project__pi_numberOfFloors,\n  outletTemp,\n  hwm__st_initialTemp,\n  hwm__st_conversionFactor,\n  global__st_hoursInDay,\n  hwm__st_heatLossCoeff,\n  hwm__st_supRet,\n  hwm__st_numberOfShafts,\n  hwm__st_hzPipe,\n  'HWM_Clubhouse'\n);\ntheProduct = utilities.utility_defaultOrSelectedProduct(\n  hpProductResolver.defaultProductIdentifier,\n  hwmClubhouse__pi_selectedProductIdentifier\n);\nselectedProductPrice = utilities.utility_numberFromString(theProduct.price);\nselectedProductRatedHeatingCapacity = utilities.utility_numberFromObject(\n  theProduct.properties,\n  'Rated Heating Capacity (kW)'\n);\nselectedProductCapacity = utilities.utility_numberFromString(\n  theProduct.filters['Capacity '][0]\n);\nnumberOfProducts =\n  hpProductResolver.requiredHeatingCapacity /\n  selectedProductRatedHeatingCapacity;\ndefaultHwmClubhouseCapacity =\n  hwmClubhouse__q_technologySelection.defaultHpCommercialCapacity;\ndefaultHwmClubhouseCapacity = utilities.utility_userOrDefaultValue(\n  defaultHwmClubhouseCapacity,\n  hwmClubhouse__pi_userHpCapacity\n);\nhwmClubhouseEnergyAnnual = utilities.utility_hpEnergySavings(\n  hwmClubhouse__pi_hpType,\n  hwmClubhouse__q_technologySelection.defaultHpCommercialCapacity,\n  selectedProductRatedInputPower,\n  numberOfProducts,\n  time\n);\nhwmClubhouseCapexPostSdPlus = utilities.utility_hpCapex(\n  hwmClubhouse__pi_hpType,\n  hwmClubhouse__q_technologySelection.defaultHpCommercialCapacity,\n  numberOfProducts,\n  selectedProductPrice,\n  selectedProductRatedInputPower,\n  hpProductResolver.pipelength\n);\nhwmClubhouseCapex =\n  hwmClubhouseCapexPostSdPlus -\n  hwmClubhouse__q_outcomesPreSdPlus.hwmCapexPreSdPlus;\nhwmClubhouseOpex = utilities.utility_energyOpex(\n  hwmClubhouseEnergyAnnual,\n  project__pi_city\n);\nhwmClubhouseAreaRequired =\n  hwmClubhouse__q_technologySelection.hpAreaRequired;\n}\nreturn {\ndefaultOrSelectedProductIdentifier: theProduct.identifier,\ndefaultHwmClubhouseCapacity,\nhwmClubhouseEnergyAnnual,\nhwmClubhouseCapexPostSdPlus,\nhwmClubhouseCapex,\nhwmClubhouseOpex,\nhwmClubhouseAreaRequired,\nnumberOfDomesticHp,\nnumberOfCommercialHp,\nhpProductResolver,\n};"
     },
     {
       "id": "hwmClubhouse__q_hwmDemand",
-      "projectInputs": [
-        "hwmClubhouse__pi_demandAssumption",
-        "hwmClubhouse__pi_lpcdPerOccupant",
-        "hwmClubhouse__pi_swimmingPoolSurfaceArea"
-      ],
-      "staticValues": [
-        "hwmClubhouse__st_poolAreaPerOccupant",
-        "hwmClubhouse__st_showerDiversity"
-      ],
+      "projectInputs": ["hwmClubhouse__pi_demandAssumption", "hwmClubhouse__pi_lpcdPerOccupant", "hwmClubhouse__pi_swimmingPoolSurfaceArea"],
+      "staticValues": ["hwmClubhouse__st_poolAreaPerOccupant", "hwmClubhouse__st_showerDiversity"],
       "lookUps": [],
       "quantities": [],
       "output": "let hotWaterPerOccupant = null;\nlet poolOccupants = null;\nlet hwmDemand = null;\nhwmClubhouse__pi_demandAssumption = 'lpcd per occupant';\nhotWaterPerOccupant = hwmClubhouse__pi_lpcdPerOccupant;\npoolOccupants =\nhwmClubhouse__pi_swimmingPoolSurfaceArea /\nhwmClubhouse__st_poolAreaPerOccupant;\nhwmDemand =\nutilities.roundTo100(hotWaterPerOccupant * poolOccupants) *\nhwmClubhouse__st_showerDiversity;\nreturn { hotWaterPerOccupant, poolOccupants, hwmDemand };"
     },
     {
       "id": "hwmClubhouse__q_technologySelection",
-      "projectInputs": [
-        "hwmClubhouse__pi_clubhouseRooftopArea"
-      ],
-      "staticValues": [
-        "hwmClubhouse__st_hotWaterHours",
-        "hwm__st_rooftopPerSwh",
-        "hwm__st_rooftopPerHp"
-      ],
+      "projectInputs": ["hwmClubhouse__pi_clubhouseRooftopArea"],
+      "staticValues": ["hwmClubhouse__st_hotWaterHours", "hwm__st_rooftopPerSwh", "hwm__st_rooftopPerHp"],
       "lookUps": [],
-      "quantities": [
-        "hwmClubhouse__q_hwmDemand"
-      ],
+      "quantities": ["hwmClubhouse__q_hwmDemand"],
       "output": "let availableRooftop = null;\nlet swhAreaRequired = null;\nlet defaultSwhCentralCapacity = null;\nlet defaultSwhIndividualCapacity = null;\nlet hpAreaRequired = null;\nlet defaultHpCommercialCapacity = null;\nlet defaultHpDomesticCapacity = null;\navailableRooftop = hwmClubhouse__pi_clubhouseRooftopArea;\nswhAreaRequired = hwmClubhouse__q_hwmDemand.hwmDemand * hwm__st_rooftopPerSwh;\nif (availableRooftop > swhAreaRequired) {\ndefaultSwhCentralCapacity = hwmClubhouse__q_hwmDemand.hwmDemand;\ndefaultSwhIndividualCapacity = hwmClubhouse__q_hwmDemand.hwmDemand;\n} else {\nswhAreaRequired = availableRooftop;\ndefaultSwhCentralCapacity =\n  utilities.roundTo100(availableRooftop) / hwm__st_rooftopPerSwh;\ndefaultSwhIndividualCapacity =\n  utilities.roundTo100(availableRooftop) / hwm__st_rooftopPerSwh;\n}\nhpAreaRequired = hwmClubhouse__q_hwmDemand.hwmDemand * hwm__st_rooftopPerHp;\nif (availableRooftop > hpAreaRequired) {\ndefaultHpCommercialCapacity = hwmClubhouse__q_hwmDemand.hwmDemand;\ndefaultHpDomesticCapacity = hwmClubhouse__q_hwmDemand.hwmDemand;\n} else {\nhpAreaRequired = availableRooftop;\ndefaultHpCommercialCapacity =\n  utilities.roundTo100(availableRooftop) / hwm__st_rooftopPerHp;\ndefaultHpDomesticCapacity =\n  utilities.roundTo100(availableRooftop) / hwm__st_rooftopPerHp;\n}\nreturn {\nswhAreaRequired,\ndefaultSwhCentralCapacity,\ndefaultSwhIndividualCapacity,\nhpAreaRequired,\ndefaultHpCommercialCapacity,\ndefaultHpDomesticCapacity,\n};"
     },
     {
       "id": "hwmClubhouse__q_outcomesPreSdPlus",
       "projectInputs": [],
-      "staticValues": [
-        "hwm__st_baseCasePerLPDkWh",
-        "hwm__st_swhCapexMultiplier",
-        "hwm__st_baseCaseClubhouseSwhCapacity"
-      ],
+      "staticValues": ["hwm__st_baseCasePerLPDkWh", "hwm__st_swhCapexMultiplier", "hwm__st_baseCaseClubhouseSwhCapacity"],
       "lookUps": [],
       "quantities": [],
       "output": "let hwmClubhouseEnergyAnnualPreSdPlus =\nhwm__st_baseCaseClubhouseSwhCapacity * hwm__st_baseCasePerLPDkWh;\nlet hwmCapexPreSdPlus =\nhwm__st_baseCaseClubhouseSwhCapacity * hwm__st_swhCapexMultiplier;\nreturn {\nhwmClubhouseEnergyAnnualPreSdPlus,\nhwmCapexPreSdPlus,\n};"
     },
     {
       "id": "hwmClubhouse__q_projectLevelInsights",
-      "projectInputs": [
-        "project__pi_city",
-        "hwmClubhouse__pi_userCityEmissionFactor"
-      ],
-      "staticValues": [
-        "global__st_convertKgToTon",
-        "global__st_treesPerTonCF",
-        "hwm__st_sdgNumberForHwm"
-      ],
+      "projectInputs": ["project__pi_city", "hwmClubhouse__pi_userCityEmissionFactor"],
+      "staticValues": ["global__st_convertKgToTon", "global__st_treesPerTonCF", "hwm__st_sdgNumberForHwm"],
       "lookUps": [],
-      "quantities": [
-        "hwmClubhouse__q_outcomes"
-      ],
+      "quantities": ["hwmClubhouse__q_outcomes"],
       "output": "let defaultCityEmissionFactor =\nutilities.utility_getCityEmissionFactors(project__pi_city);\ndefaultCityEmissionFactor = utilities.utility_userOrDefaultValue(\ndefaultCityEmissionFactor,\nhwmClubhouse__pi_userCityEmissionFactor\n);\nlet cfMitigated =\ndefaultCityEmissionFactor *\nhwmClubhouse__q_outcomes.hwmClubhouseEnergyAnnual *\nglobal__st_convertKgToTon;\nlet sdgNumber = hwm__st_sdgNumberForHwm;\nlet treesSaved = cfMitigated * global__st_treesPerTonCF;\nlet totalEnergyConsumptionPercentage =\n(hwmClubhouse__q_outcomes.hwmClubhouseEnergyAnnual * 100) / 200;\nlet residentialHotWaterEnergyConsumption =\n(hwmClubhouse__q_outcomes.hwmClubhouseEnergyAnnual * 100) / 300;\nreturn {\ncfMitigated,\nsdgNumber,\ntreesSaved,\ntotalEnergyConsumptionPercentage,\nresidentialHotWaterEnergyConsumption,\n};"
     },
     {
       "id": "hwmClubhouse__q_flowDiagram",
       "projectInputs": [],
-      "staticValues": [
-        "global__st_daysInYear"
-      ],
+      "staticValues": ["global__st_daysInYear"],
       "lookUps": [],
-      "quantities": [
-        "hwmClubhouse__q_outcomes"
-      ],
+      "quantities": ["hwmClubhouse__q_outcomes"],
       "output": "let residentialHotWater = 0;\nlet residentialLighting = 0;\nlet residentialFan = 0;\nlet homeAppliances = 0;\nlet residentialHVAC = 0;\nlet commonArea =\nhwmClubhouse__q_outcomes.hwmClubhouseEnergyAnnual / global__st_daysInYear;\nreturn {\nresidentialHotWater,\nresidentialLighting,\nresidentialFan,\nhomeAppliances,\nresidentialHVAC,\ncommonArea,\n};"
     },
     {
@@ -127,22 +88,15 @@
       "projectInputs": [],
       "staticValues": [],
       "lookUps": [],
-      "quantities": [
-        "hwmClubhouse__q_outcomes"
-      ],
+      "quantities": ["hwmClubhouse__q_outcomes"],
       "output": "let energyGoal = 100;\nlet contribution =\n(hwmClubhouse__q_outcomes.hwmClubhouseEnergyAnnual * 100) / 200;\nreturn { energyGoal, contribution };"
     },
     {
       "id": "hwmClubhouse__q_overviewBarGraph",
       "projectInputs": [],
-      "staticValues": [
-        "hwmClubhouse__st_minValue"
-      ],
+      "staticValues": ["hwmClubhouse__st_minValue"],
       "lookUps": [],
-      "quantities": [
-        "hwmClubhouse__q_flowDiagram",
-        "hwmClubhouse__q_outcomes"
-      ],
+      "quantities": ["hwmClubhouse__q_flowDiagram", "hwmClubhouse__q_outcomes"],
       "output": "let barOneTitle = 'Annual Energy Savings';\nlet barOneValue = hwmClubhouse__q_outcomes.hwmClubhouseEnergyAnnual;\nlet barOneMax = hwmClubhouse__q_outcomes.hwmClubhouseEnergyAnnual;\nlet barOneMin = hwmClubhouse__st_minValue;\nlet barTwoSubOneTitle = 'Common Area';\nlet barTwoValue = hwmClubhouse__q_flowDiagram.commonArea;\nlet barTwoSubOneTitlePercentage = (barTwoValue * 100) / barOneValue;\nreturn {\nbarOneTitle,\nbarOneValue,\nbarOneMax,\nbarOneMin,\nbarTwoSubOneTitle,\nbarTwoValue,\nbarTwoSubOneTitlePercentage,\n};"
     },
     {
@@ -150,9 +104,7 @@
       "projectInputs": [],
       "staticValues": [],
       "lookUps": [],
-      "quantities": [
-        "hwmClubhouse__q_outcomes"
-      ],
+      "quantities": ["hwmClubhouse__q_outcomes"],
       "output": "let donutOneTitle = '% of Total Energy';\nlet donutOneValue =\n(hwmClubhouse__q_outcomes.hwmClubhouseEnergyAnnual * 100) / 200;\nlet donutTwoTitle = '% of Common Area Energy';\nlet donutTwoValue =\n(hwmClubhouse__q_outcomes.hwmClubhouseEnergyAnnual * 100) / 300;\nreturn {\ndonutOneTitle,\ndonutOneValue,\ndonutTwoTitle,\ndonutTwoValue,\n};"
     }
   ],

@@ -1,3 +1,9 @@
 {
-  "quantities" : [{"id":"ank4__q_noop","arguments":"ank4__pi_hpHeatingSpeed,ank4__pi_availableVillaRooftop,ank4__pi_availablePenthouseRooftop,ank4__pi_option,ank4__pi_swhType,ank4__pi_hpType,ank4__st_rooftopPerSwh,ank4__st_rooftopPerHp","body":"return null;"}]
+  "quantities": [
+    {
+      "id": "ank4__q_noop",
+      "arguments": "ank4__pi_hpHeatingSpeed,ank4__pi_availableVillaRooftop,ank4__pi_availablePenthouseRooftop,ank4__pi_option,ank4__pi_swhType,ank4__pi_hpType,ank4__st_rooftopPerSwh,ank4__st_rooftopPerHp",
+      "body": "return null;"
+    }
+  ]
 }

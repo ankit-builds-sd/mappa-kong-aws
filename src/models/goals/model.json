@@ -1,21 +1,13 @@
 {
   "namespace": "goals",
-  "extends": [
-    "project",
-    "trickle"
-  ],
+  "extends": ["project", "trickle"],
   "quantities": [
     {
       "id": "goals__q_totalGoalsAchieved",
       "projectInputs": [],
       "staticValues": [],
       "lookUps": [],
-      "quantities": [
-        "goals__q_goalNetZeroEnergy",
-        "goals__q_goalNetZeroWater",
-        "goals__q_goalNetZeroWaste",
-        "goals__q_goalNetZeroEmbodiedCarbon"
-      ],
+      "quantities": ["goals__q_goalNetZeroEnergy", "goals__q_goalNetZeroWater", "goals__q_goalNetZeroWaste", "goals__q_goalNetZeroEmbodiedCarbon"],
       "output": "let counter = 0;\nfor (const goal of [\ngoals__q_goalNetZeroEnergy,\ngoals__q_goalNetZeroWater,\ngoals__q_goalNetZeroWaste,\ngoals__q_goalNetZeroEmbodiedCarbon,\n]) {\nif (goal.status === 'Achieved') counter++;\n}\nreturn counter;"
     },
     {
@@ -23,12 +15,7 @@
       "projectInputs": [],
       "staticValues": [],
       "lookUps": [],
-      "quantities": [
-        "goals__q_targetNzeMORE",
-        "goals__q_targetNzeCAEN",
-        "goals__q_targetNzwCSWM",
-        "goals__q_targetNzecCSAM"
-      ],
+      "quantities": ["goals__q_targetNzeMORE", "goals__q_targetNzeCAEN", "goals__q_targetNzwCSWM", "goals__q_targetNzecCSAM"],
       "output": "let counter = 0;\nfor (const target of [\ngoals__q_targetNzeMORE,\ngoals__q_targetNzeCAEN,\ngoals__q_targetNzwCSWM,\ngoals__q_targetNzecCSAM,\n]) {\nif (target.status === 'Achieved') counter++;\n}\nreturn counter;"
     },
     {
@@ -36,12 +23,7 @@
       "projectInputs": [],
       "staticValues": [],
       "lookUps": [],
-      "quantities": [
-        "goals__q_targetNzeMORE",
-        "goals__q_targetNzeCAEN",
-        "goals__q_targetNzwCSWM",
-        "goals__q_targetNzecCSAM"
-      ],
+      "quantities": ["goals__q_targetNzeMORE", "goals__q_targetNzeCAEN", "goals__q_targetNzwCSWM", "goals__q_targetNzecCSAM"],
       "output": "let counter = 0;\nfor (const target of [\ngoals__q_targetNzeMORE,\ngoals__q_targetNzeCAEN,\ngoals__q_targetNzwCSWM,\ngoals__q_targetNzecCSAM,\n]) {\nif (target.state === true) counter++;\n}\nreturn counter;"
     },
     {
@@ -49,36 +31,20 @@
       "projectInputs": [],
       "staticValues": [],
       "lookUps": [],
-      "quantities": [
-        "goals__q_goalNetZeroEnergy",
-        "goals__q_goalNetZeroWater",
-        "goals__q_goalNetZeroWaste",
-        "goals__q_goalNetZeroEmbodiedCarbon"
-      ],
+      "quantities": ["goals__q_goalNetZeroEnergy", "goals__q_goalNetZeroWater", "goals__q_goalNetZeroWaste", "goals__q_goalNetZeroEmbodiedCarbon"],
       "output": "let sum = 0;\nfor (const goal of [\ngoals__q_goalNetZeroEnergy,\ngoals__q_goalNetZeroWater,\ngoals__q_goalNetZeroWaste,\ngoals__q_goalNetZeroEmbodiedCarbon,\n]) {\nsum += goal.costPerSqFt;\n}\nreturn sum;"
     },
     {
       "id": "goals__q_scorecard",
       "projectInputs": [],
-      "staticValues": [
-        "goals__st_totalGoalsTargeted"
-      ],
+      "staticValues": ["goals__st_totalGoalsTargeted"],
       "lookUps": [],
-      "quantities": [
-        "goals__q_totalGoalsAchieved",
-        "goals__q_totalTargetsAchieved",
-        "goals__q_totalTargetsTargeted",
-        "goals__q_scCapexIncrease"
-      ],
+      "quantities": ["goals__q_totalGoalsAchieved", "goals__q_totalTargetsAchieved", "goals__q_totalTargetsTargeted", "goals__q_scCapexIncrease"],
       "output": "return {\ngoals: {\n  achieved: goals__q_totalGoalsAchieved,\n  targeted: goals__st_totalGoalsTargeted,\n},\ntargets: {\n  achieved: goals__q_totalTargetsAchieved,\n  targeted: goals__q_totalTargetsTargeted,\n},\ncapexIncrease: goals__q_scCapexIncrease,\n};"
     },
     {
       "id": "goals__q_goalNetZeroEnergy",
-      "projectInputs": [
-        "trickle__pi_percentageEnergySavings",
-        "trickle__pi_capexSumEnergyEnabled",
-        "project__pi_builtUpArea"
-      ],
+      "projectInputs": ["trickle__pi_percentageEnergySavings", "trickle__pi_capexSumEnergyEnabled", "project__pi_builtUpArea"],
       "staticValues": [],
       "lookUps": [],
       "quantities": [],
@@ -147,11 +113,7 @@
     },
     {
       "id": "goals__q_goalNetZeroWaste",
-      "projectInputs": [
-        "trickle__pi_waterServiceSLPercentWS",
-        "trickle__pi_sumOfCapexInEnabledInterventionsInWaterCategory",
-        "trickle__pi_projectBuiltUpArea"
-      ],
+      "projectInputs": ["trickle__pi_waterServiceSLPercentWS", "trickle__pi_sumOfCapexInEnabledInterventionsInWaterCategory", "trickle__pi_projectBuiltUpArea"],
       "staticValues": [],
       "lookUps": [],
       "quantities": [],

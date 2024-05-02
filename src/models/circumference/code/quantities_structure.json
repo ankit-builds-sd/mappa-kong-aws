@@ -1,1 +1,6 @@
-{"quantities":[{"id":"circumference__q_circumference","arguments":"circumference__st_radius","body":"return 2 * Math.PI * circumference__st_radius"},{"id":"circumference__q_sum","arguments":"circumference__q_circumference","body":"return 1 + 2 + 3;"}]}
+{
+  "quantities": [
+    { "id": "circumference__q_circumference", "arguments": "circumference__st_radius", "body": "return 2 * Math.PI * circumference__st_radius" },
+    { "id": "circumference__q_sum", "arguments": "circumference__q_circumference", "body": "return 1 + 2 + 3;" }
+  ]
+}

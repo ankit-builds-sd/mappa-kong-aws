@@ -27,31 +27,21 @@ export function hwmPenthouseTechnologySelection__q_technologySelection(
   hwm__st_rooftopPerHp: number,
   hwmPenthouseDemandCalc__q_hwmDemand: number
 ) {
-  let swhAreaRequired =
-    hwmPenthouseDemandCalc__q_hwmDemand * hwm__st_rooftopPerSwh;
-  let hpAreaRequired =
-    hwmPenthouseDemandCalc__q_hwmDemand * hwm__st_rooftopPerSwh;
+  let swhAreaRequired = hwmPenthouseDemandCalc__q_hwmDemand * hwm__st_rooftopPerSwh;
+  let hpAreaRequired = hwmPenthouseDemandCalc__q_hwmDemand * hwm__st_rooftopPerSwh;
   let hpDomesticCapacity;
   let swhIndividualCapacity;
   if (hwm__pi_availablePenthouseRooftop > swhAreaRequired) {
-    swhIndividualCapacity = utilities.roundTo100(
-      hwmPenthouseDemandCalc__q_hwmDemand
-    );
+    swhIndividualCapacity = utilities.roundTo100(hwmPenthouseDemandCalc__q_hwmDemand);
   } else {
     swhAreaRequired = hwm__pi_availablePenthouseRooftop;
-    swhIndividualCapacity =
-      utilities.roundTo100(hwm__pi_availablePenthouseRooftop) /
-      hwm__st_rooftopPerSwh;
+    swhIndividualCapacity = utilities.roundTo100(hwm__pi_availablePenthouseRooftop) / hwm__st_rooftopPerSwh;
   }
   if (hwm__pi_availablePenthouseRooftop > hpAreaRequired) {
-    hpDomesticCapacity = utilities.roundTo100(
-      hwmPenthouseDemandCalc__q_hwmDemand
-    );
+    hpDomesticCapacity = utilities.roundTo100(hwmPenthouseDemandCalc__q_hwmDemand);
   } else {
     hpAreaRequired = hwm__pi_availablePenthouseRooftop;
-    hpDomesticCapacity =
-      utilities.roundTo100(hwm__pi_availablePenthouseRooftop) /
-      hwm__st_rooftopPerHp;
+    hpDomesticCapacity = utilities.roundTo100(hwm__pi_availablePenthouseRooftop) / hwm__st_rooftopPerHp;
   }
 
   return {

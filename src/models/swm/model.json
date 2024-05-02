@@ -1,11 +1,6 @@
 {
   "namespace": "swm",
-  "extends": [
-    "../occupancy",
-    "../global",
-    "../project",
-    "../water"
-  ],
+  "extends": ["../occupancy", "../global", "../project", "../water"],
   "quantities": [
     {
       "id": "swm__q_sensorCalc",
@@ -35,62 +30,33 @@
         "occupancy__pi_penthouseTwoBHK",
         "occupancy__pi_penthouseStudio"
       ],
-      "staticValues": [
-        "swm__st_chSensors",
-        "swm__st_borewellSensors",
-        "swm__st_tankerSensors",
-        "swm__st_otherSensors"
-      ],
+      "staticValues": ["swm__st_chSensors", "swm__st_borewellSensors", "swm__st_tankerSensors", "swm__st_otherSensors"],
       "lookUps": [],
       "quantities": [],
       "output": "let swmStudio = null;\n  let swmOneBHK = null;\n  let swmTwoBHK = null;\n  let swmThreeBHK = null;\n  let swmFourBHK = null;\n  let swmStudioSensors = null;\n  let swmOneBHKSensors = null;\n  let swmTwoBHKSensors = null;\n  let swmThreeBHKSensors = null;\n  let swmFourBHKSensors = null;\n  let swmNumberOfSensors = null;\n  let swmNumberOfUtilitySensors = null;\n  if (swm__pi_projectCategory === 'villa') {\n    swmStudio = 0;\n    swmOneBHK = occupancy__pi_villaOneBHK;\n    swmTwoBHK = occupancy__pi_villaTwoBHK;\n    swmThreeBHK = occupancy__pi_villaThreeBHK;\n    swmFourBHK = occupancy__pi_villaFourBHK;\n  } else {\n    swmStudio = occupancy__pi_studio + occupancy__pi_penthouseStudio;\n    swmOneBHK = occupancy__pi_oneBHK + occupancy__pi_penthouseOneBHK;\n    swmTwoBHK = occupancy__pi_twoBHK + occupancy__pi_penthouseTwoBHK;\n    swmThreeBHK = occupancy__pi_threeBHK + occupancy__pi_penthouseThreeBHK;\n    swmFourBHK = occupancy__pi_fourBHK + occupancy__pi_penthouseFourBHK;\n  }\n  swmStudioSensors = swmStudio * swm__pi_inletsPerStudio;\n  swmOneBHKSensors = swmOneBHK * swm__pi_inletsPerOneBHK;\n  swmTwoBHKSensors = swmTwoBHK * swm__pi_inletsPerTwoBHK;\n  swmThreeBHKSensors = swmThreeBHK * swm__pi_inletsPerThreeBHK;\n  swmFourBHKSensors = swmFourBHK * swm__pi_inletsPerFourBHK;\n\n  swmNumberOfSensors =\n    swmStudioSensors +\n    swmOneBHKSensors +\n    swmTwoBHKSensors +\n    swmThreeBHKSensors +\n    swmFourBHKSensors;\n  if (swm__pi_clubHouseUtilitySensor === true) {\n    swmNumberOfUtilitySensors = swmNumberOfUtilitySensors + swm__st_chSensors;\n  }\n  if (swm__pi_supplySideTankerUtilitySensor === true) {\n    swmNumberOfUtilitySensors =\n      swmNumberOfUtilitySensors + swm__st_tankerSensors;\n  }\n  if (swm__pi_supplySideBorewellUtilitySensor === true) {\n    swmNumberOfUtilitySensors =\n      swmNumberOfUtilitySensors + swm__st_borewellSensors;\n  }\n  swmNumberOfUtilitySensors = swmNumberOfUtilitySensors + swm__st_otherSensors;\n  return {\n    swmNumberOfSensors,\n    swmNumberOfUtilitySensors,\n  };"
     },
     {
       "id": "swm__q_outcomes",
-      "projectInputs": [
-        "swm__pi_capexPreSdPlus"
-      ],
-      "staticValues": [
-        "global__st_convertLtoKL",
-        "global__st_daysInYear",
-        "swm__st_fixedCost",
-        "swm__st_sensorInstallationCost"
-      ],
+      "projectInputs": ["swm__pi_capexPreSdPlus"],
+      "staticValues": ["global__st_convertLtoKL", "global__st_daysInYear", "swm__st_fixedCost", "swm__st_sensorInstallationCost"],
       "lookUps": [],
-      "quantities": [
-        "swm__q_sensorCalc",
-        "water__q_currentWaterTable"
-      ],
+      "quantities": ["swm__q_sensorCalc", "water__q_currentWaterTable"],
       "output": "let productIdentifier = 'dummy';\nlet swmDaily;\nlet swmAnnualWater;\nlet swmUnitApartmentCapex;\nlet swmUnitUtilityCapex = null;\nlet swmCapexPostSdPlus = null;\nlet swmCapex = null;\nlet swmOpex = null;\nswmDaily =\n(water__q_currentWaterTable.smartWaterMeter.residentialDomestic * 100) /\nglobal__st_convertLtoKL;\nswmAnnualWater = swmDaily * global__st_daysInYear;\nswmUnitApartmentCapex = 100;\nswmUnitUtilityCapex = 100;\nswmCapexPostSdPlus =\n(swmUnitApartmentCapex + swm__st_sensorInstallationCost) *\n  swm__q_sensorCalc.swmNumberOfSensors +\n(swmUnitUtilityCapex + swm__st_sensorInstallationCost) *\n  swm__q_sensorCalc.swmNumberOfUtilitySensors +\nswm__st_fixedCost;\nswmCapex = swmCapexPostSdPlus - swm__pi_capexPreSdPlus;\nswmOpex = 100;\nreturn {\nswmDaily,\nswmAnnualWater,\nswmUnitApartmentCapex,\nswmUnitUtilityCapex,\nswmCapex,\nswmOpex,\n};"
     },
     {
       "id": "swm__q_outcomesPreSDPlus",
-      "projectInputs": [
-        "project__pi_city"
-      ],
-      "staticValues": [
-        "global__st_daysInYear",
-        "swm__st_dailyPreSDPlus"
-      ],
+      "projectInputs": ["project__pi_city"],
+      "staticValues": ["global__st_daysInYear", "swm__st_dailyPreSDPlus"],
       "lookUps": [],
-      "quantities": [
-        "swm__q_sensorCalc"
-      ],
+      "quantities": ["swm__q_sensorCalc"],
       "output": "let swmAnnualWaterPreSDPlus = swm__st_dailyPreSDPlus * global__st_daysInYear;\nlet swmCapexPreSDPlus = swm__q_sensorCalc.swmNumberOfSensors * 0.6; //need to implement a new utility function\nreturn { swmAnnualWaterPreSDPlus, swmCapexPreSDPlus };"
     },
     {
       "id": "swm__q_projectLevelInsights",
-      "projectInputs": [
-        "swm__pi_annualBaseLineWaterConsumption"
-      ],
-      "staticValues": [
-        "global__st_convertKgToTon",
-        "global__st_treesPerTonCF"
-      ],
+      "projectInputs": ["swm__pi_annualBaseLineWaterConsumption"],
+      "staticValues": ["global__st_convertKgToTon", "global__st_treesPerTonCF"],
       "lookUps": [],
-      "quantities": [
-        "swm__q_outcomes"
-      ],
+      "quantities": ["swm__q_outcomes"],
       "output": "let swmCFMitigated = null;\nlet swmSdgNumber = 100;\nlet swmTreesSaved = null;\nlet swmPercentageTotalWaterConsumption = null;\nswmCFMitigated =\n1.6 * swm__q_outcomes.swmAnnualWater * global__st_convertKgToTon;\nswmTreesSaved = swmCFMitigated * global__st_treesPerTonCF;\nswmPercentageTotalWaterConsumption =\n(swm__q_outcomes.swmAnnualWater * 100) /\nswm__pi_annualBaseLineWaterConsumption;\nreturn { swmCFMitigated, swmTreesSaved, swmPercentageTotalWaterConsumption };"
     },
     {
@@ -98,17 +64,12 @@
       "projectInputs": [],
       "staticValues": [],
       "lookUps": [],
-      "quantities": [
-        "swm__q_outcomes"
-      ],
+      "quantities": ["swm__q_outcomes"],
       "output": "let swmFlowDiagramDomestic = swm__q_outcomes.swmDaily;\nlet swmFlowDiagramHealthFaucet = 0;\nlet swmFlowDiagramFlushing = 0;\nlet swmFlowDiagramCommonArea = 0;\nlet swmFlowDiagramDrinking = 0;\nreturn swmFlowDiagramDomestic;"
     },
     {
       "id": "swm__q_passiveEnergy",
-      "projectInputs": [
-        "project__pi_numberOfFloors",
-        "project__pi_floorToFloorHeight"
-      ],
+      "projectInputs": ["project__pi_numberOfFloors", "project__pi_floorToFloorHeight"],
       "staticValues": [
         "global__st_convertJoulesTokW",
         "global__st_convertLtoM3",
@@ -119,9 +80,7 @@
         "water__st_pumpFlowRate"
       ],
       "lookUps": [],
-      "quantities": [
-        "swm__q_outcomes"
-      ],
+      "quantities": ["swm__q_outcomes"],
       "output": "let timeTakenToPumpWater = null;\nlet buildingHeight = null;\nlet hydraulicPower = null;\nlet shaftPower = null;\nlet electricalInput = null;\nlet swmPassiveEnergykWh = null;\nlet swmPassiveEnergyOpex = null;\ntimeTakenToPumpWater =\n(swm__q_outcomes.swmAnnualWater * global__st_convertLtoM3) /\nwater__st_pumpFlowRate;\nbuildingHeight = project__pi_numberOfFloors * project__pi_floorToFloorHeight;\nhydraulicPower =\n(water__st_pumpFlowRate *\n  buildingHeight *\n  global__st_accelarationDueToGravity *\n  water__st_specificGravityOfWater) /\nglobal__st_convertJoulesTokW;\nshaftPower = hydraulicPower / water__st_pumpEfficiency;\nelectricalInput = shaftPower / water__st_motorEfficiency;\nswmPassiveEnergykWh = electricalInput * timeTakenToPumpWater;\nswmPassiveEnergyOpex = 5000;\nreturn {\ntimeTakenToPumpWater,\nbuildingHeight,\nhydraulicPower,\nshaftPower,\nelectricalInput,\nswmPassiveEnergykWh,\nswmPassiveEnergyOpex,\n};"
     },
     {
@@ -129,9 +88,7 @@
       "projectInputs": [],
       "staticValues": [],
       "lookUps": [],
-      "quantities": [
-        "swm__q_passiveEnergy"
-      ],
+      "quantities": ["swm__q_passiveEnergy"],
       "output": "let passiveEnergykWh = null;\nlet passiveEnergyOpex = null;\nlet passiveWasteKg = null;\nlet passiveWasteOpex = null;\npassiveEnergykWh = swm__q_passiveEnergy.swmPassiveEnergykWh;\npassiveEnergyOpex = swm__q_passiveEnergy.swmPassiveEnergyOpex;\npassiveWasteKg = 0;\npassiveWasteOpex = 0;\nreturn {\npassiveEnergyOpex,\npassiveEnergykWh,\npassiveWasteKg,\npassiveWasteOpex,\n};"
     },
     {
@@ -139,9 +96,7 @@
       "projectInputs": [],
       "staticValues": [],
       "lookUps": [],
-      "quantities": [
-        "swm__q_outcomes"
-      ],
+      "quantities": ["swm__q_outcomes"],
       "output": "let waterGoal = null;\nlet contribution = null;\nwaterGoal = 100;\ncontribution = swm__q_outcomes.swmAnnualWater / 200;\nreturn { waterGoal, contribution };"
     },
     {
@@ -149,9 +104,7 @@
       "projectInputs": [],
       "staticValues": [],
       "lookUps": [],
-      "quantities": [
-        "swm__q_outcomes"
-      ],
+      "quantities": ["swm__q_outcomes"],
       "output": "let title = null;\n  let totalSavings = null;\n  let seriesNameOne = null;\n  let seriesValueOne = null;\n  let seriesNameTwo = null;\n  let seriesValueTwo = null;\n  let seriesNameThree = null;\n  let seriesValueThree = null;\n  let seriesNameFour = null;\n  let seriesValueFour = null;\n  let seriesNameFive = null;\n  let seriesValueFive = null;\n  title = 'Smart Water Meter savings by category';\n  totalSavings = swm__q_outcomes.swmAnnualWater;\n\n  seriesNameOne = 'domestic';\n  seriesValueOne = swm__q_outcomes.swmAnnualWater;\n  seriesNameTwo = 'health faucet';\n  seriesValueTwo = 0;\n  seriesNameThree = 'flushing';\n  seriesValueThree = 0;\n  seriesNameFour = 'common area';\n  seriesValueFour = 0;\n  seriesNameFive = 'drinking';\n  seriesValueFive = 0;\n  return { title, totalSavings };"
     },
     {
@@ -159,9 +112,7 @@
       "projectInputs": [],
       "staticValues": [],
       "lookUps": [],
-      "quantities": [
-        "swm__q_outcomes"
-      ],
+      "quantities": ["swm__q_outcomes"],
       "output": "let donutOneTitle = null;\nlet donutOneValue = null;\ndonutOneTitle = '% of Total Water';\ndonutOneValue = (swm__q_outcomes.swmAnnualWater * 100) / 500;\nreturn { donutOneTitle, donutOneValue };"
     }
   ],

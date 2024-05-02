@@ -36,67 +36,37 @@
         "hwm__st_outletTempOther"
       ],
       "lookUps": [],
-      "quantities": [
-        "hwmVilla__q_technologySelection",
-        "hwmVilla__q_hwmDemand",
-        "hwmVilla__q_outcomesPreSdPlus"
-      ],
+      "quantities": ["hwmVilla__q_technologySelection", "hwmVilla__q_hwmDemand", "hwmVilla__q_outcomesPreSdPlus"],
       "output": "let defaultProductIdentifier: string;\nlet theProduct: any;\nlet hwmVillaSwhDefaultCapacity: number;\nlet hwmVillaSwhCapacity: number;\nlet hwmVillaHpDefaultCapacity: number;\nlet hwmVillaHpCapacity: number;\nlet hwmVillaEnergyAnnual: any;\nlet hwmVillaCapexPostSdPlus: any;\nlet hwmVillaCapex: number;\nlet hwmVillaOpex: number;\nlet hwmVillaAreaRequired: number;\nlet selectedProductPrice: number;\nlet selectedProductCapacity: number;\nlet selectedProductRatedInputPower: number;\nlet numberOfProducts: number;\nlet pipeLengthDomestic: number = 10; //not there in algo\nlet time = utilities.utility_hwmHpTimeCalculator(\nhwmVilla__pi_hpHeatingSpeed,\nhwm__st_slowHeatingTime,\nhwm__st_fastHeatingTime,\nhwm__st_defaultHeatingTime\n);\nif (\nhwmVilla__pi_option === 'solar water heater' &&\nhwmVilla__pi_swhType === 'individual'\n) {\ndefaultProductIdentifier = utilities.utility_swhProductResolver(\n  hwmVilla__pi_swhType,\n  hwmVilla__pi_swhVariant,\n  hwmVilla__q_technologySelection.defaultSwhIndividualCapacity,\n  'HWM_Villa'\n);\ntheProduct = utilities.utility_defaultOrSelectedProduct(\n  defaultProductIdentifier,\n  hwmVilla__pi_selectedProductIdentifier\n);\nselectedProductPrice = utilities.utility_numberFromString(theProduct.price);\nselectedProductCapacity = utilities.utility_numberFromString(\n  theProduct.filters['Capacity '][0]\n);\nhwmVillaSwhDefaultCapacity =\n  hwmVilla__q_technologySelection.defaultSwhIndividualCapacity;\nhwmVillaSwhCapacity = utilities.utility_userOrDefaultValue(\n  hwmVillaSwhDefaultCapacity,\n  hwmVilla__pi_userSwhCapacity\n);\nnumberOfProducts = hwmVilla__q_hwmDemand.hotWaterDu;\nhwmVillaEnergyAnnual = utilities.utility_swhEnergySavings(\n  hwmVilla__pi_swhType,\n  hwmVillaSwhCapacity,\n  numberOfProducts\n);\nhwmVillaCapexPostSdPlus = utilities.utility_swhCapex(\n  hwmVilla__pi_swhType,\n  hwmVillaSwhCapacity,\n  selectedProductPrice,\n  selectedProductCapacity,\n  numberOfProducts\n);\nhwmVillaCapex =\n  hwmVillaCapexPostSdPlus - hwmVilla__q_outcomesPreSdPlus.hwmCapexPreSdPlus;\nhwmVillaOpex = utilities.utility_energyOpex(\n  hwmVillaEnergyAnnual,\n  project__pi_city\n); //the correct value not present in the algo\nhwmVillaAreaRequired = hwmVilla__q_technologySelection.swhAreaRequired;\n} else if (\nhwmVilla__pi_option === 'heat pump' &&\nhwmVilla__pi_hpType === 'domestic'\n) {\nhwmVilla__st_defaultNumberOfShafts = utilities.utility_userOrDefaultValue(\n  hwmVilla__st_defaultNumberOfShafts,\n  hwmVilla__pi_userNumberOfShafts\n);\nconst outletTemp = utilities.utility_hwmOutletTemp(\n  hwmVilla__pi_hpType,\n  hwm__st_outletTempSwimmingPool,\n  hwm__st_outletTempOther\n);\ndefaultProductIdentifier = utilities.utility_hpProductresolver(\n  hwmVilla__pi_hpType,\n  hwmVilla__q_technologySelection.defaultHpDomesticCapacity,\n  time,\n  project__pi_floorHeight,\n  project__pi_numberOfFloors,\n  outletTemp,\n  hwm__st_initialTemp,\n  hwm__st_conversionFactor,\n  global__st_hoursInDay,\n  hwm__st_heatLossCoeff,\n  hwm__st_supRet,\n  hwmVilla__st_defaultNumberOfShafts,\n  hwm__st_hzPipe,\n  'HWM_Villa'\n).defaultProductIdentifier;\ntheProduct = utilities.utility_defaultOrSelectedProduct(\n  defaultProductIdentifier,\n  hwmVilla__pi_selectedProductIdentifier\n);\nselectedProductPrice = utilities.utility_numberFromString(theProduct.price);\nselectedProductRatedInputPower = utilities.utility_numberFromObject(\n  theProduct.properties,\n  'Rated Input Power (kW)'\n);\nnumberOfProducts = hwmVilla__q_hwmDemand.hotWaterDu;\nhwmVillaHpDefaultCapacity =\n  hwmVilla__q_technologySelection.defaultHpDomesticCapacity;\nhwmVillaHpCapacity = utilities.utility_userOrDefaultValue(\n  hwmVillaHpDefaultCapacity,\n  hwmVilla__pi_userHpCapacity\n);\nhwmVillaEnergyAnnual = utilities.utility_hpEnergySavings(\n  hwmVilla__pi_hpType,\n  hwmVillaHpCapacity,\n  selectedProductRatedInputPower,\n  numberOfProducts,\n  time\n);\nhwmVillaCapexPostSdPlus = utilities.utility_hpCapex(\n  hwmVilla__pi_hpType,\n  hwmVillaHpCapacity,\n  numberOfProducts,\n  selectedProductPrice,\n  selectedProductRatedInputPower,\n  pipeLengthDomestic\n);\nhwmVillaCapex = null;\nhwmVillaOpex = utilities.utility_energyOpex(\n  hwmVillaEnergyAnnual,\n  project__pi_city\n); //the correct value not present in the algo\nhwmVillaAreaRequired = hwmVilla__q_technologySelection.hpAreaRequired;\n}\nreturn {\ndefaultOrSelectedProduct: theProduct,\nhwmVillaSwhCapacity,\nhwmVillaSwhDefaultCapacity,\nhwmVillaHpCapacity,\nhwmVillaHpDefaultCapacity,\nhwmVillaEnergyAnnual,\nhwmVillaCapexPostSdPlus,\nhwmVillaCapex,\nhwmVillaOpex,\nhwmVillaAreaRequired,\nnumberOfProducts,\n};"
     },
     {
       "id": "hwmVilla__q_technologySelection",
-      "projectInputs": [
-        "hwm__pi_availableVillaRooftop",
-        "hwm__pi_userRooftopPerSwh",
-        "hwm__pi_userRooftopPerHp"
-      ],
-      "staticValues": [
-        "hwm__st_defaultRooftopPerSwh",
-        "hwm__st_defaultRooftopPerHp"
-      ],
+      "projectInputs": ["hwm__pi_availableVillaRooftop", "hwm__pi_userRooftopPerSwh", "hwm__pi_userRooftopPerHp"],
+      "staticValues": ["hwm__st_defaultRooftopPerSwh", "hwm__st_defaultRooftopPerHp"],
       "lookUps": [],
       "quantities": ["hwmVilla__q_hwmDemand"],
       "output": "hwm__st_defaultRooftopPerSwh = utilities.utility_userOrDefaultValue(\n    hwm__st_defaultRooftopPerSwh,\n    hwm__pi_userRooftopPerSwh\n  );\n  hwm__st_defaultRooftopPerHp = utilities.utility_userOrDefaultValue(\n    hwm__st_defaultRooftopPerHp,\n    hwm__pi_userRooftopPerHp\n  );\n  let swhAreaRequired = hwmVilla__q_hwmDemand * hwm__st_defaultRooftopPerSwh;\n  let hpAreaRequired = hwmVilla__q_hwmDemand * hwm__st_defaultRooftopPerHp;\n  let defaultHpDomesticCapacity;\n  let defaultSwhIndividualCapacity;\n  if (hwm__pi_availableVillaRooftop > swhAreaRequired) {\n    defaultSwhIndividualCapacity = utilities.roundTo100(hwmVilla__q_hwmDemand);\n  } else {\n    swhAreaRequired = hwm__pi_availableVillaRooftop;\n    defaultSwhIndividualCapacity =\n      utilities.roundTo100(hwm__pi_availableVillaRooftop) /\n      hwm__st_defaultRooftopPerSwh;\n  }\n  if (hwm__pi_availableVillaRooftop > hpAreaRequired) {\n    defaultHpDomesticCapacity = utilities.roundTo100(hwmVilla__q_hwmDemand);\n  } else {\n    hpAreaRequired = hwm__pi_availableVillaRooftop;\n    defaultHpDomesticCapacity =\n      utilities.roundTo100(hwm__pi_availableVillaRooftop) /\n      hwm__st_defaultRooftopPerHp;\n  }\n\n  return {\n    defaultSwhIndividualCapacity,\n    swhAreaRequired,\n    defaultHpDomesticCapacity,\n    hpAreaRequired,\n  };"
     },
     {
       "id": "hwmVilla__q_hwmDemand",
-      "projectInputs": [
-        "hwmVilla__pi_demandAssumptionType",
-        "hwmVilla__pi_demandAssumption",
-        "hwmVilla__pi_lpdPerVilla",
-        "hwmVilla__pi_demandByBathType"
-      ],
+      "projectInputs": ["hwmVilla__pi_demandAssumptionType", "hwmVilla__pi_demandAssumption", "hwmVilla__pi_lpdPerVilla", "hwmVilla__pi_demandByBathType"],
       "staticValues": ["occupancy__st_singleBedroomOccupants"],
       "lookUps": [],
-      "quantities": [
-        "occupancy__q_occupancyVilla",
-        "occupancy__q_numberOfDwellingUnitsVilla"
-      ],
+      "quantities": ["occupancy__q_occupancyVilla", "occupancy__q_numberOfDwellingUnitsVilla"],
       "output": "let hotWaterPerOccupant = null,\n    hotWaterOccupants = null,\n    hotWaterDu = null,\n    hwmDemand = null;\n  if (hwmVilla__pi_demandAssumptionType === 'lpcd per occupant') {\n    hotWaterPerOccupant = hwmVilla__pi_demandAssumption;\n  } else if (\n    hwmVilla__pi_demandAssumptionType === 'link to installed efficient fixtures'\n  ) {\n    hotWaterPerOccupant = -1;\n  } else if (hwmVilla__pi_demandAssumptionType === 'lpd per villa') {\n    hotWaterPerOccupant = hwmVilla__pi_lpdPerVilla;\n  }\n\n  hotWaterDu = occupancy__q_numberOfDwellingUnitsVilla;\n  if (hwmVilla__pi_demandByBathType === 'all baths') {\n    hotWaterOccupants = occupancy__q_occupancyVilla;\n  } else if (hwmVilla__pi_demandByBathType === 'single bath') {\n    hotWaterOccupants =\n      occupancy__q_numberOfDwellingUnitsVilla *\n      occupancy__st_singleBedroomOccupants;\n  } else if (hwmVilla__pi_demandByBathType === 'remaining baths') {\n    hotWaterOccupants =\n      occupancy__q_occupancyVilla -\n      occupancy__q_numberOfDwellingUnitsVilla *\n        occupancy__st_singleBedroomOccupants;\n  } else if (hwmVilla__pi_demandAssumptionType === 'lpd per villa') {\n    hotWaterOccupants = occupancy__q_numberOfDwellingUnitsVilla;\n  }\n  hwmDemand =\n    utilities.roundTo100(hotWaterPerOccupant * hotWaterOccupants) /\n    occupancy__q_numberOfDwellingUnitsVilla;\n  return { hwmDemand, hotWaterOccupants, hotWaterDu };"
     },
     {
       "id": "hwmVilla__q_outcomesPreSdPlus",
       "projectInputs": [],
-      "staticValues": [
-        "hwm__st_baseCasePerLPDkWh",
-        "hwm__st_swhCapexMultiplier",
-        "hwm__st_baseCaseVillaSwhCapacity"
-      ],
+      "staticValues": ["hwm__st_baseCasePerLPDkWh", "hwm__st_swhCapexMultiplier", "hwm__st_baseCaseVillaSwhCapacity"],
       "lookUps": [],
       "quantities": [],
       "output": "let hwmVillaEnergyAnnualPreSdPlus =\nhwm__st_baseCaseVillaSwhCapacity * hwm__st_baseCasePerLPDkWh;\nlet hwmCapexPreSdPlus =\nhwm__st_baseCaseVillaSwhCapacity * hwm__st_swhCapexMultiplier;\nreturn {\nhwmVillaEnergyAnnualPreSdPlus,\nhwmCapexPreSdPlus,\n};"
     },
     {
       "id": "hwmVilla__q_projectLevelInsights",
-      "projectInputs": [
-        "project__pi_city",
-        "hwmVilla__pi_userCityEmissionFactor"
-      ],
-      "staticValues": [
-        "global__st_convertKgToTon",
-        "global__st_treesPerTonCF",
-        "hwm__st_sdgNumberForHwm"
-      ],
+      "projectInputs": ["project__pi_city", "hwmVilla__pi_userCityEmissionFactor"],
+      "staticValues": ["global__st_convertKgToTon", "global__st_treesPerTonCF", "hwm__st_sdgNumberForHwm"],
       "lookUps": [],
       "quantities": ["hwmVilla__q_outcomes"],
       "output": "let cfMitigated = null;\nlet sdgNumber = null;\nlet treesSaved = null;\nlet totalEnergyConsumptionPercentage = null;\nlet residentialHotWaterEnergyConsumption = null;\nlet defaultCityEmissionFactor =\nutilities.utility_getCityEmissionFactors(project__pi_city);\ndefaultCityEmissionFactor = utilities.utility_userOrDefaultValue(\ndefaultCityEmissionFactor,\nhwmVilla__pi_userCityEmissionFactor\n);\ncfMitigated =\ndefaultCityEmissionFactor *\nhwmVilla__q_outcomes.hwmVillaEnergyAnnual *\nglobal__st_convertKgToTon;\nsdgNumber = hwm__st_sdgNumberForHwm;\ntreesSaved = cfMitigated * global__st_treesPerTonCF;\ntotalEnergyConsumptionPercentage =\n(hwmVilla__q_outcomes.hwmVillaEnergyAnnual * 100) / 200;\nresidentialHotWaterEnergyConsumption =\n(hwmVilla__q_outcomes.hwmVillaEnergyAnnual * 100) / 300;\nreturn {\ncfMitigated,\nsdgNumber,\ntreesSaved,\ntotalEnergyConsumptionPercentage,\nresidentialHotWaterEnergyConsumption,\n};"

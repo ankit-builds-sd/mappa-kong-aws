@@ -17,10 +17,7 @@ import * as utilities from '../../../utilities/utility';
 export function circle__q_area(circle__st_rad: number) {
   return Math.PI * circle__st_rad * circle__st_rad;
 }
-export function circle__q_areaOfSector(
-  circle__st_rad: number,
-  circle__st_theta: number
-) {
+export function circle__q_areaOfSector(circle__st_rad: number, circle__st_theta: number) {
   return Math.PI * circle__st_rad * circle__st_rad * (circle__st_theta / 360);
 }
 export function circle__q_test(circle__q_area) {

@@ -1,1 +1,1 @@
-{"quantities" : [{"id":"trickle__q_noop","arguments":"trickle__pi_percentageEnergySavings","body":"return null;"}]}
+{ "quantities": [{ "id": "trickle__q_noop", "arguments": "trickle__pi_percentageEnergySavings", "body": "return null;" }] }
